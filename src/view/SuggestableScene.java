@@ -6,6 +6,7 @@ import org.mt4j.sceneManagement.AbstractScene;
 import org.mt4j.util.MTColor;
 
 import view.components.ActionOrb;
+import view.widgets.KeywordWidget;
 import view.widgets.TimelineWidget;
 
 public class SuggestableScene extends AbstractScene {
@@ -19,11 +20,17 @@ public class SuggestableScene extends AbstractScene {
 	
 	@Override
 	public void init() {
-		MTBackgroundImage background = new MTBackgroundImage(application, application.loadImage("backgrounds/" + "stripes.png"), false);
+		MTBackgroundImage background = new MTBackgroundImage(application, application.loadImage("backgrounds/stripes.png"), false);
 		this.getCanvas().addChild(background);
 		this.getCanvas().addChild(new TimelineWidget(this.application.getWidth()/2, this.application.getHeight()/2, application));
-		this.getCanvas().addChild(new ActionOrb(500, 600, application));
-		this.getCanvas().addChild(new ActionButton(application));
+		this.getCanvas().addChild(new KeywordWidget(100, 100, application));
+		ActionOrb orb = new ActionOrb(500, 600, application);
+		orb.addAction(new ActionButton(application));
+		orb.addAction(new ActionButton(application));
+		orb.addAction(new ActionButton(application));
+		orb.addAction(new ActionButton(application));
+		orb.addAction(new ActionButton(application));
+		this.getCanvas().addChild(orb);
 	}
 
 	@Override

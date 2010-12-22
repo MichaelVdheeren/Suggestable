@@ -4,8 +4,8 @@ import processing.core.PApplet;
 
 public class KeywordWidget extends AbstractWidget {
 
-	public KeywordWidget(float x, float y, float w, float h, PApplet pApplet) {
-		super(x, y, w, h, pApplet);
+	public KeywordWidget(float x, float y, PApplet pApplet) {
+		super(x, y, 400, 200, pApplet);
 		// TODO Auto-generated constructor stub
 	}
 
