@@ -2,11 +2,10 @@ package view;
 
 import org.mt4j.MTApplication;
 import org.mt4j.components.visibleComponents.widgets.MTBackgroundImage;
-import org.mt4j.components.visibleComponents.widgets.MTWindow;
-import org.mt4j.input.inputProcessors.globalProcessors.CursorTracer;
 import org.mt4j.sceneManagement.AbstractScene;
 import org.mt4j.util.MTColor;
 
+import view.components.ActionOrb;
 import view.widgets.TimelineWidget;
 
 public class SuggestableScene extends AbstractScene {
@@ -23,6 +22,7 @@ public class SuggestableScene extends AbstractScene {
 		MTBackgroundImage background = new MTBackgroundImage(application, application.loadImage("backgrounds/" + "stripes.png"), false);
 		this.getCanvas().addChild(background);
 		this.getCanvas().addChild(new TimelineWidget(this.application.getWidth()/2, this.application.getHeight()/2, application));
+		this.getCanvas().addChild(new ActionOrb(500, 600, application));
 	}
 
 	@Override

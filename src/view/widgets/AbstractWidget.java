@@ -2,6 +2,7 @@ package view.widgets;
 
 import org.mt4j.components.visibleComponents.shapes.MTRoundRectangle;
 import org.mt4j.util.MTColor;
+import org.mt4j.util.math.Vector3D;
 
 import processing.core.PApplet;
 
@@ -12,5 +13,10 @@ public abstract class AbstractWidget extends MTRoundRectangle {
 		this.setFillColor(new MTColor(0, 0, 0, 180));
 		this.setStrokeWeight(10);
 		this.setStrokeColor(new MTColor(0, 0, 0, 100));
+		
+		CloseButton btnClose = new CloseButton(pApplet, new Vector3D(x+w-15, y+15));
+		btnClose.setPickable(false);
+		this.addChild(btnClose);
+		
 	}
 }
