@@ -1,5 +1,6 @@
 package application;
 import org.mt4j.MTApplication;
+import org.mt4j.input.inputProcessors.globalProcessors.CursorTracer;
 
 import view.SuggestableScene;
 
@@ -16,6 +17,12 @@ public class Suggestable extends MTApplication {
 
 	@Override
 	public void startUp() {
-		this.addScene(new SuggestableScene(this, "Suggestable"));
+		// Create the Suggestable scene
+		SuggestableScene scene = new SuggestableScene(this, "Suggestable");
+		// Show touches on the scene
+		scene.registerGlobalInputProcessor(new CursorTracer(this, scene));
+		// Add the scene to the application
+		this.addScene(scene);
+		
 	}
 }
