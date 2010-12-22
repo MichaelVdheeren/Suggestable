@@ -23,6 +23,7 @@ public class SuggestableScene extends AbstractScene {
 		this.getCanvas().addChild(background);
 		this.getCanvas().addChild(new TimelineWidget(this.application.getWidth()/2, this.application.getHeight()/2, application));
 		this.getCanvas().addChild(new ActionOrb(500, 600, application));
+		this.getCanvas().addChild(new ActionButton(application));
 	}
 
 	@Override
