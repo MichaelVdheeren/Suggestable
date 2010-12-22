@@ -2,6 +2,8 @@ package view;
 
 import org.mt4j.components.visibleComponents.shapes.MTComplexPolygon;
 import org.mt4j.components.visibleComponents.shapes.MTRoundRectangle;
+import org.mt4j.components.visibleComponents.widgets.MTTextArea;
+import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vertex;
 
 import processing.core.PApplet;
@@ -26,6 +28,15 @@ public class ActionButton extends MTRoundRectangle {
 		
 		this.addChild(polygon);
 		polygon.setPickable(false);
+		
+		MTTextArea text = new MTTextArea(pApplet);
+		text.setText("Timeline");
+		text.setPositionGlobal(this.getCenterPointGlobal());
+		text.setNoStroke(true);
+		text.setNoFill(true);
+		text.setPickable(false);
+		text.setFillColor(new MTColor(0,0,0));
+		this.addChild(text);
 	}
 	
 }
