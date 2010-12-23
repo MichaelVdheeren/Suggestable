@@ -5,9 +5,10 @@ import org.mt4j.components.visibleComponents.widgets.MTBackgroundImage;
 import org.mt4j.sceneManagement.AbstractScene;
 import org.mt4j.util.MTColor;
 
-import view.components.ActionOrb;
+import view.widgets.OrbWidget;
 import view.widgets.KeywordWidget;
 import view.widgets.TimelineWidget;
+import view.widgets.controls.OrbButton;
 
 public class SuggestableScene extends AbstractScene {
 	private MTApplication application;
@@ -20,16 +21,15 @@ public class SuggestableScene extends AbstractScene {
 	
 	@Override
 	public void init() {
-		MTBackgroundImage background = new MTBackgroundImage(application, application.loadImage("backgrounds/stripes.png"), false);
+		MTBackgroundImage background = new MTBackgroundImage(application, application.loadImage("data/images/stripes.png"), false);
 		this.getCanvas().addChild(background);
 		this.getCanvas().addChild(new TimelineWidget(this.application.getWidth()/2, this.application.getHeight()/2, application));
 		this.getCanvas().addChild(new KeywordWidget(100, 100, application));
-		ActionOrb orb = new ActionOrb(500, 600, application);
-		orb.addAction(new ActionButton(application));
-		orb.addAction(new ActionButton(application));
-		orb.addAction(new ActionButton(application));
-		orb.addAction(new ActionButton(application));
-		orb.addAction(new ActionButton(application));
+		OrbWidget orb = new OrbWidget(500, 600, application);
+		orb.addAction(new OrbButton(application,"Tijdlijn"));
+		orb.addAction(new OrbButton(application,"Kernwoorden"));
+		orb.addAction(new OrbButton(application,"Verwijderen"));
+		orb.addAction(new OrbButton(application,"Leeg maken"));
 		this.getCanvas().addChild(orb);
 	}
 

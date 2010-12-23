@@ -1,4 +1,4 @@
-package view.widgets;
+package view.widgets.controls;
 
 import org.mt4j.components.MTComponent;
 import org.mt4j.components.visibleComponents.shapes.MTLine;
@@ -11,7 +11,7 @@ public class CloseButton extends MTComponent {
 	public CloseButton(PApplet pApplet, Vector3D center) {
 		super(pApplet);
 		
-		float s = 15f;
+		float s = 12f;
 		float w = 3.5f;
 		MTLine tLbR = new MTLine(pApplet, center.x-s/2, center.y-s/2, center.x+s/2, center.y+s/2);
 		tLbR.setPickable(false);

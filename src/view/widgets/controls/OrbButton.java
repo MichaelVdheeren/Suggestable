@@ -1,4 +1,4 @@
-package view;
+package view.widgets.controls;
 
 import org.mt4j.components.visibleComponents.font.FontManager;
 import org.mt4j.components.visibleComponents.font.IFont;
@@ -11,12 +11,14 @@ import org.mt4j.util.math.Vertex;
 
 import processing.core.PApplet;
 
-public class ActionButton extends MTRoundRectangle {
-
-	public ActionButton(PApplet pApplet) {
-		super(100, 200, 0, 100, 30, 5, 5, pApplet);
+public class OrbButton extends MTRoundRectangle {
+	private String description;
+	
+	public OrbButton(PApplet pApplet, String description) {
+		super(100, 200, 0, 110, 30, 5, 5, pApplet);
+		setDescription(description);
 		
-		this.setFillColor(new MTColor(0, 0, 0, 180));
+		this.setFillColor(new MTColor(0, 0, 0, 200));
 		this.setStrokeWeight(2.5f);
 		this.setStrokeColor(new MTColor(255, 255, 255, 150));
 		
@@ -25,7 +27,7 @@ public class ActionButton extends MTRoundRectangle {
 		float x = this.getCenterPointGlobal().x-w/2;
 		float y = this.getCenterPointGlobal().y-h/2;
 		
-		float aw = 20;
+		float aw = this.getHeightXYGlobal()/2;
 		
 		Vertex[] vertices = new Vertex[3];
 		vertices[0] = new Vertex(x+w/2-aw/2, y+h-1f);
@@ -37,21 +39,31 @@ public class ActionButton extends MTRoundRectangle {
 		this.addChild(polygon);
 		polygon.setPickable(false);
 		
-		polygon.setFillColor(new MTColor(0, 0, 0, 180));
+		polygon.setFillColor(new MTColor(0, 0, 0, 200));
 		polygon.setStrokeWeight(2.5f);
 		polygon.setStrokeColor(new MTColor(255, 255, 255, 150));
 		
 		IFont font = FontManager.getInstance().createFont(pApplet, "Trebuchet MS.ttf", 
-				18, 	//Font size
+				16, 	//Font size
 				new MTColor(255,255,255),  //Font fill color
 				new MTColor(255,255,255,180));	//Font outline color
 		
 		MTTextArea text = new MTTextArea(pApplet, font);
-		text.setText("Timeline");
+		text.setText(this.description);
 		text.setPositionGlobal(this.getCenterPointGlobal());
 		text.setNoStroke(true);
 		text.setNoFill(true);
 		text.setPickable(false);
 		this.addChild(text);
+	}
+
+	public String getDescription() {
+		return new String(description);
+	}
+
+	private void setDescription(String description) {
+		this.description = description;
 	}	
+	
+	
 }
