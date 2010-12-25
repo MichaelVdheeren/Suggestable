@@ -2,7 +2,7 @@ package view.widgets;
 
 import processing.core.PApplet;
 
-public class KeywordWidget extends AbstractWidget {
+public class KeywordWidget extends WindowWidget {
 
 	public KeywordWidget(float x, float y, PApplet pApplet) {
 		super(x, y, 400, 200, pApplet);

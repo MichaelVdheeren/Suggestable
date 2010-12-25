@@ -19,32 +19,41 @@ public class OrbWidget extends MTEllipse {
 		this.setFillColor(new MTColor(0, 0, 0, 200));
 		this.setStrokeWeight(2.5f);
 		this.setStrokeColor(new MTColor(255, 255, 255, 150));
+		
+		
 	}
 	
-	public void addAction(OrbButton action) {
-		float d = 360;
+	public void addButton(OrbButton button) {
+		OrbButton[] buttons = new OrbButton[1];
+		buttons[0] = button;
+		this.addButtons(buttons);
+	}
+	
+	public void addButtons(OrbButton[] buttons) {
 		float t;
 		
 		// Reset the rotation
-		t = d/actions.size();
-		for (int i=0; i<actions.size(); i++)
-			actions.get(i).rotateZ(this.getCenterPointGlobal(), -i*t);
+		if (actions.size() != 0) {
+			t = 360/actions.size();
+			for (int i=0; i<actions.size(); i++)
+				actions.get(i).rotateZ(this.getCenterPointGlobal(), -i*t);
+		}
 		
-		Vector3D anchor = this.getCenterPointGlobal();
-		anchor.translate(new Vector3D(0,-(this.getHeightXYGlobal()/2+action.getHeightXY(TransformSpace.GLOBAL)),0));
-		
-		actions.add(action);
-		this.addChild(action);
-		action.setPositionGlobal(anchor);
-		action.setPickable(false);
+		for (OrbButton button : buttons) {
+			Vector3D anchor = this.getCenterPointGlobal();
+			anchor.translate(new Vector3D(0,-(this.getHeightXYGlobal()/2+button.getHeightXY(TransformSpace.GLOBAL)),0));
+			actions.add(button);
+			this.addChild(button);
+			button.setPositionGlobal(anchor);
+		}
 
 		// Now rotate again
-		t = d/actions.size();
+		t = 360/actions.size();
 		for (int i=0; i<actions.size(); i++)
 			actions.get(i).rotateZ(this.getCenterPointGlobal(), i*t);
 	}
 	
-	public void deleteAction() {
+	public void removeButtons() {
 		
 	}
 }

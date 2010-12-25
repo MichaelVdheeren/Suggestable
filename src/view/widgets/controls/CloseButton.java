@@ -7,19 +7,19 @@ import org.mt4j.util.math.Vector3D;
 import processing.core.PApplet;
 
 public class CloseButton extends MTComponent {
-
+	static float s = 15f;
+	static float w = 3.5f;
+	
 	public CloseButton(PApplet pApplet, Vector3D center) {
 		super(pApplet);
 		
-		float s = 12f;
-		float w = 3.5f;
 		MTLine tLbR = new MTLine(pApplet, center.x-s/2, center.y-s/2, center.x+s/2, center.y+s/2);
-		tLbR.setPickable(false);
+		tLbR.removeAllGestureEventListeners();
 		tLbR.setStrokeWeight(w);
 		this.addChild(tLbR);
 		
 		MTLine tRbL = new MTLine(pApplet, center.x+s/2, center.y-s/2, center.x-s/2, center.y+s/2);
-		tRbL.setPickable(false);
+		tRbL.removeAllGestureEventListeners();
 		tRbL.setStrokeWeight(w);
 		this.addChild(tRbL);
 	}

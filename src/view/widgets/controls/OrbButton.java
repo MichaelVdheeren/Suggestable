@@ -6,7 +6,6 @@ import org.mt4j.components.visibleComponents.shapes.MTComplexPolygon;
 import org.mt4j.components.visibleComponents.shapes.MTRoundRectangle;
 import org.mt4j.components.visibleComponents.widgets.MTTextArea;
 import org.mt4j.util.MTColor;
-import org.mt4j.util.math.Vector3D;
 import org.mt4j.util.math.Vertex;
 
 import processing.core.PApplet;
@@ -43,7 +42,7 @@ public class OrbButton extends MTRoundRectangle {
 		polygon.setStrokeWeight(2.5f);
 		polygon.setStrokeColor(new MTColor(255, 255, 255, 150));
 		
-		IFont font = FontManager.getInstance().createFont(pApplet, "Trebuchet MS.ttf", 
+		IFont font = FontManager.getInstance().createFont(pApplet, "fonts/Trebuchet MS.ttf", 
 				16, 	//Font size
 				new MTColor(255,255,255),  //Font fill color
 				new MTColor(255,255,255,180));	//Font outline color
@@ -63,7 +62,7 @@ public class OrbButton extends MTRoundRectangle {
 
 	private void setDescription(String description) {
 		this.description = description;
-	}	
+	}
 	
 	
 }

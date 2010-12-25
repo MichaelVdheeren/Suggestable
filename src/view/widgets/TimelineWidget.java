@@ -3,13 +3,12 @@ package view.widgets;
 import java.util.ArrayList;
 
 import org.mt4j.components.MTComponent;
-import org.mt4j.components.visibleComponents.shapes.MTRectangle;
 import org.mt4j.components.visibleComponents.shapes.MTRoundRectangle;
 import org.mt4j.util.MTColor;
 
 import processing.core.PApplet;
 
-public class TimelineWidget extends AbstractWidget {
+public class TimelineWidget extends WindowWidget {
 	private ArrayList<Float> values = new ArrayList<Float>();
 	private ArrayList<MTRoundRectangle> bars = new ArrayList<MTRoundRectangle>();
 	private ArrayList<Integer> selectedIndices = new ArrayList<Integer>();
