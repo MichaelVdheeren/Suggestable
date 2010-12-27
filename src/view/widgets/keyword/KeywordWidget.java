@@ -1,6 +1,7 @@
-package view.widgets;
+package view.widgets.keyword;
 
 import processing.core.PApplet;
+import view.widgets.window.WindowWidget;
 
 public class KeywordWidget extends WindowWidget {
 

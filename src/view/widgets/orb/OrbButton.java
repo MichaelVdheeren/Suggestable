@@ -1,4 +1,4 @@
-package view.widgets.controls;
+package view.widgets.orb;
 
 import org.mt4j.components.visibleComponents.font.FontManager;
 import org.mt4j.components.visibleComponents.font.IFont;
@@ -36,7 +36,6 @@ public class OrbButton extends MTRoundRectangle {
 		MTComplexPolygon polygon = new MTComplexPolygon(pApplet, vertices);
 		
 		this.addChild(polygon);
-		polygon.setPickable(false);
 		
 		polygon.setFillColor(new MTColor(0, 0, 0, 200));
 		polygon.setStrokeWeight(2.5f);
@@ -52,8 +51,8 @@ public class OrbButton extends MTRoundRectangle {
 		text.setPositionGlobal(this.getCenterPointGlobal());
 		text.setNoStroke(true);
 		text.setNoFill(true);
-		text.setPickable(false);
 		this.addChild(text);
+		this.setComposite(true);
 	}
 
 	public String getDescription() {
@@ -63,6 +62,4 @@ public class OrbButton extends MTRoundRectangle {
 	private void setDescription(String description) {
 		this.description = description;
 	}
-	
-	
 }

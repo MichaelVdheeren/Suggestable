@@ -2,19 +2,16 @@ package view;
 
 import org.mt4j.MTApplication;
 import org.mt4j.components.visibleComponents.widgets.MTBackgroundImage;
-import org.mt4j.input.MTEvent;
 import org.mt4j.input.inputProcessors.IGestureEventListener;
 import org.mt4j.input.inputProcessors.MTGestureEvent;
-import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProcessor;
-import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProcessor;
 import org.mt4j.sceneManagement.AbstractScene;
 import org.mt4j.util.MTColor;
 
-import view.widgets.KeywordWidget;
-import view.widgets.OrbWidget;
-import view.widgets.TimelineWidget;
-import view.widgets.controls.OrbButton;
+import view.widgets.keyword.KeywordWidget;
+import view.widgets.orb.OrbButton;
+import view.widgets.orb.OrbWidget;
+import view.widgets.timeline.TimelineWidget;
 
 public class SuggestableScene extends AbstractScene {
 	private MTApplication application;
@@ -31,7 +28,6 @@ public class SuggestableScene extends AbstractScene {
 		this.getCanvas().addChild(background);
 		
 		OrbWidget orb = new OrbWidget(500, 600, application);
-		
 		
 		OrbButton btnTimeline = new OrbButton(application,"Tijdlijn");
 		btnTimeline.registerInputProcessor(new TapProcessor(application));

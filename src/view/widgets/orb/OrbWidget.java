@@ -1,14 +1,18 @@
-package view.widgets;
+package view.widgets.orb;
 
 import java.util.ArrayList;
 
 import org.mt4j.components.TransformSpace;
 import org.mt4j.components.visibleComponents.shapes.MTEllipse;
+import org.mt4j.components.visibleComponents.widgets.MTSvg;
 import org.mt4j.util.MTColor;
+import org.mt4j.util.animation.Animation;
+import org.mt4j.util.animation.AnimationEvent;
+import org.mt4j.util.animation.IAnimationListener;
+import org.mt4j.util.animation.MultiPurposeInterpolator;
 import org.mt4j.util.math.Vector3D;
 
 import processing.core.PApplet;
-import view.widgets.controls.OrbButton;
 
 public class OrbWidget extends MTEllipse {
 	private ArrayList<OrbButton> actions = new ArrayList<OrbButton>();
@@ -20,7 +24,22 @@ public class OrbWidget extends MTEllipse {
 		this.setStrokeWeight(2.5f);
 		this.setStrokeColor(new MTColor(255, 255, 255, 150));
 		
+		MTSvg svg = new MTSvg(pApplet, "data/icons/rfid-3.svg");
 		
+		svg.setPositionGlobal(this.getCenterPointGlobal());
+		svg.scale(2.5f, 2.5f, 0, svg.getCenterPointGlobal());
+		this.addChild(svg);
+		svg.setPickable(false);
+		
+		Animation anim = new Animation("rotate", new MultiPurposeInterpolator( 0,360, 4000, 0, 1f, -1), svg);
+		anim.addAnimationListener(new IAnimationListener() {
+			public void processAnimationEvent(AnimationEvent ae) {
+				float factor = ae.getCurrentStepDelta();
+				MTSvg target = (MTSvg)ae.getTargetObject();
+				target.rotateZ(target.getCenterPointGlobal(), factor,TransformSpace.GLOBAL);
+			}
+		});
+		anim.start();
 	}
 	
 	public void addButton(OrbButton button) {
