@@ -27,6 +27,16 @@ public class SuggestableScene extends AbstractScene {
 		MTBackgroundImage background = new MTBackgroundImage(application, application.loadImage("data/images/stripes.png"), false);
 		this.getCanvas().addChild(background);
 		
+		initializeOrb();
+	}
+
+	@Override
+	public void shutDown() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void initializeOrb() {
 		OrbWidget orb = new OrbWidget(500, 600, application);
 		
 		OrbButton btnTimeline = new OrbButton(application,"Tijdlijn");
@@ -47,7 +57,7 @@ public class SuggestableScene extends AbstractScene {
 			@Override
 			public boolean processGestureEvent(MTGestureEvent e) {
 				if (e.getId() == MTGestureEvent.GESTURE_ENDED)
-					getCanvas().addChild(new KeywordWidget(100, 100, application));
+					getCanvas().addChild(new KeywordWidget(application.getWidth()/2, application.getHeight()/2, application));
 				
 				return true;
 			}
@@ -56,12 +66,6 @@ public class SuggestableScene extends AbstractScene {
 		orb.addButton(btnTimeline);
 		orb.addButton(btnKeywords);
 		this.getCanvas().addChild(orb);
-	}
-
-	@Override
-	public void shutDown() {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

@@ -60,6 +60,6 @@ public class OrbButton extends MTRoundRectangle {
 	}
 
 	private void setDescription(String description) {
-		this.description = description;
+		this.description = new String(description);
 	}
 }

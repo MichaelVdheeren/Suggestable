@@ -4,11 +4,11 @@ import org.mt4j.input.inputProcessors.globalProcessors.CursorTracer;
 
 import view.SuggestableScene;
 
-
+/**
+ * The application
+ * @author michael
+ */
 public class Suggestable extends MTApplication {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	public static void main(String args[]){
