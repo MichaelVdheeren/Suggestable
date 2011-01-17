@@ -15,7 +15,7 @@ import org.mt4j.util.math.Vector3D;
 import processing.core.PApplet;
 
 public class OrbWidget extends MTEllipse {
-	private ArrayList<OrbButton> actions = new ArrayList<OrbButton>();
+	private ArrayList<OrbButton> buttonList = new ArrayList<OrbButton>();
 	
 	public OrbWidget(float x, float y, PApplet pApplet) {
 		super(pApplet, new Vector3D(x, y), 100,100);
@@ -52,24 +52,24 @@ public class OrbWidget extends MTEllipse {
 		float t;
 		
 		// Reset the rotation
-		if (actions.size() != 0) {
-			t = 360/actions.size();
-			for (int i=0; i<actions.size(); i++)
-				actions.get(i).rotateZ(this.getCenterPointGlobal(), -i*t);
+		if (buttonList.size() != 0) {
+			t = 360/buttonList.size();
+			for (int i=0; i<buttonList.size(); i++)
+				buttonList.get(i).rotateZ(this.getCenterPointGlobal(), -i*t);
 		}
 		
 		for (OrbButton button : buttons) {
 			Vector3D anchor = this.getCenterPointGlobal();
 			anchor.translate(new Vector3D(0,-(this.getHeightXYGlobal()/2+button.getHeightXY(TransformSpace.GLOBAL)),0));
-			actions.add(button);
+			buttonList.add(button);
 			this.addChild(button);
 			button.setPositionGlobal(anchor);
 		}
 
 		// Now rotate again
-		t = 360/actions.size();
-		for (int i=0; i<actions.size(); i++)
-			actions.get(i).rotateZ(this.getCenterPointGlobal(), i*t);
+		t = 360/buttonList.size();
+		for (int i=0; i<buttonList.size(); i++)
+			buttonList.get(i).rotateZ(this.getCenterPointGlobal(), i*t);
 	}
 	
 	public void removeButtons() {
