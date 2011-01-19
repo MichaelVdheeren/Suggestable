@@ -1,4 +1,4 @@
-package view.widgets.timeline;
+package view.widgets;
 
 import org.mt4j.components.MTComponent;
 import org.mt4j.components.visibleComponents.shapes.MTEllipse;

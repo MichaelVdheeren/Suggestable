@@ -1,4 +1,4 @@
-package view.components;
+package view;
 
 import org.mt4j.components.visibleComponents.widgets.MTSvg;
 import processing.core.PApplet;

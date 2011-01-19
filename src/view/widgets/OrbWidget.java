@@ -1,4 +1,4 @@
-package view.widgets.orb;
+package view.widgets;
 
 import java.util.ArrayList;
 
@@ -13,7 +13,7 @@ import org.mt4j.util.animation.MultiPurposeInterpolator;
 import org.mt4j.util.math.Vector3D;
 
 import processing.core.PApplet;
-import view.components.Svg;
+import view.Svg;
 
 public class OrbWidget extends MTEllipse {
 	private ArrayList<OrbButton> buttonList = new ArrayList<OrbButton>();
@@ -25,7 +25,7 @@ public class OrbWidget extends MTEllipse {
 		this.setStrokeWeight(2.5f);
 		this.setStrokeColor(new MTColor(255, 255, 255, 150));
 		
-		Svg svg = new Svg(pApplet, "data/icons/rfid-3.svg");
+		Svg svg = new Svg(pApplet, "data/icons/rfid.svg");
 		svg.setPositionGlobal(this.getCenterPointGlobal());
 		svg.scale(2.5f, 2.5f, 0, svg.getCenterPointGlobal());
 		this.addChild(svg);

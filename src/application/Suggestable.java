@@ -6,7 +6,6 @@ import view.SuggestableScene;
 
 /**
  * The application
- * @author michael
  */
 public class Suggestable extends MTApplication {
 	private static final long serialVersionUID = 1L;

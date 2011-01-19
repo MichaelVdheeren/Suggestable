@@ -1,7 +1,6 @@
-package view.widgets.information;
+package view.widgets;
 
 import processing.core.PApplet;
-import view.widgets.window.WindowWidget;
 
 public class InformationWidget extends WindowWidget {
 

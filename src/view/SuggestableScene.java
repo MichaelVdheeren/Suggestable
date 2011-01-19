@@ -1,6 +1,5 @@
 package view;
 
-import org.mt4j.MTApplication;
 import org.mt4j.components.visibleComponents.widgets.MTBackgroundImage;
 import org.mt4j.input.inputProcessors.IGestureEventListener;
 import org.mt4j.input.inputProcessors.MTGestureEvent;
@@ -8,15 +7,16 @@ import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProces
 import org.mt4j.sceneManagement.AbstractScene;
 import org.mt4j.util.MTColor;
 
-import view.widgets.keyword.KeywordWidget;
-import view.widgets.orb.OrbButton;
-import view.widgets.orb.OrbWidget;
-import view.widgets.timeline.TimelineWidget;
+import view.widgets.KeywordWidget;
+import view.widgets.OrbButton;
+import view.widgets.OrbWidget;
+import view.widgets.TimelineWidget;
+import application.Suggestable;
 
 public class SuggestableScene extends AbstractScene {
-	private MTApplication application;
+	private Suggestable application;
 	
-	public SuggestableScene(MTApplication application, String name) {
+	public SuggestableScene(Suggestable application, String name) {
 		super(application, name);
 		this.application = application;
 		this.setClearColor(new MTColor(146, 150, 188));
@@ -37,7 +37,7 @@ public class SuggestableScene extends AbstractScene {
 	}
 	
 	public void initializeOrb() {
-		OrbWidget orb = new OrbWidget(500, 600, application);
+		OrbWidget orb = new OrbWidget(application.getWidth()/2, application.getHeight()/2, application);
 		
 		OrbButton btnTimeline = new OrbButton(application,"Tijdlijn");
 		btnTimeline.registerInputProcessor(new TapProcessor(application));
@@ -63,8 +63,11 @@ public class SuggestableScene extends AbstractScene {
 			}
 		});
 		
+		OrbButton btnSearch = new OrbButton(application,"Zoeken");
+		
 		orb.addButton(btnTimeline);
 		orb.addButton(btnKeywords);
+		orb.addButton(btnSearch);
 		this.getCanvas().addChild(orb);
 	}
 

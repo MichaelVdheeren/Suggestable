@@ -1,4 +1,4 @@
-package view.widgets.orb;
+package view.widgets;
 
 import org.mt4j.components.visibleComponents.font.FontManager;
 import org.mt4j.components.visibleComponents.font.IFont;

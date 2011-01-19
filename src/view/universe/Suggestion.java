@@ -1,22 +1,24 @@
-package view.components;
+package view.universe;
+
+import model.books.Book;
 
 import org.mt4j.components.visibleComponents.font.FontManager;
 import org.mt4j.components.visibleComponents.font.IFont;
-import org.mt4j.components.visibleComponents.shapes.MTEllipse;
+import org.mt4j.components.visibleComponents.shapes.MTRoundRectangle;
 import org.mt4j.components.visibleComponents.widgets.MTTextArea;
 import org.mt4j.util.MTColor;
-import org.mt4j.util.math.Vector3D;
 
 import processing.core.PApplet;
 
-public class Placeholder extends MTEllipse {
-	private String description;
+public class Suggestion extends MTRoundRectangle {
+	private final Book book;
 	
-	public Placeholder(PApplet pApplet, Vector3D cp, float rx, float ry, String description) {
-		super(pApplet, cp, rx, ry);
-		setDescription(description);
-		// TODO Auto-generated constructor stub
+	public Suggestion(PApplet pApplet, float x, float y, float s, Book book) {
+		super(x, y, 0, s, s, 5, 5, pApplet);
+
+		this.book = book;
 		
+		this.setComposite(true);
 		this.setFillColor(new MTColor(0, 0, 0, 200));
 		this.setStrokeWeight(2.5f);
 		this.setStrokeColor(new MTColor(255, 255, 255, 150));
@@ -26,16 +28,15 @@ public class Placeholder extends MTEllipse {
 				new MTColor(255,255,255),  //Font fill color
 				new MTColor(255,255,255,180));	//Font outline color
 		
-		MTTextArea text = new MTTextArea(pApplet, font);
-		text.setText(this.description);
+		MTTextArea text = new MTTextArea(this.getCenterPointGlobal().getX(), this.getCenterPointGlobal().getY(), s, s, font, pApplet);
+		text.setNoStroke(true);
+		text.setNoFill(true);
+		text.setText(getBook().getTitle());
 		text.setPositionGlobal(this.getCenterPointGlobal());
-	}
-	
-	public String getDescription() {
-		return new String(description);
+		this.addChild(text);
 	}
 
-	private void setDescription(String description) {
-		this.description = new String(description);
+	public Book getBook() {
+		return this.book;
 	}
 }
