@@ -13,12 +13,12 @@ import processing.core.PApplet;
 
 public class Placeholder extends MTEllipse {
 	private final Book book;
-	private float radius;
-	private float gforce = 1;
+	private final float radius;
 	
-	public Placeholder(PApplet pApplet, Vector3D c, float r, Book book) {
-		super(pApplet, c, r, r);
+	public Placeholder(PApplet pApplet, Vector3D center, float radius, Book book) {
+		super(pApplet, center, radius, radius);
 		this.book = book;
+		this.radius = radius;
 		
 		this.setComposite(true);
 		this.setFillColor(new MTColor(0, 0, 0, 200));
@@ -34,11 +34,15 @@ public class Placeholder extends MTEllipse {
 		text.setNoStroke(true);
 		text.setNoFill(true);
 		text.setText(getBook().getTitle());
-		text.setPositionGlobal(c);
+		text.setPositionGlobal(center);
 		this.addChild(text);
 	}
 	
 	public Book getBook() {
 		return this.book;
+	}
+	
+	public float getGForce() {
+		return this.getWidthXYGlobal()/this.radius;
 	}
 }
