@@ -33,7 +33,6 @@ public class SuggestableScene extends AbstractScene {
 	@Override
 	public void shutDown() {
 		// TODO Auto-generated method stub
-		
 	}
 	
 	public void initializeOrb() {
@@ -45,7 +44,7 @@ public class SuggestableScene extends AbstractScene {
 			@Override
 			public boolean processGestureEvent(MTGestureEvent e) {
 				if (e.getId() == MTGestureEvent.GESTURE_ENDED)
-					getCanvas().addChild(new TimelineWidget(application.getWidth()/2, application.getHeight()/2, application));
+					getCanvas().addChild(new TimelineWidget(application.getWidth()/2, application.getHeight()/2, 400, 200, application));
 				
 				return true;
 			}
@@ -57,7 +56,7 @@ public class SuggestableScene extends AbstractScene {
 			@Override
 			public boolean processGestureEvent(MTGestureEvent e) {
 				if (e.getId() == MTGestureEvent.GESTURE_ENDED)
-					getCanvas().addChild(new KeywordWidget(application.getWidth()/2, application.getHeight()/2, application));
+					getCanvas().addChild(new KeywordWidget(application.getWidth()/2, application.getHeight()/2, 400, 200, application));
 				
 				return true;
 			}

@@ -51,10 +51,6 @@
 	<classpathentry kind="lib" path="mt4j/mri.jar"/>
 	<classpathentry kind="lib" path="mt4j/mt4j.jar"/>
 	<classpathentry kind="lib" path="mt4j/muito_blobtracking.jar"/>
-	<classpathentry kind="lib" path="google/gdata-books-1.0.jar"/>
-	<classpathentry kind="lib" path="google/gdata-client-1.0.jar"/>
-	<classpathentry kind="lib" path="google/gdata-base-1.0.jar"/>
-	<classpathentry kind="lib" path="google/gdata-core-1.0.jar"/>
-	<classpathentry kind="lib" path="google/guava-r07.jar"/>
+	<classpathentry kind="lib" path="google/books.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

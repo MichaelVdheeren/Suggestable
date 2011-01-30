@@ -21,8 +21,8 @@ public class TimelineWidget extends WindowWidget {
 	private final MTColor white = new MTColor(255,255,255);
 	private final MTColor blue = new MTColor(1,151,253);
 	
-	public TimelineWidget(float x, float y, PApplet pApplet) {
-		super(x, y, 400, 200, pApplet);
+	public TimelineWidget(float x, float y, float w, float h, PApplet pApplet) {
+		super(x, y, w, h, pApplet);
 		this.pApplet = pApplet;
 		
 		graph = new MTRoundRectangle(x+7.5f, y+30, 0, this.getWidthXYGlobal()-15, this.getHeightXYGlobal()-60, 5, 5, pApplet);
