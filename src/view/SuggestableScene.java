@@ -1,5 +1,8 @@
 package view;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
 import org.mt4j.components.visibleComponents.widgets.MTBackgroundImage;
 import org.mt4j.input.inputProcessors.IGestureEventListener;
 import org.mt4j.input.inputProcessors.MTGestureEvent;
@@ -7,11 +10,15 @@ import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProces
 import org.mt4j.sceneManagement.AbstractScene;
 import org.mt4j.util.MTColor;
 
+import view.universe.Suggestion;
 import view.widgets.KeywordWidget;
 import view.widgets.OrbButton;
 import view.widgets.OrbWidget;
 import view.widgets.TimelineWidget;
 import application.Suggestable;
+
+import com.google.books.unofficial.api.Book;
+import com.google.books.unofficial.api.Collection;
 
 public class SuggestableScene extends AbstractScene {
 	private Suggestable application;
@@ -63,6 +70,26 @@ public class SuggestableScene extends AbstractScene {
 		});
 		
 		OrbButton btnSearch = new OrbButton(application,"Zoeken");
+		btnSearch.registerInputProcessor(new TapProcessor(application));
+		btnSearch.addGestureListener(TapProcessor.class, new IGestureEventListener() {
+			@Override
+			public boolean processGestureEvent(MTGestureEvent e) {
+				if (e.getId() != MTGestureEvent.GESTURE_ENDED)
+					return false;
+				
+				Collection googleBooks = new Collection();
+				try {
+					ArrayList<Book> books = googleBooks.getBooks("Blue Ocean Strategy");
+					for (Book b : books)
+						getCanvas().addChild(new Suggestion(application, 300, 300, 100, b));
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				return true;
+			}
+		});
 		
 		orb.addButton(btnTimeline);
 		orb.addButton(btnKeywords);

@@ -1,7 +1,5 @@
 package view.universe;
 
-import model.books.Book;
-
 import org.mt4j.components.visibleComponents.font.FontManager;
 import org.mt4j.components.visibleComponents.font.IFont;
 import org.mt4j.components.visibleComponents.shapes.MTRoundRectangle;
@@ -9,6 +7,8 @@ import org.mt4j.components.visibleComponents.widgets.MTTextArea;
 import org.mt4j.util.MTColor;
 
 import processing.core.PApplet;
+
+import com.google.books.unofficial.api.Book;
 
 public class Suggestion extends MTRoundRectangle {
 	private final Book book;
@@ -31,7 +31,7 @@ public class Suggestion extends MTRoundRectangle {
 		MTTextArea text = new MTTextArea(this.getCenterPointGlobal().getX(), this.getCenterPointGlobal().getY(), s, s, font, pApplet);
 		text.setNoStroke(true);
 		text.setNoFill(true);
-		text.setText(getBook().getTitle());
+		text.setText(getBook().getTitles().get(0));
 		text.setPositionGlobal(this.getCenterPointGlobal());
 		this.addChild(text);
 	}

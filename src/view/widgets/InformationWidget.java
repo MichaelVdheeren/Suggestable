@@ -1,13 +1,13 @@
 package view.widgets;
 
-import model.books.Book;
-
 import org.mt4j.components.TransformSpace;
 import org.mt4j.components.visibleComponents.shapes.MTRoundRectangle;
 import org.mt4j.components.visibleComponents.widgets.MTTextArea;
 import org.mt4j.util.MTColor;
 
 import processing.core.PApplet;
+
+import com.google.books.unofficial.api.Book;
 
 public class InformationWidget extends WindowWidget {
 
@@ -26,7 +26,7 @@ public class InformationWidget extends WindowWidget {
 		float ty = container.getCenterPointGlobal().y-container.getHeightXY(TransformSpace.GLOBAL)/2;
 		
 		MTTextArea text = new MTTextArea(tx, ty, container.getWidthXY(TransformSpace.GLOBAL), 20, pApplet);
-		text.setText(book.getTitle());
+		text.setText(book.getTitles().get(0));
 		container.addChild(text);
 	}
 }

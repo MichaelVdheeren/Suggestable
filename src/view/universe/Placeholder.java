@@ -1,7 +1,5 @@
 package view.universe;
 
-import model.books.Book;
-
 import org.mt4j.components.visibleComponents.font.FontManager;
 import org.mt4j.components.visibleComponents.font.IFont;
 import org.mt4j.components.visibleComponents.shapes.MTEllipse;
@@ -10,6 +8,8 @@ import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
 
 import processing.core.PApplet;
+
+import com.google.books.unofficial.api.Book;
 
 public class Placeholder extends MTEllipse {
 	private final Book book;
@@ -33,7 +33,7 @@ public class Placeholder extends MTEllipse {
 		MTTextArea text = new MTTextArea(pApplet, font);
 		text.setNoStroke(true);
 		text.setNoFill(true);
-		text.setText(getBook().getTitle());
+		text.setText(getBook().getTitles().get(0));
 		text.setPositionGlobal(center);
 		this.addChild(text);
 	}

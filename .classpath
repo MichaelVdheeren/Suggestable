@@ -52,5 +52,6 @@
 	<classpathentry kind="lib" path="mt4j/mt4j.jar"/>
 	<classpathentry kind="lib" path="mt4j/muito_blobtracking.jar"/>
 	<classpathentry kind="lib" path="google/books.jar"/>
+	<classpathentry kind="lib" path="google/jericho.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
