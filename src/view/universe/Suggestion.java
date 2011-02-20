@@ -7,13 +7,12 @@ import org.mt4j.components.visibleComponents.widgets.MTTextArea;
 import org.mt4j.util.MTColor;
 
 import processing.core.PApplet;
-
-import com.google.books.unofficial.api.Book;
+import bookshelf.AbstractBook;
 
 public class Suggestion extends MTRoundRectangle {
-	private final Book book;
+	private final AbstractBook book;
 	
-	public Suggestion(PApplet pApplet, float x, float y, float s, Book book) {
+	public Suggestion(PApplet pApplet, float x, float y, float s, AbstractBook book) {
 		super(x, y, 0, s, s, 5, 5, pApplet);
 
 		this.book = book;
@@ -31,12 +30,12 @@ public class Suggestion extends MTRoundRectangle {
 		MTTextArea text = new MTTextArea(this.getCenterPointGlobal().getX(), this.getCenterPointGlobal().getY(), s, s, font, pApplet);
 		text.setNoStroke(true);
 		text.setNoFill(true);
-		text.setText(getBook().getTitles().get(0));
+		text.setText(getBook().getTitle());
 		text.setPositionGlobal(this.getCenterPointGlobal());
 		this.addChild(text);
 	}
 
-	public Book getBook() {
+	public AbstractBook getBook() {
 		return this.book;
 	}
 }

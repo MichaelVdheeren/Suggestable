@@ -51,7 +51,6 @@
 	<classpathentry kind="lib" path="mt4j/mri.jar"/>
 	<classpathentry kind="lib" path="mt4j/mt4j.jar"/>
 	<classpathentry kind="lib" path="mt4j/muito_blobtracking.jar"/>
-	<classpathentry kind="lib" path="google/books.jar"/>
-	<classpathentry kind="lib" path="google/jericho.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Bookshelf"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

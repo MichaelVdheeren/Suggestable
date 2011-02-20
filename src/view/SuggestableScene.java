@@ -1,6 +1,5 @@
 package view;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import org.mt4j.components.visibleComponents.widgets.MTBackgroundImage;
@@ -11,14 +10,14 @@ import org.mt4j.sceneManagement.AbstractScene;
 import org.mt4j.util.MTColor;
 
 import view.universe.Suggestion;
-import view.widgets.KeywordWidget;
 import view.widgets.OrbButton;
 import view.widgets.OrbWidget;
-import view.widgets.TimelineWidget;
+import view.widgets.orbactions.ButtonKeywords;
+import view.widgets.orbactions.ButtonTimeline;
 import application.Suggestable;
-
-import com.google.books.unofficial.api.Book;
-import com.google.books.unofficial.api.Collection;
+import bookshelf.AbstractBook;
+import bookshelf.apis.google.GoogleBookshelf;
+import bookshelf.exceptions.BookshelfUnavailableException;
 
 public class SuggestableScene extends AbstractScene {
 	private Suggestable application;
@@ -44,30 +43,8 @@ public class SuggestableScene extends AbstractScene {
 	
 	public void initializeOrb() {
 		OrbWidget orb = new OrbWidget(application.getWidth()/2, application.getHeight()/2, application);
-		
-		OrbButton btnTimeline = new OrbButton(application,"Tijdlijn");
-		btnTimeline.registerInputProcessor(new TapProcessor(application));
-		btnTimeline.addGestureListener(TapProcessor.class, new IGestureEventListener() {
-			@Override
-			public boolean processGestureEvent(MTGestureEvent e) {
-				if (e.getId() == MTGestureEvent.GESTURE_ENDED)
-					getCanvas().addChild(new TimelineWidget(application.getWidth()/2, application.getHeight()/2, 400, 200, application));
-				
-				return true;
-			}
-		});
-		
-		OrbButton btnKeywords = new OrbButton(application,"Kernwoorden");
-		btnKeywords.registerInputProcessor(new TapProcessor(application));
-		btnKeywords.addGestureListener(TapProcessor.class, new IGestureEventListener() {
-			@Override
-			public boolean processGestureEvent(MTGestureEvent e) {
-				if (e.getId() == MTGestureEvent.GESTURE_ENDED)
-					getCanvas().addChild(new KeywordWidget(application.getWidth()/2, application.getHeight()/2, 400, 200, application));
-				
-				return true;
-			}
-		});
+		orb.addButton(new ButtonTimeline(application, getCanvas()));
+		orb.addButton(new ButtonKeywords(application, getCanvas()));
 		
 		OrbButton btnSearch = new OrbButton(application,"Zoeken");
 		btnSearch.registerInputProcessor(new TapProcessor(application));
@@ -77,22 +54,20 @@ public class SuggestableScene extends AbstractScene {
 				if (e.getId() != MTGestureEvent.GESTURE_ENDED)
 					return false;
 				
-				Collection googleBooks = new Collection();
+				GoogleBookshelf googleBooks = new GoogleBookshelf();
 				try {
-					ArrayList<Book> books = googleBooks.getBooks("Blue Ocean Strategy");
-					for (Book b : books)
+					ArrayList<AbstractBook> books = googleBooks.getBooks("Blue Ocean Strategy");
+					for (AbstractBook b : books)
 						getCanvas().addChild(new Suggestion(application, 300, 300, 100, b));
-				} catch (IOException e1) {
+				} catch (BookshelfUnavailableException ex) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					ex.printStackTrace();
 				}
 				
 				return true;
 			}
 		});
-		
-		orb.addButton(btnTimeline);
-		orb.addButton(btnKeywords);
+
 		orb.addButton(btnSearch);
 		this.getCanvas().addChild(orb);
 	}

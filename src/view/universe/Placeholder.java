@@ -8,14 +8,13 @@ import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
 
 import processing.core.PApplet;
-
-import com.google.books.unofficial.api.Book;
+import bookshelf.AbstractBook;
 
 public class Placeholder extends MTEllipse {
-	private final Book book;
+	private final AbstractBook book;
 	private final float radius;
 	
-	public Placeholder(PApplet pApplet, Vector3D center, float radius, Book book) {
+	public Placeholder(PApplet pApplet, Vector3D center, float radius, AbstractBook book) {
 		super(pApplet, center, radius, radius);
 		this.book = book;
 		this.radius = radius;
@@ -33,12 +32,12 @@ public class Placeholder extends MTEllipse {
 		MTTextArea text = new MTTextArea(pApplet, font);
 		text.setNoStroke(true);
 		text.setNoFill(true);
-		text.setText(getBook().getTitles().get(0));
+		text.setText(getBook().getTitle());
 		text.setPositionGlobal(center);
 		this.addChild(text);
 	}
 	
-	public Book getBook() {
+	public AbstractBook getBook() {
 		return this.book;
 	}
 	

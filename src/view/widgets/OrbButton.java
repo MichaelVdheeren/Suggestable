@@ -52,7 +52,9 @@ public class OrbButton extends MTRoundRectangle {
 		text.setNoStroke(true);
 		text.setNoFill(true);
 		this.addChild(text);
+		
 		this.setComposite(true);
+		this.removeAllGestureEventListeners();
 	}
 
 	public String getDescription() {
