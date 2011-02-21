@@ -1,0 +1,10 @@
+How to build the application from source:
+
+1. Checkout and import the Bookshelf project from GitHub (https://github.com/michaelvanderheeren/Bookshelf). Name the project Bookshelf.
+2. Checkout and import the MT4j project from Google Code (http://code.google.com/p/mt4j/source/checkout). Name the project MT4j.
+3. Checkout the source of Suggestable and import it.
+4. Check if the build path contains references to:
+	- The Bookshelf project, located in your workspace.
+	- The libraries (*.jar) inside the libs folder of the Bookshelf project.
+	- The MT4j project, located in your workspace.
+	- The libraries (*.jar) inside the MT4jLibs folder of the MT4j project.

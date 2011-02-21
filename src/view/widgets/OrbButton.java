@@ -14,7 +14,7 @@ public class OrbButton extends MTRoundRectangle {
 	private String description;
 	
 	public OrbButton(PApplet pApplet, String description) {
-		super(100, 200, 0, 110, 30, 5, 5, pApplet);
+		super(pApplet, 100, 200, 0, 110, 30, 5, 5);
 		setDescription(description);
 		
 		this.setFillColor(new MTColor(0, 0, 0, 200));
@@ -43,8 +43,7 @@ public class OrbButton extends MTRoundRectangle {
 		
 		IFont font = FontManager.getInstance().createFont(pApplet, "fonts/Trebuchet MS.ttf", 
 				16, 	//Font size
-				new MTColor(255,255,255),  //Font fill color
-				new MTColor(255,255,255,180));	//Font outline color
+				new MTColor(255,255,255));	//Font color
 		
 		MTTextArea text = new MTTextArea(pApplet, font);
 		text.setText(this.description);

@@ -16,7 +16,7 @@ public class TimelineSlider extends MTComponent {
 		Vector3D xy1 = new Vector3D(x1,y1);
 		Vector3D xy2 = new Vector3D(x2,y2);
 		
-		MTRoundRectangle line = new MTRoundRectangle(x1, y1-2.5f, 0, xy1.distance(xy2), 5, 2.5f, 2.5f, pApplet);
+		MTRoundRectangle line = new MTRoundRectangle(pApplet, x1, y1-2.5f, 0, xy1.distance(xy2), 5, 2.5f, 2.5f);
 		line.rotateZ(xy1, d);
 		line.setNoStroke(true);
 		line.setFillColor(new MTColor(255, 255, 255, 150));

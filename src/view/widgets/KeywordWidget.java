@@ -15,19 +15,19 @@ public class KeywordWidget extends WindowWidget {
 	private ArrayList<String> keywords;
 	private final MTList list;
 	private final MTRoundRectangle cloud;
-	private final PApplet applet;
+	private final PApplet pApplet;
 	
-	public KeywordWidget(float x, float y, float w, float h, PApplet applet) {
-		super(x, y, w, h, applet);
+	public KeywordWidget(float x, float y, float w, float h, PApplet pApplet) {
+		super(x, y, w, h, pApplet);
 		
-		this.applet = applet;
-		cloud = new MTRoundRectangle(x+7.5f, y+30, 0, w-15, h-40, 5, 5, applet);
+		this.pApplet = pApplet;
+		cloud = new MTRoundRectangle(pApplet, x+7.5f, y+30, 0, w-15, h-40, 5, 5);
 		cloud.setFillColor(new MTColor(0, 0, 0, 150));
 		cloud.setNoStroke(true);
 		cloud.removeAllGestureEventListeners();
 		this.addChild(cloud);
 		
-		list = new MTList(x+12.5f, y+35, w-25, h-50, applet);
+		list = new MTList(pApplet, x+12.5f, y+35, w-25, h-50);
 		list.setFillColor(new MTColor(0,0,0,0));
 		list.setStrokeColor(new MTColor(0,0,0,0));
 
@@ -48,10 +48,10 @@ public class KeywordWidget extends WindowWidget {
 			else {
 				MTListCell cell;
 				MTTextArea text;
-				cell = new MTListCell(this.getWidthXYGlobal()-25, 30, applet);
+				cell = new MTListCell(pApplet, this.getWidthXYGlobal()-25, 30);
 				cell.setStrokeColor(new MTColor(0,0,0,0));
 				cell.setFillColor(new MTColor(0,0,0,0));
-				text = new MTTextArea(applet);
+				text = new MTTextArea(pApplet);
 				text.setText(keyword + " (" + count + ")");
 				cell.addChild(text);
 				list.addChild(cell);

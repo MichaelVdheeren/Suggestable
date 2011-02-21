@@ -26,8 +26,7 @@ public class Placeholder extends MTEllipse {
 		
 		IFont font = FontManager.getInstance().createFont(pApplet, "fonts/Trebuchet MS.ttf", 
 				16, 	//Font size
-				new MTColor(255,255,255),  //Font fill color
-				new MTColor(255,255,255,180));	//Font outline color
+				new MTColor(255,255,255));	//Font color
 		
 		MTTextArea text = new MTTextArea(pApplet, font);
 		text.setNoStroke(true);

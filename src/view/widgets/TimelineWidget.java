@@ -25,7 +25,7 @@ public class TimelineWidget extends WindowWidget {
 		super(x, y, w, h, pApplet);
 		this.pApplet = pApplet;
 		
-		graph = new MTRoundRectangle(x+7.5f, y+30, 0, this.getWidthXYGlobal()-15, this.getHeightXYGlobal()-60, 5, 5, pApplet);
+		graph = new MTRoundRectangle(pApplet, x+7.5f, y+30, 0, this.getWidthXYGlobal()-15, this.getHeightXYGlobal()-60, 5, 5);
 		graph.setFillColor(new MTColor(0, 0, 0, 150));
 		graph.setNoStroke(true);
 		graph.removeAllGestureEventListeners();
@@ -75,7 +75,7 @@ public class TimelineWidget extends WindowWidget {
 		
 		for (int i=0; i<this.getValues().size(); i++) {
 			float h = this.getValues().get(i)/100*mH;
-			final MTRoundRectangle bar = new MTRoundRectangle(x+i*(w+s), y-h, 0, w, h, 5, 5, this.getpApplet());
+			final MTRoundRectangle bar = new MTRoundRectangle(this.getpApplet(), x+i*(w+s), y-h, 0, w, h, 5, 5);
 			bar.setFillColor(white);
 			bar.removeAllGestureEventListeners();
 			bar.registerInputProcessor(new TapProcessor(getpApplet()));

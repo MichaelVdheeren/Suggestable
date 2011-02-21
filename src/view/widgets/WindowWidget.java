@@ -16,17 +16,15 @@ import processing.core.PApplet;
 
 public abstract class WindowWidget extends MTRoundRectangle {
 	public WindowWidget(float x, float y, float w, float h, PApplet pApplet) {
-		super(x, y,  0, w, h, 5, 5, pApplet);
+		super(pApplet, x, y,  0, w, h, 5, 5);
 		
 		this.setFillColor(new MTColor(0, 0, 0, 100));
 		this.setStrokeWeight(2.5f);
 		this.setStrokeColor(new MTColor(255, 255, 255, 150));
-		
 
 		IFont font = FontManager.getInstance().createFont(pApplet, "fonts/Trebuchet MS.ttf", 
 				16, 	//Font size
-				new MTColor(255,255,255),  //Font fill color
-				new MTColor(255,255,255,180));	//Font outline color
+				new MTColor(255,255,255));	//Font color
 		
 		MTTextArea text = new MTTextArea(pApplet, font);
 		text.setText("Widget title");
@@ -37,14 +35,14 @@ public abstract class WindowWidget extends MTRoundRectangle {
 		this.addChild(text);
 		
 		
-		final MTSvgButton btnClose = new MTSvgButton("data/icons/close.svg", pApplet);
+		final MTSvgButton btnClose = new MTSvgButton(pApplet, "data/icons/close.svg");
 		btnClose.setSizeXYGlobal(20, 20);
 		btnClose.setPositionGlobal(new Vector3D(x+w-15, y+15));
 		btnClose.removeAllGestureEventListeners();
 		btnClose.addGestureListener(TapProcessor.class, new IGestureEventListener() {
 			@Override
 			public boolean processGestureEvent(MTGestureEvent e) {
-				if (e.getId() == MTGestureEvent.GESTURE_DETECTED)
+				if (e.getId() == MTGestureEvent.GESTURE_STARTED)
 					destroy();
 				
 				return true;

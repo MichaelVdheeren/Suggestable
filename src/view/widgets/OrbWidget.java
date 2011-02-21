@@ -34,8 +34,8 @@ public class OrbWidget extends MTEllipse {
 		Animation anim = new Animation("rotate", new MultiPurposeInterpolator( 0,360, 4000, 0, 1f, -1), svg);
 		anim.addAnimationListener(new IAnimationListener() {
 			public void processAnimationEvent(AnimationEvent ae) {
-				float factor = ae.getCurrentStepDelta();
-				MTSvg target = (MTSvg)ae.getTargetObject();
+				float factor = ae.getDelta();
+				MTSvg target = (MTSvg)ae.getTarget();
 				target.rotateZ(target.getCenterPointGlobal(), factor,TransformSpace.GLOBAL);
 			}
 		});

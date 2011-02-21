@@ -13,7 +13,7 @@ public class Suggestion extends MTRoundRectangle {
 	private final AbstractBook book;
 	
 	public Suggestion(PApplet pApplet, float x, float y, float s, AbstractBook book) {
-		super(x, y, 0, s, s, 5, 5, pApplet);
+		super(pApplet, x, y, 0, s, s, 5, 5);
 
 		this.book = book;
 		
@@ -24,10 +24,9 @@ public class Suggestion extends MTRoundRectangle {
 		
 		IFont font = FontManager.getInstance().createFont(pApplet, "fonts/Trebuchet MS.ttf", 
 				16, 	//Font size
-				new MTColor(255,255,255),  //Font fill color
-				new MTColor(255,255,255,180));	//Font outline color
+				new MTColor(255,255,255));	//Font color
 		
-		MTTextArea text = new MTTextArea(this.getCenterPointGlobal().getX(), this.getCenterPointGlobal().getY(), s, s, font, pApplet);
+		MTTextArea text = new MTTextArea(pApplet, this.getCenterPointGlobal().getX(), this.getCenterPointGlobal().getY(), s, s, font);
 		text.setNoStroke(true);
 		text.setNoFill(true);
 		text.setText(getBook().getTitle());
