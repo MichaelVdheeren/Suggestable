@@ -1,4 +1,4 @@
-package view.widgets;
+package view.widgets.custom;
 
 import java.util.ArrayList;
 
@@ -11,8 +11,9 @@ import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProces
 import org.mt4j.util.MTColor;
 
 import processing.core.PApplet;
+import view.widgets.AbstractWindow;
 
-public class TimelineWidget extends WindowWidget {
+public class TimelineWidget extends AbstractWindow {
 	private ArrayList<Float> values = new ArrayList<Float>();
 	
 	private final PApplet pApplet;
@@ -21,8 +22,8 @@ public class TimelineWidget extends WindowWidget {
 	private final MTColor white = new MTColor(255,255,255);
 	private final MTColor blue = new MTColor(1,151,253);
 	
-	public TimelineWidget(float x, float y, float w, float h, PApplet pApplet) {
-		super(x, y, w, h, pApplet);
+	public TimelineWidget(PApplet pApplet, float x, float y, float w, float h) {
+		super(pApplet, x, y, w, h, "Timeline");
 		this.pApplet = pApplet;
 		
 		graph = new MTRoundRectangle(pApplet, x+7.5f, y+30, 0, this.getWidthXYGlobal()-15, this.getHeightXYGlobal()-60, 5, 5);

@@ -14,8 +14,10 @@ import org.mt4j.util.math.Vector3D;
 
 import processing.core.PApplet;
 
-public abstract class WindowWidget extends MTRoundRectangle {
-	public WindowWidget(float x, float y, float w, float h, PApplet pApplet) {
+public abstract class AbstractWindow extends MTRoundRectangle {
+	private MTTextArea title;
+	
+	public AbstractWindow(PApplet pApplet, float x, float y, float w, float h) {
 		super(pApplet, x, y,  0, w, h, 5, 5);
 		
 		this.setFillColor(new MTColor(0, 0, 0, 100));
@@ -26,13 +28,12 @@ public abstract class WindowWidget extends MTRoundRectangle {
 				16, 	//Font size
 				new MTColor(255,255,255));	//Font color
 		
-		MTTextArea text = new MTTextArea(pApplet, font);
-		text.setText("Widget title");
-		text.setPositionGlobal(new Vector3D(x+text.getWidthXY(TransformSpace.GLOBAL)/2, y+15));
-		text.setNoStroke(true);
-		text.setNoFill(true);
-		text.setPickable(false);
-		this.addChild(text);
+		title = new MTTextArea(pApplet, font);
+		title.setPositionGlobal(new Vector3D(x+title.getWidthXY(TransformSpace.GLOBAL)/2, y+15));
+		title.setNoStroke(true);
+		title.setNoFill(true);
+		title.setPickable(false);
+		this.addChild(title);
 		
 		
 		final MTSvgButton btnClose = new MTSvgButton(pApplet, "data/icons/close.svg");
@@ -50,6 +51,20 @@ public abstract class WindowWidget extends MTRoundRectangle {
 		});
 		
 		this.addChild(btnClose);
+		
+	}
+	
+	public AbstractWindow(PApplet pApplet, float x, float y, float w, float h, String title) {
+		this(pApplet, x, y, w, h);
+		this.setTitle(title);
+	}
+
+	public String getTitle() {
+		return title.getText();
+	}
+
+	public void setTitle(String title) {
+		this.title.setText(title);
 		
 	}
 }

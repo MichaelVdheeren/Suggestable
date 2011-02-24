@@ -28,11 +28,15 @@ public class Placeholder extends MTEllipse {
 				16, 	//Font size
 				new MTColor(255,255,255));	//Font color
 		
-		MTTextArea text = new MTTextArea(pApplet, font);
+		Vector3D v = new Vector3D(radius/2,0);
+		v.rotateZ(center, 45);
+		float s = 4*(radius-v.getX());
+		
+		MTTextArea text = new MTTextArea(pApplet, center.getX()+s/2, center.getY()+s/2, s,s, font);
 		text.setNoStroke(true);
 		text.setNoFill(true);
 		text.setText(getBook().getTitle());
-		text.setPositionGlobal(center);
+		//text.setPositionGlobal(center);
 		this.addChild(text);
 	}
 	

@@ -9,7 +9,7 @@ import view.SuggestableScene;
  */
 public class Suggestable extends MTApplication {
 	private static final long serialVersionUID = 1L;
-
+	
 	public static void main(String args[]){
 		initialize();
 	}
@@ -18,10 +18,10 @@ public class Suggestable extends MTApplication {
 	public void startUp() {
 		// Create the Suggestable scene
 		SuggestableScene scene = new SuggestableScene(this, "Suggestable");
+		
 		// Show touches on the scene
 		scene.registerGlobalInputProcessor(new CursorTracer(this, scene));
 		// Add the scene to the application
 		this.addScene(scene);
-		
 	}
 }

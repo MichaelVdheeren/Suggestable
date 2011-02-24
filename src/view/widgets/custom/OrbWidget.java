@@ -1,4 +1,4 @@
-package view.widgets;
+package view.widgets.custom;
 
 import java.util.ArrayList;
 

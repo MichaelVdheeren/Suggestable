@@ -4,6 +4,9 @@ import org.mt4j.components.visibleComponents.font.FontManager;
 import org.mt4j.components.visibleComponents.font.IFont;
 import org.mt4j.components.visibleComponents.shapes.MTRoundRectangle;
 import org.mt4j.components.visibleComponents.widgets.MTTextArea;
+import org.mt4j.input.inputProcessors.IGestureEventListener;
+import org.mt4j.input.inputProcessors.MTGestureEvent;
+import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProcessor;
 import org.mt4j.util.MTColor;
 
 import processing.core.PApplet;
@@ -32,6 +35,25 @@ public class Suggestion extends MTRoundRectangle {
 		text.setText(getBook().getTitle());
 		text.setPositionGlobal(this.getCenterPointGlobal());
 		this.addChild(text);
+		
+		
+		
+		
+		registerInputProcessor(new DragProcessor(pApplet));
+		addGestureListener(DragProcessor.class, new IGestureEventListener() {
+			@Override
+			public boolean processGestureEvent(MTGestureEvent e) {
+				// Check if gestured ended on top of this
+				// Then check if we are dropping a suggestion on this
+				if (e.getId() == MTGestureEvent.GESTURE_ENDED) {
+					if (!e.hasTarget())
+						return false;
+					
+					System.out.println("dragged");
+				}
+				return true;
+			}
+		});
 	}
 
 	public AbstractBook getBook() {

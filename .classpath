@@ -58,5 +58,6 @@
 	<classpathentry kind="lib" path="/MT4j/mt4jLibs/whirlylib/log4j-1.2.8.jar"/>
 	<classpathentry kind="lib" path="/MT4j/mt4jLibs/whirlylib/whirlycache-1.0.1.jar"/>
 	<classpathentry kind="lib" path="/Bookshelf/libs/jericho.jar"/>
+	<classpathentry kind="lib" path="/MT4j/mt4jLibs/junit-4.8.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
