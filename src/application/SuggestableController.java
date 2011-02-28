@@ -1,21 +1,22 @@
 package application;
 
-import java.util.ArrayList;
-
 import bookshelf.AbstractBook;
+import bookshelf.apis.google.GoogleBookProcessor;
 import bookshelf.apis.google.GoogleBookshelf;
 import bookshelf.apis.libis.LibisBarcode;
+import bookshelf.apis.libis.LibisBookProcessor;
 import bookshelf.apis.libis.LibisBookshelf;
 import bookshelf.exceptions.BookNotFoundException;
 import bookshelf.exceptions.BookshelfUnavailableException;
 import bookshelf.exceptions.InvalidBarcodeException;
 
 public class SuggestableController {
-	private final String libisKey = "XG3M5F6NMMYE7MS686G8EC43TRAA9DVRJSIXCF65KTRCVI2RVL-06073";
+	private final String libisKey = "96UNFINK44R9MEHP3HD5NYBU61QV63JSPDUYXIFTY56TYQ9MUX-00871";
 	private final GoogleBookshelf googleBookshelf = new GoogleBookshelf();
 	private final LibisBookshelf libisBookshelf = new LibisBookshelf(libisKey);
 	
-	public AbstractBook getBook(String strBarcode) throws InvalidBarcodeException, BookshelfUnavailableException, BookNotFoundException {
+	public LibisBookProcessor getBook(String strBarcode) 
+			throws InvalidBarcodeException, BookshelfUnavailableException, BookNotFoundException {
 		if (!LibisBarcode.isValidLength(strBarcode))
 			throw new InvalidBarcodeException();
 		
@@ -23,7 +24,7 @@ public class SuggestableController {
 		return getLibisBookshelf().getBook(lbsBarcode);
 	}
 	
-	public ArrayList<AbstractBook> getRelatedBooks(AbstractBook book) throws BookshelfUnavailableException {
+	public GoogleBookProcessor getRelatedBooks(AbstractBook book) throws BookshelfUnavailableException {
 		return getGoogleBookshelf().getRelatedBooks(book);
 	}
 

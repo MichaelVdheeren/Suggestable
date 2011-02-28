@@ -14,6 +14,7 @@ import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
 
 import view.universe.Placeholder;
+import view.universe.Suggestion;
 import view.widgets.custom.OrbWidget;
 import view.widgets.listeners.ButtonKeywords;
 import view.widgets.listeners.ButtonRemove;
@@ -21,13 +22,16 @@ import view.widgets.listeners.ButtonTimeline;
 import application.Suggestable;
 import application.SuggestableController;
 import bookshelf.AbstractBook;
+import bookshelf.apis.google.GoogleBookProcessor;
+import bookshelf.apis.libis.LibisBookProcessor;
 import bookshelf.exceptions.BookNotFoundException;
 import bookshelf.exceptions.BookshelfUnavailableException;
 import bookshelf.exceptions.InvalidBarcodeException;
 
 public class SuggestableScene extends AbstractScene implements Observer {
 	private SuggestableController controller = new SuggestableController();
-	private ArrayList<Placeholder> books = new ArrayList<Placeholder>();
+	private ArrayList<Placeholder> booksInPosession = new ArrayList<Placeholder>();
+	private ArrayList<Suggestion> booksRelated = new ArrayList<Suggestion>();
 	
 	public SuggestableScene(Suggestable application, String name) {
 		super(application, name);
@@ -58,12 +62,27 @@ public class SuggestableScene extends AbstractScene implements Observer {
 				// Check if gestured ended on top of this
 				// Then check if we are dropping a suggestion on this
 				if (e.getId() == MTGestureEvent.GESTURE_ENDED) {
-					AbstractBook book;
 					try {
-						book = controller.getBook("009906485");
-						Placeholder p = new Placeholder(getMTApplication(), new Vector3D(100,100), 100, book);
-						books.add(p);
+						LibisBookProcessor lp = controller.getBook("009906485");
+						lp.run();
+						Placeholder p = new Placeholder(getMTApplication(), new Vector3D(100,100), 50, lp.getLastBook());
+						booksInPosession.add(p);
 						getCanvas().addChild(p);
+						int i = 0;
+						
+						GoogleBookProcessor gp = controller.getRelatedBooks(lp.getLastBook());
+						gp.run();
+						
+						for (AbstractBook relatedBook : gp.getBooks()) {
+							Suggestion s = new Suggestion(getMTApplication(), 100, 100, 50, relatedBook);
+							booksRelated.add(s);
+							
+							if (i<5)
+								getCanvas().addChild(s);
+							
+							i++;
+						}
+						
 					} catch (InvalidBarcodeException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -98,7 +117,6 @@ public class SuggestableScene extends AbstractScene implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
 		
 	}
 }
