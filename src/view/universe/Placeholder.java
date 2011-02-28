@@ -9,15 +9,16 @@ import org.mt4j.util.math.Vector3D;
 
 import processing.core.PApplet;
 import bookshelf.AbstractBook;
+import bookshelf.apis.libis.LibisBook;
 
 public class Placeholder extends MTEllipse {
-	private final AbstractBook book;
+	private final LibisBook book;
 	private final float radius;
 	
-	public Placeholder(PApplet pApplet, Vector3D center, float radius, AbstractBook book) {
-		super(pApplet, center, radius, radius);
+	public Placeholder(PApplet pApplet, float x, float y, float r, LibisBook book) {
+		super(pApplet, new Vector3D(x,y,0), r, r);
 		this.book = book;
-		this.radius = radius;
+		this.radius = r;
 		
 		this.setComposite(true);
 		this.setFillColor(new MTColor(0, 0, 0, 200));
@@ -28,11 +29,12 @@ public class Placeholder extends MTEllipse {
 				16, 	//Font size
 				new MTColor(255,255,255));	//Font color
 		
-		Vector3D v = new Vector3D(radius/2,0);
-		v.rotateZ(center, 45);
-		float s = 4*(radius-v.getX());
+		Vector3D t = getCenterPointGlobal().addLocal(new Vector3D(-r,0,0));
+		t.rotateZ(getCenterPointGlobal(), 45);
+		float dx = t.getX()-x;
+		float dy = t.getY()-y;
 		
-		MTTextArea text = new MTTextArea(pApplet, center.getX()+s/2, center.getY()+s/2, s,s, font);
+		MTTextArea text = new MTTextArea(pApplet, x+dx, y+dy, r-dx/2, r-dy/2, font);
 		text.setNoStroke(true);
 		text.setNoFill(true);
 		text.setText(getBook().getTitle());
@@ -47,4 +49,6 @@ public class Placeholder extends MTEllipse {
 	public float getGForce() {
 		return this.getWidthXYGlobal()/this.radius;
 	}
+	
+	
 }

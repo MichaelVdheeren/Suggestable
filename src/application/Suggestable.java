@@ -17,7 +17,7 @@ public class Suggestable extends MTApplication {
 	@Override
 	public void startUp() {
 		// Create the Suggestable scene
-		SuggestableScene scene = new SuggestableScene(this, "Suggestable");
+		SuggestableScene scene = new SuggestableScene(this);
 		
 		// Show touches on the scene
 		scene.registerGlobalInputProcessor(new CursorTracer(this, scene));
