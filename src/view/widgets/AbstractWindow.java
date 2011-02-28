@@ -1,6 +1,5 @@
 package view.widgets;
 
-import org.mt4j.components.TransformSpace;
 import org.mt4j.components.visibleComponents.font.FontManager;
 import org.mt4j.components.visibleComponents.font.IFont;
 import org.mt4j.components.visibleComponents.shapes.MTRoundRectangle;
@@ -18,7 +17,8 @@ public abstract class AbstractWindow extends MTRoundRectangle {
 	private MTTextArea title;
 	
 	public AbstractWindow(PApplet pApplet, float x, float y, float w, float h) {
-		super(pApplet, x, y,  0, w, h, 5, 5);
+		super(pApplet, 0, 0,  0, w, h, 5, 5);
+		this.setPositionGlobal(new Vector3D(x,y));
 		
 		this.setFillColor(new MTColor(0, 0, 0, 100));
 		this.setStrokeWeight(2.5f);
@@ -29,7 +29,7 @@ public abstract class AbstractWindow extends MTRoundRectangle {
 				new MTColor(255,255,255));	//Font color
 		
 		title = new MTTextArea(pApplet, font);
-		title.setPositionGlobal(new Vector3D(x+title.getWidthXY(TransformSpace.GLOBAL)/2, y+15));
+		title.setPositionRelativeToParent(new Vector3D(0,0).addLocal(title.getCenterOfMass2DLocal()));
 		title.setNoStroke(true);
 		title.setNoFill(true);
 		title.setPickable(false);
@@ -38,7 +38,7 @@ public abstract class AbstractWindow extends MTRoundRectangle {
 		
 		final MTSvgButton btnClose = new MTSvgButton(pApplet, "data/icons/close.svg");
 		btnClose.setSizeXYGlobal(20, 20);
-		btnClose.setPositionGlobal(new Vector3D(x+w-15, y+15));
+		btnClose.setPositionRelativeToParent(new Vector3D(-15,15).addLocal(new Vector3D(w,0)));
 		btnClose.removeAllGestureEventListeners();
 		btnClose.addGestureListener(TapProcessor.class, new IGestureEventListener() {
 			@Override

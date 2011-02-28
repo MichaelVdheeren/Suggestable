@@ -1,7 +1,5 @@
 package view.widgets.listeners;
 
-import java.util.ArrayList;
-
 import org.mt4j.MTApplication;
 import org.mt4j.components.MTCanvas;
 import org.mt4j.input.inputProcessors.IGestureEventListener;
@@ -20,21 +18,6 @@ public class ButtonKeywords extends OrbButton {
 			public boolean processGestureEvent(MTGestureEvent e) {
 				if (e.getId() == MTGestureEvent.GESTURE_ENDED) {
 					KeywordWidget widget = new KeywordWidget(application, application.getWidth()/2, application.getHeight()/2, 400, 200);
-					ArrayList<String> keywords = new ArrayList<String>();
-					keywords.add("Boom");
-					keywords.add("Wortel");
-					keywords.add("Luipaard");
-					keywords.add("Ezel");
-					keywords.add("Wortel");
-					keywords.add("Giraf");
-					keywords.add("Dwerg");
-					keywords.add("Koe");
-					keywords.add("Chimp");
-					keywords.add("Luipaard");
-					keywords.add("Tag");
-					keywords.add("Dwerg");
-					keywords.add("Koe");
-					widget.setKeywords(keywords);
 					canvas.addChild(widget);
 				}
 				return true;

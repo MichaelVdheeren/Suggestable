@@ -8,8 +8,10 @@ import org.mt4j.components.visibleComponents.shapes.MTRoundRectangle;
 import org.mt4j.components.visibleComponents.widgets.MTImage;
 import org.mt4j.input.inputProcessors.IGestureEventListener;
 import org.mt4j.input.inputProcessors.MTGestureEvent;
+import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProcessor;
 import org.mt4j.util.MTColor;
+import org.mt4j.util.math.Vector3D;
 
 import processing.core.PApplet;
 import processing.core.PImage;
@@ -63,10 +65,11 @@ public class Suggestion extends MTRoundRectangle {
 //		});
 		registerInputProcessor(new TapProcessor(pApplet));
 		addGestureListener(TapProcessor.class, new IGestureEventListener() {
-			
 			@Override
 			public boolean processGestureEvent(MTGestureEvent ge) {
-				if (ge.getId() == MTGestureEvent.GESTURE_ENDED) {
+				TapEvent te = (TapEvent) ge;
+				
+				if (te.getTapID() == TapEvent.TAPPED) {
 					getParent().addChild(new InformationWidget(getpApplet(), x, y, 400, 200, getBook()));
 				}
 				return true;
