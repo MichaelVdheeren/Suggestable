@@ -58,7 +58,7 @@ public class SuggestableScene extends AbstractScene implements Observer {
 		orb.addButton(new ButtonTimeline(getMTApplication(), getCanvas()));
 		orb.addButton(new ButtonKeywords(getMTApplication(), getCanvas()));
 		orb.addButton(new ButtonRemove(getMTApplication(), getCanvas()));
-		orb.addButton(new ButtonClearTable(getMTApplication(), getCanvas()));
+		orb.addButton(new ButtonClearTable(this));
 		orb.addButton(new ButtonTest(getMTApplication(), this, getCanvas()));
 		this.getCanvas().addChild(orb);
 	}
@@ -103,5 +103,16 @@ public class SuggestableScene extends AbstractScene implements Observer {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public void removeAllBooks() {
+		for (Placeholder p : booksInPosession)
+			p.destroy();
+		
+		for (Suggestion s : booksRelated)
+			s.destroy();
+		
+		booksInPosession.clear();
+		booksRelated.clear();
 	}
 }

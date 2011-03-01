@@ -25,7 +25,7 @@ public class InformationWidget extends AbstractWindow {
 		this.book = book;
 		
 		container = new MTRoundRectangle(pApplet, 0, 0, 0, this.getWidthXYGlobal()-15, this.getHeightXYGlobal()-40, 5, 5);
-		container.setPositionRelativeToParent(new Vector3D(7.5f,30,0).addLocal(container.getCenterOfMass2DLocal()));
+		container.setPositionRelativeToParent(new Vector3D(7.5f,32,0).addLocal(container.getCenterOfMass2DLocal()));
 		container.setFillColor(new MTColor(0, 0, 0, 150));
 		container.setNoStroke(true);
 		container.removeAllGestureEventListeners();
@@ -44,7 +44,8 @@ public class InformationWidget extends AbstractWindow {
 			container.addChild(cover);
 			float s = 100/cover.getHeightXY(TransformSpace.GLOBAL);
 			cover.scaleGlobal(s, s, 1, cover.getCenterPointGlobal());
-			cover.setPositionRelativeToParent(new Vector3D(-10,-15,0).addLocal(cover.getCenterOfMass2DLocal()));
+			cover.setPositionRelativeToParent(new Vector3D(7.5f,7.5f,0).addLocal(
+					new Vector3D(cover.getWidthXY(TransformSpace.GLOBAL)/2, cover.getHeightXY(TransformSpace.GLOBAL)/2)));
 			
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
