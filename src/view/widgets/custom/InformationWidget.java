@@ -31,13 +31,6 @@ public class InformationWidget extends AbstractWindow {
 		container.removeAllGestureEventListeners();
 		this.addChild(container);
 		
-//		float tx = container.getCenterPointGlobal().x-container.getWidthXY(TransformSpace.GLOBAL)/2;
-//		float ty = container.getCenterPointGlobal().y-container.getHeightXY(TransformSpace.GLOBAL)/2;
-		
-//		MTTextArea text = new MTTextArea(pApplet, tx, ty, container.getWidthXY(TransformSpace.GLOBAL), 20);
-//		text.setText(book.getTitle());
-//		container.addChild(text);
-		
 		try {
 			Image image = getBook().getCover();
 			MTImage cover = new MTImage(getpApplet(), new PImage(image));
@@ -45,7 +38,8 @@ public class InformationWidget extends AbstractWindow {
 			float s = 100/cover.getHeightXY(TransformSpace.GLOBAL);
 			cover.scaleGlobal(s, s, 1, cover.getCenterPointGlobal());
 			cover.setPositionRelativeToParent(new Vector3D(7.5f,7.5f,0).addLocal(
-					new Vector3D(cover.getWidthXY(TransformSpace.GLOBAL)/2, cover.getHeightXY(TransformSpace.GLOBAL)/2)));
+					new Vector3D(cover.getWidthXY(TransformSpace.GLOBAL)/2, cover.getHeightXY(TransformSpace.GLOBAL)/2)
+				));
 			
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block

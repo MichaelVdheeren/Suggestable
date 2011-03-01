@@ -7,6 +7,7 @@ import org.mt4j.components.visibleComponents.widgets.MTTextArea;
 import org.mt4j.components.visibleComponents.widgets.buttons.MTSvgButton;
 import org.mt4j.input.inputProcessors.IGestureEventListener;
 import org.mt4j.input.inputProcessors.MTGestureEvent;
+import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProcessor;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
@@ -42,9 +43,10 @@ public abstract class AbstractWindow extends MTRoundRectangle {
 		btnClose.removeAllGestureEventListeners();
 		btnClose.addGestureListener(TapProcessor.class, new IGestureEventListener() {
 			@Override
-			public boolean processGestureEvent(MTGestureEvent e) {
-				if (e.getId() == MTGestureEvent.GESTURE_STARTED)
-					destroy();
+			public boolean processGestureEvent(MTGestureEvent ge) {
+				TapEvent te = (TapEvent) ge;
+				if (te.getTapID() == TapEvent.TAPPED)
+					setVisible(false);
 				
 				return true;
 			}

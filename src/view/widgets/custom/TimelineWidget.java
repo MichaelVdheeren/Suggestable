@@ -9,6 +9,7 @@ import org.mt4j.input.inputProcessors.IGestureEventListener;
 import org.mt4j.input.inputProcessors.MTGestureEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProcessor;
 import org.mt4j.util.MTColor;
+import org.mt4j.util.math.Vector3D;
 
 import processing.core.PApplet;
 import view.widgets.AbstractWindow;
@@ -26,11 +27,12 @@ public class TimelineWidget extends AbstractWindow {
 		super(pApplet, x, y, w, h, "Timeline");
 		this.pApplet = pApplet;
 		
-		graph = new MTRoundRectangle(pApplet, x+7.5f, y+30, 0, this.getWidthXYGlobal()-15, this.getHeightXYGlobal()-60, 5, 5);
+		graph = new MTRoundRectangle(pApplet, 0, 0, 0, this.getWidthXYGlobal()-15, this.getHeightXYGlobal()-60, 5, 5);
+		this.addChild(graph);
+		graph.setPositionRelativeToParent(new Vector3D(7.5f,32,0).addLocal(graph.getCenterOfMass2DLocal()));
 		graph.setFillColor(new MTColor(0, 0, 0, 150));
 		graph.setNoStroke(true);
 		graph.removeAllGestureEventListeners();
-		this.addChild(graph);
 		
 		ArrayList<Float> values = new ArrayList<Float>();
 		values.add(100f);
@@ -69,10 +71,10 @@ public class TimelineWidget extends AbstractWindow {
 		
 		float a = values.size();
 		float s = 5.0f;
-		float mH = graph.getHeightXY(TransformSpace.GLOBAL) - 2*s;
-		float w = (graph.getWidthXY(TransformSpace.GLOBAL) - s)/a-s;
-		float x = graph.getCenterPointGlobal().x - graph.getWidthXY(TransformSpace.GLOBAL)/2 + s;
-		float y = graph.getCenterPointGlobal().y + graph.getHeightXY(TransformSpace.GLOBAL)/2 - s;
+		float mH = graph.getHeightXY(TransformSpace.LOCAL) - 2*s;
+		float w = (graph.getWidthXY(TransformSpace.LOCAL) - s)/a-s;
+		float x = graph.getCenterPointLocal().x - graph.getWidthXY(TransformSpace.LOCAL)/2 + s;
+		float y = graph.getCenterPointLocal().y + graph.getHeightXY(TransformSpace.LOCAL)/2 - s;
 		
 		for (int i=0; i<this.getValues().size(); i++) {
 			float h = this.getValues().get(i)/100*mH;

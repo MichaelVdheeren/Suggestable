@@ -10,6 +10,7 @@ import org.mt4j.components.visibleComponents.widgets.MTList;
 import org.mt4j.components.visibleComponents.widgets.MTListCell;
 import org.mt4j.components.visibleComponents.widgets.MTTextArea;
 import org.mt4j.util.MTColor;
+import org.mt4j.util.math.Vector3D;
 
 import processing.core.PApplet;
 import view.widgets.AbstractWindow;
@@ -24,17 +25,21 @@ public class KeywordWidget extends AbstractWindow {
 		super(pApplet, x, y, w, h, "Keywords");
 		
 		this.pApplet = pApplet;
-		cloud = new MTRoundRectangle(pApplet, x+7.5f, y+30, 0, w-15, h-40, 5, 5);
+		cloud = new MTRoundRectangle(pApplet, 0, 0, 0, w-15, h-40, 5, 5);
+		this.addChild(cloud);
+		cloud.setPositionRelativeToParent(new Vector3D(7.5f,32,0).addLocal(cloud.getCenterOfMass2DLocal()));
 		cloud.setFillColor(new MTColor(0, 0, 0, 150));
 		cloud.setNoStroke(true);
 		cloud.removeAllGestureEventListeners();
-		this.addChild(cloud);
 		
-		list = new MTList(pApplet, x+12.5f, y+35, w-25, h-50);
+		
+		list = new MTList(pApplet, 0, 0, w-25, h-50);
+		cloud.addChild(list);
+		list.setPositionRelativeToParent(new Vector3D(12.5f,35,0).addLocal(list.getCenterOfMass2DLocal()));
 		list.setNoFill(true);
 		list.setNoStroke(true);
 
-		cloud.addChild(list);
+		
 	}
 	
 	public void setKeywords(ArrayList<String> keywords) {
@@ -56,18 +61,17 @@ public class KeywordWidget extends AbstractWindow {
 			if (keyword.equals(previous))
 				count++;
 			else {
-				MTListCell cell;
-				MTTextArea text;
-				cell = new MTListCell(pApplet, this.getWidthXYGlobal()-25, 30);
+				MTListCell cell = new MTListCell(pApplet, this.getWidthXYGlobal()-25, 30);
+				MTTextArea text = new MTTextArea(pApplet);
+				list.addChild(cell);
 				cell.setNoStroke(true);
 				cell.setFillColor(new MTColor(0,0,0,255));
-				text = new MTTextArea(pApplet);
 				text.setText(keyword + " (" + count + ")");
 				text.setFont(font);
 				text.setNoStroke(true);
 				text.setNoFill(true);
 				cell.addChild(text);
-				list.addChild(cell);
+				
 				count = 1;
 			}
 			

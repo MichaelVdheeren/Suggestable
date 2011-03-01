@@ -10,6 +10,7 @@ import org.mt4j.util.MTColor;
 
 import view.universe.Placeholder;
 import view.universe.Suggestion;
+import view.widgets.custom.KeywordWidget;
 import view.widgets.custom.OrbWidget;
 import view.widgets.listeners.ButtonClearTable;
 import view.widgets.listeners.ButtonKeywords;
@@ -29,9 +30,10 @@ public class SuggestableScene extends AbstractScene implements Observer {
 	private ArrayList<Placeholder> booksInPosession = new ArrayList<Placeholder>();
 	private ArrayList<Suggestion> booksRelated = new ArrayList<Suggestion>();
 	
+	private KeywordWidget keywordWidget;
+	
 	public SuggestableScene(Suggestable application) {
 		super(application, "Suggestable Scene");
-		
 		this.setClearColor(new MTColor(146, 150, 188));
 	}
 	
@@ -41,6 +43,10 @@ public class SuggestableScene extends AbstractScene implements Observer {
 				new MTBackgroundImage(getMTApplication(), 
 						getMTApplication().loadImage("data/images/stripes.png"), false);
 		this.getCanvas().addChild(background);
+		
+		this.keywordWidget = new KeywordWidget(getMTApplication(), 500, 500, 400, 200);
+		getKeywordWidget().setVisible(false);
+		getCanvas().addChild(getKeywordWidget());
 		
 		initializeOrb();
 	}
@@ -56,7 +62,7 @@ public class SuggestableScene extends AbstractScene implements Observer {
 		
 		OrbWidget orb = new OrbWidget(x, y, getMTApplication());
 		orb.addButton(new ButtonTimeline(getMTApplication(), getCanvas()));
-		orb.addButton(new ButtonKeywords(getMTApplication(), getCanvas()));
+		orb.addButton(new ButtonKeywords(this));
 		orb.addButton(new ButtonRemove(getMTApplication(), getCanvas()));
 		orb.addButton(new ButtonClearTable(this));
 		orb.addButton(new ButtonTest(getMTApplication(), this, getCanvas()));
@@ -78,6 +84,10 @@ public class SuggestableScene extends AbstractScene implements Observer {
 
 	protected void setController(ModelController controller) {
 		this.controller = controller;
+	}
+	
+	protected KeywordWidget getKeywordWidget() {
+		return this.keywordWidget;
 	}
 
 	@Override
@@ -114,5 +124,9 @@ public class SuggestableScene extends AbstractScene implements Observer {
 		
 		booksInPosession.clear();
 		booksRelated.clear();
+	}
+
+	public void showKeywordWidget() {
+		getKeywordWidget().setVisible(true);
 	}
 }
