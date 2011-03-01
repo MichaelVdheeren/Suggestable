@@ -1,7 +1,5 @@
 package view.widgets.listeners;
 
-import org.mt4j.MTApplication;
-import org.mt4j.components.MTCanvas;
 import org.mt4j.input.inputProcessors.IGestureEventListener;
 import org.mt4j.input.inputProcessors.MTGestureEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProcessor;
@@ -14,9 +12,9 @@ import bookshelf.exceptions.BookshelfUnavailableException;
 import bookshelf.exceptions.InvalidBarcodeException;
 
 public class ButtonTest extends OrbButton {
-	public ButtonTest(final MTApplication application, final SuggestableScene scene, final MTCanvas canvas) {
-		super(application,"TESTRUN");
-		registerInputProcessor(new TapProcessor(application));
+	public ButtonTest(final SuggestableScene scene) {
+		super(scene.getMTApplication(),"TESTRUN");
+		registerInputProcessor(new TapProcessor(scene.getMTApplication()));
 		addGestureListener(TapProcessor.class, new IGestureEventListener() {
 			
 

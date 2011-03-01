@@ -61,11 +61,11 @@ public class SuggestableScene extends AbstractScene implements Observer {
 		float y = getMTApplication().getHeight()/2;
 		
 		OrbWidget orb = new OrbWidget(x, y, getMTApplication());
-		orb.addButton(new ButtonTimeline(getMTApplication(), getCanvas()));
+		orb.addButton(new ButtonTimeline(this));
 		orb.addButton(new ButtonKeywords(this));
-		orb.addButton(new ButtonRemove(getMTApplication(), getCanvas()));
+		orb.addButton(new ButtonRemove(this));
 		orb.addButton(new ButtonClearTable(this));
-		orb.addButton(new ButtonTest(getMTApplication(), this, getCanvas()));
+		orb.addButton(new ButtonTest(this));
 		this.getCanvas().addChild(orb);
 	}
 
