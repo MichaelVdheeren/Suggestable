@@ -147,8 +147,14 @@ public class SuggestableScene extends AbstractScene implements Observer {
 	}
 	
 	public void showTimelineWidget() {
+		ArrayList <Integer> years = new ArrayList<Integer>();
+		
+		for (Suggestion s : booksRelated) {
+			GoogleBook book = s.getBook();
+			years.add(book.getPublishingYear());
+		}
+		
+		getTimelineWidget().setValues(years);
 		getTimelineWidget().setVisible(true);
-		
-		
 	}
 }
