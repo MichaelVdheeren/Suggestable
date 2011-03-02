@@ -12,13 +12,15 @@ import view.universe.Placeholder;
 import view.universe.Suggestion;
 import view.widgets.custom.KeywordWidget;
 import view.widgets.custom.OrbWidget;
+import view.widgets.custom.TimelineWidget;
 import view.widgets.listeners.ButtonClearTable;
 import view.widgets.listeners.ButtonKeywords;
 import view.widgets.listeners.ButtonRemove;
 import view.widgets.listeners.ButtonTest;
 import view.widgets.listeners.ButtonTimeline;
-import application.Suggestable;
 import application.ModelController;
+import application.Suggestable;
+import bookshelf.AbstractBook;
 import bookshelf.apis.google.GoogleBook;
 import bookshelf.apis.google.GoogleBookProcessor;
 import bookshelf.apis.libis.LibisBook;
@@ -31,6 +33,7 @@ public class SuggestableScene extends AbstractScene implements Observer {
 	private ArrayList<Suggestion> booksRelated = new ArrayList<Suggestion>();
 	
 	private KeywordWidget keywordWidget;
+	private TimelineWidget timelineWidget;
 	
 	public SuggestableScene(Suggestable application) {
 		super(application, "Suggestable Scene");
@@ -45,8 +48,11 @@ public class SuggestableScene extends AbstractScene implements Observer {
 		this.getCanvas().addChild(background);
 		
 		this.keywordWidget = new KeywordWidget(getMTApplication(), 500, 500, 400, 200);
+		this.timelineWidget = new TimelineWidget(getMTApplication(), 500, 500, 400, 200);
 		getKeywordWidget().setVisible(false);
+		getTimelineWidget().setVisible(false);
 		getCanvas().addChild(getKeywordWidget());
+		getCanvas().addChild(getTimelineWidget());
 		
 		initializeOrb();
 	}
@@ -89,6 +95,10 @@ public class SuggestableScene extends AbstractScene implements Observer {
 	protected KeywordWidget getKeywordWidget() {
 		return this.keywordWidget;
 	}
+	
+	private TimelineWidget getTimelineWidget() {
+		return this.timelineWidget;
+	}
 
 	@Override
 	public void update(Observable o, Object arg) {
@@ -96,6 +106,7 @@ public class SuggestableScene extends AbstractScene implements Observer {
 			GoogleBook book = (GoogleBook) arg;
 			Suggestion s = new Suggestion(getMTApplication(), 100, 100, 50, book);
 			booksRelated.add(s);
+			getKeywordWidget().addKeywords(book.getWords());
 			getCanvas().addChild(s);
 		} else if (o instanceof LibisBookProcessor) {
 			LibisBook book = (LibisBook) arg;
@@ -106,13 +117,16 @@ public class SuggestableScene extends AbstractScene implements Observer {
 				GoogleBookProcessor gp = getController().getRelatedBooks(book);
 				gp.addObserver(this);
 				gp.setLimit(5);
-				Thread thread = new Thread(gp,"Book Processor");
-				thread.start();
+				getMTApplication().invokeLater(gp);
 			} catch (BookshelfUnavailableException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public void addBook(AbstractBook book) {
+		
 	}
 
 	public void removeAllBooks() {
@@ -128,5 +142,9 @@ public class SuggestableScene extends AbstractScene implements Observer {
 
 	public void showKeywordWidget() {
 		getKeywordWidget().setVisible(true);
+	}
+	
+	public void showTimelineWidget() {
+		getTimelineWidget().setVisible(true);
 	}
 }

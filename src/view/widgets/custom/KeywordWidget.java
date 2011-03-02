@@ -16,7 +16,7 @@ import processing.core.PApplet;
 import view.widgets.AbstractWindow;
 
 public class KeywordWidget extends AbstractWindow {
-	private ArrayList<String> keywords;
+	private ArrayList<String> keywords = new ArrayList<String>();
 	private final MTList list;
 	private final MTRoundRectangle cloud;
 	private final PApplet pApplet;
@@ -35,18 +35,20 @@ public class KeywordWidget extends AbstractWindow {
 		
 		list = new MTList(pApplet, 0, 0, w-25, h-50);
 		cloud.addChild(list);
-		list.setPositionRelativeToParent(new Vector3D(12.5f,35,0).addLocal(list.getCenterOfMass2DLocal()));
+		list.setPositionRelativeToParent(new Vector3D(5,5,0).addLocal(list.getCenterOfMass2DLocal()));
 		list.setNoFill(true);
 		list.setNoStroke(true);
 
 		
 	}
 	
+	public void addKeywords(ArrayList<String> keywords) {
+		keywords.addAll(getKeywords());
+		setKeywords(keywords);
+	}
+	
 	public void setKeywords(ArrayList<String> keywords) {
-		// TODO: remove when bug with MT4j is fixed
-		if (getKeywords() != null)
-			list.removeAllChildren();
-			
+		list.removeAllListElements();
 		this.keywords = keywords;
 		
 		Collections.sort(keywords);
@@ -62,12 +64,11 @@ public class KeywordWidget extends AbstractWindow {
 				count++;
 			else {
 				MTListCell cell = new MTListCell(pApplet, this.getWidthXYGlobal()-25, 30);
-				MTTextArea text = new MTTextArea(pApplet);
+				MTTextArea text = new MTTextArea(pApplet, font);
 				list.addChild(cell);
 				cell.setNoStroke(true);
 				cell.setFillColor(new MTColor(0,0,0,255));
 				text.setText(keyword + " (" + count + ")");
-				text.setFont(font);
 				text.setNoStroke(true);
 				text.setNoFill(true);
 				cell.addChild(text);

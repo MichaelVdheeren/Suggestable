@@ -2,11 +2,11 @@ package view.widgets.listeners;
 
 import org.mt4j.input.inputProcessors.IGestureEventListener;
 import org.mt4j.input.inputProcessors.MTGestureEvent;
+import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProcessor;
 
 import view.SuggestableScene;
 import view.widgets.custom.OrbButton;
-import view.widgets.custom.TimelineWidget;
 
 public class ButtonTimeline extends OrbButton {
 	public ButtonTimeline(final SuggestableScene scene) {
@@ -14,10 +14,11 @@ public class ButtonTimeline extends OrbButton {
 		registerInputProcessor(new TapProcessor(scene.getMTApplication()));
 		addGestureListener(TapProcessor.class, new IGestureEventListener() {
 			@Override
-			public boolean processGestureEvent(MTGestureEvent e) {
-				if (e.getId() == MTGestureEvent.GESTURE_ENDED)
-					scene.getCanvas().addChild(new TimelineWidget(scene.getMTApplication(), scene.getMTApplication().getWidth()/2, scene.getMTApplication().getHeight()/2, 400, 200));
-				
+			public boolean processGestureEvent(MTGestureEvent ge) {
+				TapEvent te = (TapEvent) ge;
+				if (te.getTapID() == TapEvent.TAPPED) {
+					scene.showTimelineWidget();
+				}
 				return true;
 			}
 		});
