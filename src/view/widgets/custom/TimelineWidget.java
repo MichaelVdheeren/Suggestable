@@ -33,30 +33,6 @@ public class TimelineWidget extends AbstractWindow {
 		graph.setFillColor(new MTColor(0, 0, 0, 150));
 		graph.setNoStroke(true);
 		graph.removeAllGestureEventListeners();
-		
-		ArrayList<Float> values = new ArrayList<Float>();
-		values.add(100f);
-		values.add(50f);
-		values.add(30f);
-		values.add(20f);
-		values.add(60f);
-		values.add(100f);
-		values.add(50f);
-		values.add(30f);
-		values.add(20f);
-		values.add(60f);
-		values.add(100f);
-		values.add(50f);
-		values.add(30f);
-		values.add(20f);
-		values.add(60f);
-		values.add(30f);
-		values.add(20f);
-		values.add(60f);
-		values.add(100f);
-		values.add(50f);
-		
-		this.setValues(values);
 	}
 
 	public ArrayList<Float> getValues() {

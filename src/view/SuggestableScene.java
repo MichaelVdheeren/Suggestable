@@ -148,5 +148,7 @@ public class SuggestableScene extends AbstractScene implements Observer {
 	
 	public void showTimelineWidget() {
 		getTimelineWidget().setVisible(true);
+		
+		
 	}
 }
