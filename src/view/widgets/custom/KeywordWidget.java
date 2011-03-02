@@ -32,19 +32,11 @@ public class KeywordWidget extends AbstractWindow {
 		cloud.setNoStroke(true);
 		cloud.removeAllGestureEventListeners();
 		
-		
 		list = new MTList(pApplet, 0, 0, w-25, h-50);
 		cloud.addChild(list);
 		list.setPositionRelativeToParent(new Vector3D(5,5,0).addLocal(list.getCenterOfMass2DLocal()));
 		list.setNoFill(true);
 		list.setNoStroke(true);
-
-		
-	}
-	
-	public void addKeywords(ArrayList<String> keywords) {
-		keywords.addAll(getKeywords());
-		setKeywords(keywords);
 	}
 	
 	public void setKeywords(ArrayList<String> keywords) {

@@ -20,7 +20,6 @@ import view.widgets.listeners.ButtonTest;
 import view.widgets.listeners.ButtonTimeline;
 import application.ModelController;
 import application.Suggestable;
-import bookshelf.AbstractBook;
 import bookshelf.apis.google.GoogleBook;
 import bookshelf.apis.google.GoogleBookProcessor;
 import bookshelf.apis.libis.LibisBook;
@@ -106,7 +105,6 @@ public class SuggestableScene extends AbstractScene implements Observer {
 			GoogleBook book = (GoogleBook) arg;
 			Suggestion s = new Suggestion(getMTApplication(), 100, 100, 50, book);
 			booksRelated.add(s);
-			getKeywordWidget().addKeywords(book.getWords());
 			getCanvas().addChild(s);
 		} else if (o instanceof LibisBookProcessor) {
 			LibisBook book = (LibisBook) arg;
@@ -124,10 +122,6 @@ public class SuggestableScene extends AbstractScene implements Observer {
 			}
 		}
 	}
-	
-	public void addBook(AbstractBook book) {
-		
-	}
 
 	public void removeAllBooks() {
 		for (Placeholder p : booksInPosession)
@@ -141,6 +135,14 @@ public class SuggestableScene extends AbstractScene implements Observer {
 	}
 
 	public void showKeywordWidget() {
+		ArrayList<String> keywords = new ArrayList<String>();
+		
+		for (Suggestion s : booksRelated) {
+			GoogleBook book = s.getBook();
+			keywords.addAll(book.getWords());
+		}
+		
+		getKeywordWidget().setKeywords(keywords);
 		getKeywordWidget().setVisible(true);
 	}
 	
