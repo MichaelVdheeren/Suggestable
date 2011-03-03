@@ -1,6 +1,5 @@
 package view.universe;
 
-import java.awt.Image;
 import java.io.IOException;
 
 import org.mt4j.components.TransformSpace;
@@ -33,13 +32,12 @@ public class Suggestion extends MTRoundRectangle {
 		this.setStrokeColor(new MTColor(255, 255, 255, 150));
 		
 		try {
-			Image image = getBook().getCover();
-			MTImage cover = new MTImage(getpApplet(), new PImage(image));
+			MTImage cover = new MTImage(getpApplet(), new PImage(getBook().getCover()));
 			this.addChild(cover);
 			cover.setPositionGlobal(this.getCenterPointGlobal());
 			cover.setStrokeColor(new MTColor(0, 255, 255, 150));
-			float X = this.getHeightXYGlobal()/cover.getHeightXY(TransformSpace.GLOBAL);
-			cover.scaleGlobal(X, X, 1, cover.getCenterPointGlobal());
+			float scaleFactor = this.getHeightXYGlobal()/cover.getHeightXY(TransformSpace.GLOBAL);
+			cover.scaleGlobal(scaleFactor, scaleFactor, 1, cover.getCenterPointGlobal());
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -69,7 +67,8 @@ public class Suggestion extends MTRoundRectangle {
 				TapEvent te = (TapEvent) ge;
 				
 				if (te.getTapID() == TapEvent.TAPPED) {
-					getParent().addChild(new InformationWidget(getpApplet(), x, y, 400, 200, getBook()));
+					getParent().addChild(new InformationWidget(getpApplet(), getCenterPointGlobal().getX(), 
+							getCenterPointGlobal().getY(), 400, 200, getBook()));
 				}
 				return true;
 			}

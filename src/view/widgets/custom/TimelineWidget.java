@@ -44,46 +44,54 @@ public class TimelineWidget extends AbstractWindow {
 		graph.removeAllChildren();
 		Collections.sort(values);
 		
-		int mC = 0;
-		int a = 1;
-		int previous = -1;
-		int count = 1;
+		if (values.isEmpty())
+			return;
 		
-		for (int value : values) {
-			if (value == previous)
-				count++;
-			else {
-				if (mC < count)
-					mC = count;
-				count = 1;
-				a++;
-			}
-			previous = value;
+		int lowest = values.get(0);
+		int highest = values.get(values.size()-1);
+		int amount = highest - lowest + 1;
+		
+		int maxCount = 0;
+		int previousIndex = -1;
+		
+		for (int i=lowest; i<=highest; i++) {
+			int index = values.lastIndexOf(i);
+			
+			if (index == -1)
+				continue;
+			
+			int count = index-previousIndex;
+			
+			if (maxCount < count)
+				maxCount = count;
+			
+			previousIndex = index;
 		}
 		
-		previous = -1;
-		count = 1;
+		previousIndex = -1;
 		
-		float s = 5.0f;
-		float mH = graph.getHeightXY(TransformSpace.LOCAL) - 2*s;
-		float w = (graph.getWidthXY(TransformSpace.LOCAL) - s)/a-s;
-		float x = graph.getCenterPointLocal().x - graph.getWidthXY(TransformSpace.LOCAL)/2 + s;
-		float y = graph.getCenterPointLocal().y + graph.getHeightXY(TransformSpace.LOCAL)/2 - s;
+		float margin = 5.0f;
+		float maxHeight = graph.getHeightXY(TransformSpace.LOCAL) - 2*margin;
+		float minHeight = 10;
+		float width = (graph.getWidthXY(TransformSpace.LOCAL) - margin)/amount-margin;
+		float x = graph.getCenterPointLocal().x - graph.getWidthXY(TransformSpace.LOCAL)/2 + margin;
+		float y = graph.getCenterPointLocal().y + graph.getHeightXY(TransformSpace.LOCAL)/2 - margin;
 		
-		for (int i=0; i<values.size(); i++) {
-			int value = values.get(i);
-			if (value == previous)
-				count++;
-			else {
-				float h = count*(mH/mC);
-				final MTRoundRectangle bar = new MTRoundRectangle(this.getpApplet(), x+i*(w+s), y-h, 0, w, h, 5, 5);
-				bar.setFillColor(white);
-				graph.addChild(bar);
-
-				count = 1;
+		for (int i=lowest; i<=highest; i++) {
+			int index = values.lastIndexOf(i);
+			int count = 0;
+			
+			if (index != -1) {
+				count = index-previousIndex;
+				previousIndex = index;
 			}
 			
-			previous = value;
+			float h = minHeight + count*((maxHeight-minHeight)/maxCount);
+			final MTRoundRectangle bar = new MTRoundRectangle(this.getpApplet(), x+(i-lowest)*(width+margin), y-h, 0, width, h, 5, 5);
+			bar.setFillColor(white);
+			graph.addChild(bar);
+			
+			
 		}
 	}
 
