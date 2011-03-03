@@ -13,11 +13,8 @@ Fullscreen=true
 FullscreenExclusive=false
 
 #Resolution
-#DisplayWidth=1024
-#DisplayHeight=768
-
 DisplayWidth=1920
-DisplayHeight=1200
+DisplayHeight=1080
 
 #Which display to use for fullscreen
 Display=1
@@ -26,10 +23,10 @@ Display=1
 MaximumFrameRate=60
 
 #Vertical_sync:'true' or 'false'
-Vertical_sync=true
+Vertical_sync=false
 
 #Enables multiple mice use (windows, some linux)
 MultiMiceEnabled=false
 
 #Anti aliasing multisampling - '0' disables it - 2,4,8 determines the quality of the a.a.
-OpenGLAntialiasing=2
+OpenGLAntialiasing=4
