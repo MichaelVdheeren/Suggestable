@@ -1,13 +1,12 @@
 package view;
 
 import java.util.ArrayList;
-import java.util.Observable;
-import java.util.Observer;
 
 import org.mt4j.components.visibleComponents.widgets.MTBackgroundImage;
 import org.mt4j.sceneManagement.AbstractScene;
 import org.mt4j.util.MTColor;
 
+import view.observers.SuggestionObserver;
 import view.universe.Placeholder;
 import view.universe.Suggestion;
 import view.widgets.custom.KeywordWidget;
@@ -22,11 +21,9 @@ import application.ModelController;
 import application.Suggestable;
 import bookshelf.apis.google.GoogleBook;
 import bookshelf.apis.google.GoogleBookProcessor;
-import bookshelf.apis.libis.LibisBook;
-import bookshelf.apis.libis.LibisBookProcessor;
 import bookshelf.exceptions.BookshelfUnavailableException;
 
-public class SuggestableScene extends AbstractScene implements Observer {
+public class SuggestableScene extends AbstractScene {
 	private ModelController controller = new ModelController();
 	private ArrayList<Placeholder> booksInPosession = new ArrayList<Placeholder>();
 	private ArrayList<Suggestion> booksRelated = new ArrayList<Suggestion>();
@@ -99,30 +96,6 @@ public class SuggestableScene extends AbstractScene implements Observer {
 		return this.timelineWidget;
 	}
 
-	@Override
-	public void update(Observable o, Object arg) {
-		if (o instanceof GoogleBookProcessor) {
-			GoogleBook book = (GoogleBook) arg;
-			Suggestion s = new Suggestion(getMTApplication(), 100, 100, 50, book);
-			booksRelated.add(s);
-			getCanvas().addChild(s);
-		} else if (o instanceof LibisBookProcessor) {
-			LibisBook book = (LibisBook) arg;
-			Placeholder p = new Placeholder(getMTApplication(), 200, 200, 50, book);
-			booksInPosession.add(p);
-			getCanvas().addChild(p);
-			try {
-				GoogleBookProcessor gp = getController().getRelatedBooks(book);
-				gp.addObserver(this);
-				gp.setLimit(5);
-				getMTApplication().invokeLater(gp);
-			} catch (BookshelfUnavailableException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
-
 	public void removeAllBooks() {
 		for (Placeholder p : booksInPosession)
 			p.destroy();
@@ -156,5 +129,26 @@ public class SuggestableScene extends AbstractScene implements Observer {
 		
 		getTimelineWidget().setValues(years);
 		getTimelineWidget().setVisible(true);
+	}
+
+	public void addSuggestion(Suggestion s) {
+		booksRelated.add(s);
+		getCanvas().addChild(s);
+	}
+
+	public void addPlaceholder(Placeholder p) {
+		booksInPosession.add(p);
+		getCanvas().addChild(p);
+		
+		try {
+			GoogleBookProcessor gp = getController().getRelatedBooks(p.getBook());
+			gp.addObserver(new SuggestionObserver(this));
+			gp.setLimit(5);
+			Thread thread = new Thread(gp);
+			thread.start();
+		} catch (BookshelfUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

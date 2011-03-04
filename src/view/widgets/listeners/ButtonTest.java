@@ -5,6 +5,7 @@ import org.mt4j.input.inputProcessors.MTGestureEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProcessor;
 
 import view.SuggestableScene;
+import view.observers.PlaceholderObserver;
 import view.widgets.custom.OrbButton;
 import bookshelf.apis.libis.LibisBookProcessor;
 import bookshelf.exceptions.BookNotFoundException;
@@ -25,7 +26,7 @@ public class ButtonTest extends OrbButton {
 				if (e.getId() == MTGestureEvent.GESTURE_ENDED) {
 					try {
 						LibisBookProcessor lp = scene.getController().getBook("009906485");
-						lp.addObserver(scene);
+						lp.addObserver(new PlaceholderObserver(scene));
 						lp.setLimit(1);
 						Thread thread = new Thread(lp,"Book Processor");
 						thread.start();
