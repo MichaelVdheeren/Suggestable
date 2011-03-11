@@ -1,4 +1,4 @@
-package view.widgets.listeners;
+package view.widgets.buttons;
 
 import org.mt4j.input.inputProcessors.IGestureEventListener;
 import org.mt4j.input.inputProcessors.MTGestureEvent;

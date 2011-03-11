@@ -89,9 +89,8 @@ public class TimelineWidget extends AbstractWindow {
 			float h = minHeight + count*((maxHeight-minHeight)/maxCount);
 			final MTRoundRectangle bar = new MTRoundRectangle(this.getpApplet(), x+(i-lowest)*(width+margin), y-h, 0, width, h, 5, 5);
 			bar.setFillColor(white);
+			bar.removeAllGestureEventListeners();
 			graph.addChild(bar);
-			
-			
 		}
 	}
 
@@ -112,7 +111,6 @@ public class TimelineWidget extends AbstractWindow {
 	}
 }
 
-//bar.removeAllGestureEventListeners();
 //bar.registerInputProcessor(new TapProcessor(getpApplet()));
 //bar.addGestureListener(TapProcessor.class, new IGestureEventListener() {
 //	@Override

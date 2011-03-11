@@ -1,4 +1,4 @@
-package view.widgets.listeners;
+package view.widgets.buttons;
 
 import view.SuggestableScene;
 import view.widgets.custom.OrbButton;

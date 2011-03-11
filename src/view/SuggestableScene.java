@@ -9,14 +9,14 @@ import org.mt4j.util.MTColor;
 import view.observers.SuggestionObserver;
 import view.universe.Placeholder;
 import view.universe.Suggestion;
+import view.widgets.buttons.ButtonClearTable;
+import view.widgets.buttons.ButtonKeywords;
+import view.widgets.buttons.ButtonRemove;
+import view.widgets.buttons.ButtonTest;
+import view.widgets.buttons.ButtonTimeline;
 import view.widgets.custom.KeywordWidget;
 import view.widgets.custom.OrbWidget;
 import view.widgets.custom.TimelineWidget;
-import view.widgets.listeners.ButtonClearTable;
-import view.widgets.listeners.ButtonKeywords;
-import view.widgets.listeners.ButtonRemove;
-import view.widgets.listeners.ButtonTest;
-import view.widgets.listeners.ButtonTimeline;
 import application.ModelController;
 import application.Suggestable;
 import bookshelf.apis.google.GoogleBook;
@@ -131,7 +131,7 @@ public class SuggestableScene extends AbstractScene {
 		getTimelineWidget().setVisible(true);
 	}
 
-	public void addSuggestion(Suggestion s) {
+	public void addSuggestion(Suggestion s, Placeholder p) {
 		booksRelated.add(s);
 		getCanvas().addChild(s);
 	}
@@ -142,7 +142,7 @@ public class SuggestableScene extends AbstractScene {
 		
 		try {
 			GoogleBookProcessor gp = getController().getRelatedBooks(p.getBook());
-			gp.addObserver(new SuggestionObserver(this));
+			gp.addObserver(new SuggestionObserver(this,p));
 			gp.setLimit(5);
 			Thread thread = new Thread(gp);
 			thread.start();
