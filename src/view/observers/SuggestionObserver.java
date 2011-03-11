@@ -3,6 +3,8 @@ package view.observers;
 import java.util.Observable;
 import java.util.Observer;
 
+import org.mt4j.util.math.Vector3D;
+
 import view.SuggestableScene;
 import view.universe.Placeholder;
 import view.universe.Suggestion;
@@ -21,7 +23,7 @@ public class SuggestionObserver implements Observer {
 	public void update(Observable o, Object arg) {
 		GoogleBook book = (GoogleBook) arg;
 		Suggestion s = new Suggestion(getScene(), 0, 0, 75, book);
-		s.setPositionGlobal(p.getCenterPointGlobal());
+		s.setPositionGlobal(p.getCenterPointGlobal().addLocal(new Vector3D(1, 1)));
 		getScene().addSuggestion(s,p);
 	}
 

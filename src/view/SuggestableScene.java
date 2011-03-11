@@ -4,8 +4,11 @@ import java.util.ArrayList;
 
 import org.mt4j.components.visibleComponents.widgets.MTBackgroundImage;
 import org.mt4j.sceneManagement.AbstractScene;
+import org.mt4j.sceneManagement.IPreDrawAction;
 import org.mt4j.util.MTColor;
 
+import view.listeners.RelatedListener;
+import view.listeners.UnrelatedListener;
 import view.observers.SuggestionObserver;
 import view.universe.Placeholder;
 import view.universe.Suggestion;
@@ -134,6 +137,27 @@ public class SuggestableScene extends AbstractScene {
 	public void addSuggestion(Suggestion s, Placeholder p) {
 		booksRelated.add(s);
 		getCanvas().addChild(s);
+		IPreDrawAction action = new RelatedListener(p, s);
+		s.registerPreDrawAction(action);
+		registerPreDrawAction(action);
+		
+		for (Suggestion so : this.booksRelated) {
+			if (so.equals(s))
+				continue;
+			
+			IPreDrawAction action2 = new UnrelatedListener(so, s);
+			s.registerPreDrawAction(action2);
+			so.registerPreDrawAction(action2);
+			registerPreDrawAction(action2);
+		}
+	}
+	
+	public void removeSuggestion(Suggestion s) {
+		for (IPreDrawAction action : s.getPreDrawActions())
+			this.unregisterPreDrawAction(action);
+		
+		s.destroy();
+		booksRelated.remove(s);
 	}
 
 	public void addPlaceholder(Placeholder p) {

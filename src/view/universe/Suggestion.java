@@ -1,6 +1,7 @@
 package view.universe;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.mt4j.components.PickResult.PickEntry;
@@ -13,6 +14,7 @@ import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEven
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProcessor;
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProcessor;
+import org.mt4j.sceneManagement.IPreDrawAction;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
 
@@ -25,6 +27,7 @@ import bookshelf.apis.google.GoogleBook;
 public class Suggestion extends MTRoundRectangle {
 	private final GoogleBook book;
 	private final SuggestableScene scene;
+	private ArrayList<IPreDrawAction> preDrawActions = new ArrayList<IPreDrawAction>();
 	
 	public Suggestion(final SuggestableScene scene, final float x, final float y, float s, GoogleBook book) {
 		super(scene.getMTApplication(), x, y, 0, s, s, 5, 5);
@@ -49,6 +52,7 @@ public class Suggestion extends MTRoundRectangle {
 			e1.printStackTrace();
 		}
 		
+		final Suggestion self = this;
 		addGestureListener(DragProcessor.class, new IGestureEventListener() {
 			@Override
 			public boolean processGestureEvent(MTGestureEvent ge) {
@@ -62,7 +66,7 @@ public class Suggestion extends MTRoundRectangle {
 					
 					for( PickEntry pe : components ) {
                         if (pe.hitObj instanceof ButtonRemove)
-                        	destroy();
+                        	getScene().removeSuggestion(self);
                     }
 				}
 				
@@ -91,5 +95,13 @@ public class Suggestion extends MTRoundRectangle {
 
 	protected SuggestableScene getScene() {
 		return scene;
+	}
+	
+	public void registerPreDrawAction(IPreDrawAction action) {
+		this.preDrawActions.add(action);
+	}
+	
+	public ArrayList<IPreDrawAction> getPreDrawActions() {
+		return this.preDrawActions;
 	}
 }
