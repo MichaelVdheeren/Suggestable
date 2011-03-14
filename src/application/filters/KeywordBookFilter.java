@@ -23,7 +23,7 @@ public class KeywordBookFilter implements BookFilter<GoogleBook> {
 		return result;
 	}
 	
-	private boolean filter(GoogleBook book) {
+	public boolean filter(GoogleBook book) {
 		if (book.getWords().containsAll(keywords))
 			return false;
 		

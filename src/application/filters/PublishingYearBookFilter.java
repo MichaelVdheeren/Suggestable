@@ -31,7 +31,7 @@ public class PublishingYearBookFilter implements BookFilter<AbstractBook> {
 		return result;
 	}
 	
-	private boolean filter(AbstractBook book) {
+	public boolean filter(AbstractBook book) {
 		if (periodBegin > book.getPublishingYear())
 			return true;
 		

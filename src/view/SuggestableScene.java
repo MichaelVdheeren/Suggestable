@@ -3,6 +3,8 @@ package view;
 import java.util.ArrayList;
 
 import org.mt4j.components.visibleComponents.widgets.MTBackgroundImage;
+import org.mt4j.input.gestureAction.DefaultPanAction;
+import org.mt4j.input.inputProcessors.componentProcessors.panProcessor.PanProcessorTwoFingers;
 import org.mt4j.sceneManagement.AbstractScene;
 import org.mt4j.sceneManagement.IPreDrawAction;
 import org.mt4j.util.MTColor;
@@ -12,13 +14,7 @@ import view.listeners.UnrelatedListener;
 import view.observers.SuggestionObserver;
 import view.universe.Placeholder;
 import view.universe.Suggestion;
-import view.widgets.buttons.ButtonClearTable;
-import view.widgets.buttons.ButtonKeywords;
-import view.widgets.buttons.ButtonRemove;
-import view.widgets.buttons.ButtonTest;
-import view.widgets.buttons.ButtonTimeline;
 import view.widgets.custom.KeywordWidget;
-import view.widgets.custom.OrbWidget;
 import view.widgets.custom.TimelineWidget;
 import application.ModelController;
 import application.Suggestable;
@@ -34,44 +30,33 @@ public class SuggestableScene extends AbstractScene {
 	private KeywordWidget keywordWidget;
 	private TimelineWidget timelineWidget;
 	
+	public WidgetLayer widgetLayer = new WidgetLayer(this);
+	
 	public SuggestableScene(Suggestable application) {
 		super(application, "Suggestable Scene");
-		this.setClearColor(new MTColor(146, 150, 188));
 	}
 	
 	@Override
 	public void init() {
 		MTBackgroundImage background = 
-				new MTBackgroundImage(getMTApplication(), 
-						getMTApplication().loadImage("data/images/stripes.png"), false);
-		this.getCanvas().addChild(background);
+			new MTBackgroundImage(getMTApplication(), 
+					getMTApplication().loadImage("data/images/stripes.png"), false);
+
+		getCanvas().addChild(background);
 		
 		this.keywordWidget = new KeywordWidget(getMTApplication(), 500, 500, 400, 200);
 		this.timelineWidget = new TimelineWidget(getMTApplication(), 500, 500, 400, 200);
 		getKeywordWidget().setVisible(false);
 		getTimelineWidget().setVisible(false);
-		getCanvas().addChild(getKeywordWidget());
-		getCanvas().addChild(getTimelineWidget());
+		widgetLayer.addChild(getKeywordWidget());
+		widgetLayer.addChild(getTimelineWidget());
 		
-		initializeOrb();
+		this.getCanvas().addChild(widgetLayer);
 	}
 
 	@Override
 	public void shutDown() {
 		// TODO Auto-generated method stub
-	}
-	
-	public void initializeOrb() {
-		float x = getMTApplication().getWidth()/2;
-		float y = getMTApplication().getHeight()/2;
-		
-		OrbWidget orb = new OrbWidget(x, y, getMTApplication());
-		orb.addButton(new ButtonTimeline(this));
-		orb.addButton(new ButtonKeywords(this));
-		orb.addButton(new ButtonRemove(this));
-		orb.addButton(new ButtonClearTable(this));
-		orb.addButton(new ButtonTest(this));
-		this.getCanvas().addChild(orb);
 	}
 
 	public ArrayList<Placeholder> getBooksInPosession() {
@@ -167,7 +152,7 @@ public class SuggestableScene extends AbstractScene {
 		try {
 			GoogleBookProcessor gp = getController().getRelatedBooks(p.getBook());
 			gp.addObserver(new SuggestionObserver(this,p));
-			gp.setLimit(5);
+			gp.setLimit(7);
 			Thread thread = new Thread(gp);
 			thread.start();
 		} catch (BookshelfUnavailableException e) {

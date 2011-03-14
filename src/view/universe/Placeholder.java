@@ -4,16 +4,19 @@ import org.mt4j.components.visibleComponents.font.FontManager;
 import org.mt4j.components.visibleComponents.font.IFont;
 import org.mt4j.components.visibleComponents.shapes.MTEllipse;
 import org.mt4j.components.visibleComponents.widgets.MTTextArea;
+import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProcessor;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
 
 import processing.core.PApplet;
+import view.listeners.DragListener;
 import bookshelf.AbstractBook;
 import bookshelf.apis.libis.LibisBook;
 
-public class Placeholder extends MTEllipse {
+public class Placeholder extends MTEllipse implements IElement {
 	private final LibisBook book;
 	private final float radius;
+	private boolean dragged;
 	
 	public Placeholder(PApplet pApplet, float x, float y, float r, LibisBook book) {
 		super(pApplet, new Vector3D(x,y,0), r, r);
@@ -40,6 +43,8 @@ public class Placeholder extends MTEllipse {
 		text.setText(getBook().getTitle());
 		//text.setPositionGlobal(center);
 		this.addChild(text);
+		
+		addGestureListener(DragProcessor.class, new DragListener(this));
 	}
 	
 	public AbstractBook getBook() {
@@ -48,6 +53,21 @@ public class Placeholder extends MTEllipse {
 	
 	public float getGForce() {
 		return this.getWidthXYGlobal()/this.radius;
+	}
+
+	@Override
+	public boolean isDragged() {
+		return this.dragged;
+	}
+
+	@Override
+	public void setDragged() {
+		this.dragged = true;
+	}
+
+	@Override
+	public void resetDragged() {
+		this.dragged = false;
 	}
 	
 	

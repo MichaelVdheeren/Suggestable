@@ -25,21 +25,22 @@ public class OrbWidget extends MTEllipse {
 		this.setStrokeWeight(2.5f);
 		this.setStrokeColor(new MTColor(255, 255, 255, 150));
 		
-		Svg svg = new Svg(pApplet, "data/icons/rfid.svg");
-		svg.setPositionGlobal(this.getCenterPointGlobal());
-		svg.scale(2.5f, 2.5f, 0, svg.getCenterPointGlobal());
-		this.addChild(svg);
-		svg.setPickable(false);
-		
-		Animation anim = new Animation("rotate", new MultiPurposeInterpolator( 0,360, 4000, 0, 1f, -1), svg);
-		anim.addAnimationListener(new IAnimationListener() {
-			public void processAnimationEvent(AnimationEvent ae) {
-				float factor = ae.getDelta();
-				MTSvg target = (MTSvg)ae.getTarget();
-				target.rotateZ(target.getCenterPointGlobal(), factor,TransformSpace.GLOBAL);
-			}
-		});
-		anim.start();
+//		Svg svg = new Svg(pApplet, "data/icons/rfid.svg");
+//		svg.setPositionGlobal(this.getCenterPointGlobal());
+//		svg.scale(2.5f, 2.5f, 0, svg.getCenterPointGlobal());
+//		this.addChild(svg);
+//		svg.setPickable(false);
+//		
+//		Animation anim = new Animation("rotate", new MultiPurposeInterpolator( 0,360, 4000, 0, 1f, -1), svg);
+//		anim.addAnimationListener(new IAnimationListener() {
+//			public void processAnimationEvent(AnimationEvent ae) {
+//				float factor = ae.getDelta();
+//				MTSvg target = (MTSvg)ae.getTarget();
+//				target.rotateZ(target.getCenterPointGlobal(), factor,TransformSpace.GLOBAL);
+//			}
+//		});
+//		anim.start();
+		this.removeAllGestureEventListeners();
 	}
 	
 	/**

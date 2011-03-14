@@ -20,13 +20,15 @@ import org.mt4j.util.math.Vector3D;
 
 import processing.core.PImage;
 import view.SuggestableScene;
+import view.listeners.DragListener;
 import view.widgets.buttons.ButtonRemove;
 import view.widgets.custom.InformationWidget;
 import bookshelf.apis.google.GoogleBook;
 
-public class Suggestion extends MTRoundRectangle {
+public class Suggestion extends MTRoundRectangle implements IElement {
 	private final GoogleBook book;
 	private final SuggestableScene scene;
+	private boolean dragged;
 	private ArrayList<IPreDrawAction> preDrawActions = new ArrayList<IPreDrawAction>();
 	
 	public Suggestion(final SuggestableScene scene, final float x, final float y, float s, GoogleBook book) {
@@ -62,7 +64,7 @@ public class Suggestion extends MTRoundRectangle {
 				if (de.getId() == DragEvent.GESTURE_ENDED) {
 					
 					Vector3D location = de.getTo();
-					List<PickEntry> components = scene.getCanvas().pick(location.x, location.y).getPickList();
+					List<PickEntry> components = scene.widgetLayer.pick(location.x, location.y).getPickList();
 					
 					for( PickEntry pe : components ) {
                         if (pe.hitObj instanceof ButtonRemove)
@@ -87,6 +89,8 @@ public class Suggestion extends MTRoundRectangle {
 				return true;
 			}
 		});
+		
+		addGestureListener(DragProcessor.class, new DragListener(this));
 	}
 
 	public GoogleBook getBook() {
@@ -103,5 +107,21 @@ public class Suggestion extends MTRoundRectangle {
 	
 	public ArrayList<IPreDrawAction> getPreDrawActions() {
 		return this.preDrawActions;
+	}
+	
+
+	@Override
+	public boolean isDragged() {
+		return this.dragged;
+	}
+
+	@Override
+	public void setDragged() {
+		this.dragged = true;
+	}
+
+	@Override
+	public void resetDragged() {
+		this.dragged = false;
 	}
 }

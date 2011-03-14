@@ -11,7 +11,7 @@ import bookshelf.exceptions.BookshelfUnavailableException;
 import bookshelf.exceptions.InvalidBarcodeException;
 
 public class ModelController {
-	private final String libisKey = "CM3INYJBEQBIXBH42NYKKX81HXF5GVXU9YFHQR6Y74YQ2DHLRI-37040";
+	private final String libisKey = "BF3GHC6VRII49461TDXE3DN8R6GEHMX1Y54TRTMUAIG8N46795-57123";
 	private final GoogleBookshelf googleBookshelf = new GoogleBookshelf();
 	private final LibisBookshelf libisBookshelf = new LibisBookshelf(libisKey);
 	

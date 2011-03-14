@@ -1,32 +1,34 @@
 package view.listeners;
 
 import org.mt4j.components.TransformSpace;
-import org.mt4j.components.visibleComponents.shapes.AbstractShape;
 import org.mt4j.sceneManagement.IPreDrawAction;
 import org.mt4j.util.math.Vector3D;
 
+import view.universe.Placeholder;
+import view.universe.Suggestion;
+
 public class RelatedListener implements IPreDrawAction {
-	private final AbstractShape shape1;
-	private final AbstractShape shape2;
+	private final Placeholder component1;
+	private final Suggestion component2;
 	private static final float springK = 0.01f;
 	
-	public RelatedListener(AbstractShape component1, AbstractShape component2) {
-		this.shape1 = component1;
-		this.shape2 = component2;
+	public RelatedListener(Placeholder component1, Suggestion component2) {
+		this.component1 = component1;
+		this.component2 = component2;
 	}
 	
 	@Override
 	public void processAction() {
-		Vector3D centerTN1 = shape1.getCenterPointGlobal();
-		Vector3D centerTN2 = shape2.getCenterPointGlobal();
+		Vector3D centerTN1 = component1.getCenterPointGlobal();
+		Vector3D centerTN2 = component2.getCenterPointGlobal();
 		
 		float width1 = 0, width2 = 0, height1 = 0, height2 = 0, targetLength = 200;
 		
 		try {
-			width1 = shape1.getWidthXY(TransformSpace.GLOBAL);
-			height1 = shape1.getHeightXY(TransformSpace.GLOBAL);
-			width2 = shape2.getWidthXY(TransformSpace.GLOBAL);
-			height2 = shape2.getHeightXY(TransformSpace.GLOBAL);
+			width1 = component1.getWidthXY(TransformSpace.GLOBAL);
+			height1 = component1.getHeightXY(TransformSpace.GLOBAL);
+			width2 = component2.getWidthXY(TransformSpace.GLOBAL);
+			height2 = component2.getHeightXY(TransformSpace.GLOBAL);
 			
 			float x1 = centerTN1.x - centerTN2.x;
 			float y1 = centerTN1.y - centerTN2.y;
@@ -67,8 +69,10 @@ public class RelatedListener implements IPreDrawAction {
 		Vector3D diff2 = new Vector3D((diffX < 1 ? 0 : (float)diffX),(float)diffY,0);
 		Vector3D diff1 = new Vector3D(-(float)diffX,-(float)diffY,0);
 		
-		shape1.translate(diff1);
-		shape2.translate(diff2);
+		if (!component1.isDragged())
+			component1.translate(diff1);
+		if (!component2.isDragged())
+			component2.translate(diff2);
 	}
 
 	@Override
