@@ -20,8 +20,6 @@ import bookshelf.AbstractBook;
 import bookshelf.apis.google.GoogleBook;
 import bookshelf.apis.google.GoogleBookProcessor;
 import bookshelf.exceptions.BookshelfUnavailableException;
-import bookshelf.filters.KeywordFilter;
-import bookshelf.filters.PublishingYearFilter;
 
 public class SuggestableScene extends AbstractScene {
 	private ModelController controller = new ModelController();
@@ -30,9 +28,6 @@ public class SuggestableScene extends AbstractScene {
 	
 	private KeywordWidget keywordWidget;
 	private TimelineWidget timelineWidget;
-	
-	private KeywordFilter keywordFilter;
-	private PublishingYearFilter timelineFilter;
 	
 	public WidgetLayer widgetLayer = new WidgetLayer(this);
 	
@@ -163,15 +158,5 @@ public class SuggestableScene extends AbstractScene {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	
-	public void updateTimelineFilter(PublishingYearFilter filter) {
-		this.timelineFilter = filter;
-		
-		for (SuggestedElement el : suggestedElements)
-			if (filter.applyTo(el.getBook()))
-				el.setVisible(false);
-			else
-				el.setVisible(true);
 	}
 }
