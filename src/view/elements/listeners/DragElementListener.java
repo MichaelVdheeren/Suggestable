@@ -1,15 +1,15 @@
-package view.listeners;
+package view.elements.listeners;
 
 import org.mt4j.input.inputProcessors.IGestureEventListener;
 import org.mt4j.input.inputProcessors.MTGestureEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent;
 
-import view.universe.IElement;
+import view.elements.IElement;
 
-public class DragListener implements IGestureEventListener {
+public class DragElementListener implements IGestureEventListener {
 	private final IElement element;
 	
-	public DragListener (IElement element) {
+	public DragElementListener (IElement element) {
 		this.element = element;
 	}
 	

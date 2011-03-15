@@ -6,6 +6,9 @@ import java.util.Collections;
 import org.mt4j.components.MTComponent;
 import org.mt4j.components.TransformSpace;
 import org.mt4j.components.visibleComponents.shapes.MTRoundRectangle;
+import org.mt4j.input.inputProcessors.IGestureEventListener;
+import org.mt4j.input.inputProcessors.MTGestureEvent;
+import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProcessor;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
 
@@ -91,6 +94,20 @@ public class TimelineWidget extends AbstractWindow {
 			bar.setFillColor(white);
 			bar.removeAllGestureEventListeners();
 			graph.addChild(bar);
+			
+			bar.registerInputProcessor(new TapProcessor(getpApplet()));
+			bar.addGestureListener(TapProcessor.class, new IGestureEventListener() {
+				@Override
+				public boolean processGestureEvent(MTGestureEvent e) {
+					if (e.getId() == MTGestureEvent.GESTURE_ENDED)
+						if (bar.getFillColor() == white)
+							bar.setFillColor(blue);
+						else
+							bar.setFillColor(white);
+					
+					return true;
+				}
+			});
 		}
 	}
 
@@ -111,16 +128,4 @@ public class TimelineWidget extends AbstractWindow {
 	}
 }
 
-//bar.registerInputProcessor(new TapProcessor(getpApplet()));
-//bar.addGestureListener(TapProcessor.class, new IGestureEventListener() {
-//	@Override
-//	public boolean processGestureEvent(MTGestureEvent e) {
-//		if (e.getId() == MTGestureEvent.GESTURE_ENDED)
-//			if (bar.getFillColor() == white)
-//				bar.setFillColor(blue);
-//			else
-//				bar.setFillColor(white);
-//		
-//		return true;
-//	}
-//});
+

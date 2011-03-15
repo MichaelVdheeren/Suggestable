@@ -1,17 +1,17 @@
-package view.listeners;
+package view.elements.listeners;
 
 import org.mt4j.sceneManagement.IPreDrawAction;
 import org.mt4j.util.math.Vector3D;
 
-import view.universe.Suggestion;
+import view.elements.SuggestedElement;
 
-public class UnrelatedListener implements IPreDrawAction {
-	private final Suggestion component1;
-	private final Suggestion component2;
+public class UnrelatedElementListener implements IPreDrawAction {
+	private final SuggestedElement component1;
+	private final SuggestedElement component2;
 	private static final float springK = 0.01f;
 	private static final float targetLength = 250;
 	
-	public UnrelatedListener(Suggestion component1, Suggestion component2) {
+	public UnrelatedElementListener(SuggestedElement component1, SuggestedElement component2) {
 		this.component1 = component1;
 		this.component2 = component2;
 	}
@@ -37,9 +37,9 @@ public class UnrelatedListener implements IPreDrawAction {
 		Vector3D diff2 = new Vector3D((float)diffX,(float)diffY,0);
 		Vector3D diff1 = new Vector3D(-(float)diffX,-(float)diffY,0);
 		
-		if (!component1.isDragged())
+		if (!component1.isDragged() && component1.isVisible())
 			component1.translate(diff1);
-		if (!component2.isDragged())
+		if (!component2.isDragged() && component2.isVisible())
 			component2.translate(diff2);
 	}
 

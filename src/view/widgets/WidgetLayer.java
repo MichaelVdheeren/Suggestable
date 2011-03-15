@@ -1,15 +1,16 @@
-package view;
+package view.widgets;
 
 import org.mt4j.components.MTComponent;
 import org.mt4j.util.camera.MTCamera;
 
-import view.listeners.HoverListener;
+import view.SuggestableScene;
 import view.widgets.buttons.ButtonClearTable;
 import view.widgets.buttons.ButtonKeywords;
 import view.widgets.buttons.ButtonRemove;
 import view.widgets.buttons.ButtonTest;
 import view.widgets.buttons.ButtonTimeline;
 import view.widgets.custom.OrbWidget;
+import view.widgets.listeners.HoverListener;
 
 public class WidgetLayer extends MTComponent {
 	private final SuggestableScene scene;

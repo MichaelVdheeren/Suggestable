@@ -1,4 +1,4 @@
-package view.universe;
+package view.elements;
 
 import org.mt4j.components.visibleComponents.font.FontManager;
 import org.mt4j.components.visibleComponents.font.IFont;
@@ -9,16 +9,16 @@ import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
 
 import processing.core.PApplet;
-import view.listeners.DragListener;
+import view.elements.listeners.DragElementListener;
 import bookshelf.AbstractBook;
 import bookshelf.apis.libis.LibisBook;
 
-public class Placeholder extends MTEllipse implements IElement {
+public class RetrievedElement extends MTEllipse implements IElement {
 	private final LibisBook book;
 	private final float radius;
 	private boolean dragged;
 	
-	public Placeholder(PApplet pApplet, float x, float y, float r, LibisBook book) {
+	public RetrievedElement(PApplet pApplet, float x, float y, float r, LibisBook book) {
 		super(pApplet, new Vector3D(x,y,0), r, r);
 		this.book = book;
 		this.radius = r;
@@ -44,15 +44,17 @@ public class Placeholder extends MTEllipse implements IElement {
 		//text.setPositionGlobal(center);
 		this.addChild(text);
 		
-		addGestureListener(DragProcessor.class, new DragListener(this));
+		addGestureListener(DragProcessor.class, new DragElementListener(this));
 	}
 	
+	@Override
 	public AbstractBook getBook() {
 		return this.book;
 	}
 	
 	public float getGForce() {
-		return this.getWidthXYGlobal()/this.radius;
+		float currentRadius = this.getWidthXYGlobal()/2;
+		return 9.81f*currentRadius/radius;
 	}
 
 	@Override

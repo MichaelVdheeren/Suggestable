@@ -3,32 +3,36 @@ package view;
 import java.util.ArrayList;
 
 import org.mt4j.components.visibleComponents.widgets.MTBackgroundImage;
-import org.mt4j.input.gestureAction.DefaultPanAction;
-import org.mt4j.input.inputProcessors.componentProcessors.panProcessor.PanProcessorTwoFingers;
 import org.mt4j.sceneManagement.AbstractScene;
 import org.mt4j.sceneManagement.IPreDrawAction;
-import org.mt4j.util.MTColor;
 
-import view.listeners.RelatedListener;
-import view.listeners.UnrelatedListener;
-import view.observers.SuggestionObserver;
-import view.universe.Placeholder;
-import view.universe.Suggestion;
+import view.elements.RetrievedElement;
+import view.elements.SuggestedElement;
+import view.elements.listeners.RelatedElementListener;
+import view.elements.listeners.UnrelatedElementListener;
+import view.elements.observers.SuggestedElementBirthObserver;
+import view.widgets.WidgetLayer;
 import view.widgets.custom.KeywordWidget;
 import view.widgets.custom.TimelineWidget;
 import application.ModelController;
 import application.Suggestable;
+import bookshelf.AbstractBook;
 import bookshelf.apis.google.GoogleBook;
 import bookshelf.apis.google.GoogleBookProcessor;
 import bookshelf.exceptions.BookshelfUnavailableException;
+import bookshelf.filters.KeywordFilter;
+import bookshelf.filters.PublishingYearFilter;
 
 public class SuggestableScene extends AbstractScene {
 	private ModelController controller = new ModelController();
-	private ArrayList<Placeholder> booksInPosession = new ArrayList<Placeholder>();
-	private ArrayList<Suggestion> booksRelated = new ArrayList<Suggestion>();
+	private ArrayList<RetrievedElement> retrievedElements = new ArrayList<RetrievedElement>();
+	private ArrayList<SuggestedElement> suggestedElements = new ArrayList<SuggestedElement>();
 	
 	private KeywordWidget keywordWidget;
 	private TimelineWidget timelineWidget;
+	
+	private KeywordFilter keywordFilter;
+	private PublishingYearFilter timelineFilter;
 	
 	public WidgetLayer widgetLayer = new WidgetLayer(this);
 	
@@ -59,12 +63,12 @@ public class SuggestableScene extends AbstractScene {
 		// TODO Auto-generated method stub
 	}
 
-	public ArrayList<Placeholder> getBooksInPosession() {
-		return booksInPosession;
+	public ArrayList<RetrievedElement> getBooksInPosession() {
+		return retrievedElements;
 	}
 
-	protected ArrayList<Suggestion> getBooksRelated() {
-		return booksRelated;
+	protected ArrayList<SuggestedElement> getBooksRelated() {
+		return suggestedElements;
 	}
 
 	
@@ -85,22 +89,22 @@ public class SuggestableScene extends AbstractScene {
 	}
 
 	public void removeAllBooks() {
-		for (Placeholder p : booksInPosession)
+		for (RetrievedElement p : retrievedElements)
 			p.destroy();
 		
-		for (Suggestion s : booksRelated)
+		for (SuggestedElement s : suggestedElements)
 			s.destroy();
 		
-		booksInPosession.clear();
-		booksRelated.clear();
+		retrievedElements.clear();
+		suggestedElements.clear();
 	}
 
 	public void showKeywordWidget() {
 		ArrayList<String> keywords = new ArrayList<String>();
 		
-		for (Suggestion s : booksRelated) {
+		for (SuggestedElement s : suggestedElements) {
 			GoogleBook book = s.getBook();
-			keywords.addAll(book.getWords());
+			keywords.addAll(book.getKeywords());
 		}
 		
 		getKeywordWidget().setKeywords(keywords);
@@ -110,8 +114,8 @@ public class SuggestableScene extends AbstractScene {
 	public void showTimelineWidget() {
 		ArrayList <Integer> years = new ArrayList<Integer>();
 		
-		for (Suggestion s : booksRelated) {
-			GoogleBook book = s.getBook();
+		for (SuggestedElement s : suggestedElements) {
+			AbstractBook book = s.getBook();
 			years.add(book.getPublishingYear());
 		}
 		
@@ -119,39 +123,39 @@ public class SuggestableScene extends AbstractScene {
 		getTimelineWidget().setVisible(true);
 	}
 
-	public void addSuggestion(Suggestion s, Placeholder p) {
-		booksRelated.add(s);
+	public void addSuggestion(SuggestedElement s, RetrievedElement p) {
+		suggestedElements.add(s);
 		getCanvas().addChild(s);
-		IPreDrawAction action = new RelatedListener(p, s);
+		IPreDrawAction action = new RelatedElementListener(p, s);
 		s.registerPreDrawAction(action);
 		registerPreDrawAction(action);
 		
-		for (Suggestion so : this.booksRelated) {
+		for (SuggestedElement so : this.suggestedElements) {
 			if (so.equals(s))
 				continue;
 			
-			IPreDrawAction action2 = new UnrelatedListener(so, s);
+			IPreDrawAction action2 = new UnrelatedElementListener(so, s);
 			s.registerPreDrawAction(action2);
 			so.registerPreDrawAction(action2);
 			registerPreDrawAction(action2);
 		}
 	}
 	
-	public void removeSuggestion(Suggestion s) {
+	public void removeSuggestion(SuggestedElement s) {
 		for (IPreDrawAction action : s.getPreDrawActions())
 			this.unregisterPreDrawAction(action);
 		
 		s.destroy();
-		booksRelated.remove(s);
+		suggestedElements.remove(s);
 	}
 
-	public void addPlaceholder(Placeholder p) {
-		booksInPosession.add(p);
+	public void addPlaceholder(RetrievedElement p) {
+		retrievedElements.add(p);
 		getCanvas().addChild(p);
 		
 		try {
 			GoogleBookProcessor gp = getController().getRelatedBooks(p.getBook());
-			gp.addObserver(new SuggestionObserver(this,p));
+			gp.addObserver(new SuggestedElementBirthObserver(this,p));
 			gp.setLimit(7);
 			Thread thread = new Thread(gp);
 			thread.start();
@@ -159,5 +163,15 @@ public class SuggestableScene extends AbstractScene {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void updateTimelineFilter(PublishingYearFilter filter) {
+		this.timelineFilter = filter;
+		
+		for (SuggestedElement el : suggestedElements)
+			if (filter.applyTo(el.getBook()))
+				el.setVisible(false);
+			else
+				el.setVisible(true);
 	}
 }

@@ -1,4 +1,4 @@
-package view.listeners;
+package view.widgets.listeners;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import org.mt4j.sceneManagement.IPreDrawAction;
 import org.mt4j.util.math.Vector3D;
 
 import view.SuggestableScene;
-import view.universe.Suggestion;
+import view.elements.RetrievedElement;
 import view.widgets.buttons.ButtonRemove;
 
 public class HoverListener implements IPreDrawAction {
@@ -27,7 +27,7 @@ public class HoverListener implements IPreDrawAction {
 		List<PickEntry> components = getScene().getCanvas().pick(location.x, location.y).getPickList();
 		
 		for( PickEntry pe : components )
-            if (pe.hitObj instanceof Suggestion) {
+            if (pe.hitObj instanceof RetrievedElement) {
             	setHovered();
             	return;
             }

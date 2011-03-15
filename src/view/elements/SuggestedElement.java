@@ -1,4 +1,4 @@
-package view.universe;
+package view.elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,18 +20,18 @@ import org.mt4j.util.math.Vector3D;
 
 import processing.core.PImage;
 import view.SuggestableScene;
-import view.listeners.DragListener;
+import view.elements.listeners.DragElementListener;
 import view.widgets.buttons.ButtonRemove;
 import view.widgets.custom.InformationWidget;
 import bookshelf.apis.google.GoogleBook;
 
-public class Suggestion extends MTRoundRectangle implements IElement {
+public class SuggestedElement extends MTRoundRectangle implements IElement {
 	private final GoogleBook book;
 	private final SuggestableScene scene;
 	private boolean dragged;
 	private ArrayList<IPreDrawAction> preDrawActions = new ArrayList<IPreDrawAction>();
 	
-	public Suggestion(final SuggestableScene scene, final float x, final float y, float s, GoogleBook book) {
+	public SuggestedElement(final SuggestableScene scene, final float x, final float y, float s, GoogleBook book) {
 		super(scene.getMTApplication(), x, y, 0, s, s, 5, 5);
 
 		this.book = book;
@@ -54,7 +54,7 @@ public class Suggestion extends MTRoundRectangle implements IElement {
 			e1.printStackTrace();
 		}
 		
-		final Suggestion self = this;
+		final SuggestedElement self = this;
 		addGestureListener(DragProcessor.class, new IGestureEventListener() {
 			@Override
 			public boolean processGestureEvent(MTGestureEvent ge) {
@@ -90,7 +90,7 @@ public class Suggestion extends MTRoundRectangle implements IElement {
 			}
 		});
 		
-		addGestureListener(DragProcessor.class, new DragListener(this));
+		addGestureListener(DragProcessor.class, new DragElementListener(this));
 	}
 
 	public GoogleBook getBook() {

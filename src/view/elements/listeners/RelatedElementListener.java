@@ -1,18 +1,19 @@
-package view.listeners;
+package view.elements.listeners;
 
 import org.mt4j.components.TransformSpace;
 import org.mt4j.sceneManagement.IPreDrawAction;
 import org.mt4j.util.math.Vector3D;
 
-import view.universe.Placeholder;
-import view.universe.Suggestion;
+import view.elements.RetrievedElement;
+import view.elements.SuggestedElement;
 
-public class RelatedListener implements IPreDrawAction {
-	private final Placeholder component1;
-	private final Suggestion component2;
+public class RelatedElementListener implements IPreDrawAction {
+	private final RetrievedElement component1;
+	private final SuggestedElement component2;
 	private static final float springK = 0.01f;
+	private final float forceMultiplier = 10f;
 	
-	public RelatedListener(Placeholder component1, Suggestion component2) {
+	public RelatedElementListener(RetrievedElement component1, SuggestedElement component2) {
 		this.component1 = component1;
 		this.component2 = component2;
 	}
@@ -22,7 +23,8 @@ public class RelatedListener implements IPreDrawAction {
 		Vector3D centerTN1 = component1.getCenterPointGlobal();
 		Vector3D centerTN2 = component2.getCenterPointGlobal();
 		
-		float width1 = 0, width2 = 0, height1 = 0, height2 = 0, targetLength = 200;
+		float width1 = 0, width2 = 0, height1 = 0, height2 = 0;
+		float targetLength = component1.getGForce()*forceMultiplier;
 		
 		try {
 			width1 = component1.getWidthXY(TransformSpace.GLOBAL);

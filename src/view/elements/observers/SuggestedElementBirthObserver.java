@@ -1,4 +1,4 @@
-package view.observers;
+package view.elements.observers;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -6,15 +6,15 @@ import java.util.Observer;
 import org.mt4j.util.math.Vector3D;
 
 import view.SuggestableScene;
-import view.universe.Placeholder;
-import view.universe.Suggestion;
+import view.elements.RetrievedElement;
+import view.elements.SuggestedElement;
 import bookshelf.apis.google.GoogleBook;
 
-public class SuggestionObserver implements Observer {
+public class SuggestedElementBirthObserver implements Observer {
 	private final SuggestableScene scene;
-	private final Placeholder p;
+	private final RetrievedElement p;
 	
-	public SuggestionObserver(SuggestableScene scene, Placeholder p) {
+	public SuggestedElementBirthObserver(SuggestableScene scene, RetrievedElement p) {
 		this.scene = scene;
 		this.p = p;
 	}
@@ -22,7 +22,7 @@ public class SuggestionObserver implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		GoogleBook book = (GoogleBook) arg;
-		Suggestion s = new Suggestion(getScene(), 0, 0, 75, book);
+		SuggestedElement s = new SuggestedElement(getScene(), 0, 0, 75, book);
 		s.setPositionGlobal(p.getCenterPointGlobal().addLocal(new Vector3D(1, 1)));
 		getScene().addSuggestion(s,p);
 	}
