@@ -1,15 +1,19 @@
 package view.widgets.listeners;
 
+import java.util.ArrayList;
+
 import org.mt4j.sceneManagement.IPreDrawAction;
 
 import view.elements.SuggestedElement;
+import view.widgets.custom.KeywordWidget;
 import view.widgets.custom.TimelineWidget;
 
-public class ChangedTimelinePeriodListener implements IPreDrawAction {
-	private final SuggestedElement element;
-	private final TimelineWidget widget;
+public class ChangedWidgetsListener implements IPreDrawAction {
+	private final ArrayList<SuggestedElement> elements;
+	private final TimelineWidget tLwidget;
+	private final KeywordWidget kwWidget;
 	
-	public ChangedTimelinePeriodListener(SuggestedElement element, TimelineWidget widget) {
+	public ChangedWidgetsListener(SuggestedElement element, TimelineWidget widget) {
 		this.element = element;
 		this.widget = widget;
 	}
