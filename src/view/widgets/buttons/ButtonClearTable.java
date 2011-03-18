@@ -5,7 +5,8 @@ import org.mt4j.input.inputProcessors.MTGestureEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProcessor;
 
-import view.SuggestableScene;
+import controllers.SuggestableScene;
+
 import view.widgets.custom.OrbButton;
 
 public class ButtonClearTable extends OrbButton {
@@ -17,7 +18,7 @@ public class ButtonClearTable extends OrbButton {
 			public boolean processGestureEvent(MTGestureEvent ge) {
 				TapEvent te = (TapEvent) ge;
 				if (te.getTapID() == TapEvent.TAPPED) {
-					scene.removeAllBooks();
+					scene.removeAllElements();
 				}
 				return true;
 			}

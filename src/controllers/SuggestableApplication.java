@@ -1,13 +1,12 @@
-package application;
+package controllers;
 import org.mt4j.MTApplication;
 import org.mt4j.input.inputProcessors.globalProcessors.CursorTracer;
 
-import view.SuggestableScene;
 
 /**
  * The application
  */
-public class Suggestable extends MTApplication {
+public class SuggestableApplication extends MTApplication {
 	private static final long serialVersionUID = 1L;
 	
 	public static void main(String args[]){

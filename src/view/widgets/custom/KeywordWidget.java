@@ -1,78 +1,97 @@
 package view.widgets.custom;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 
+import org.mt4j.components.TransformSpace;
 import org.mt4j.components.visibleComponents.font.FontManager;
 import org.mt4j.components.visibleComponents.font.IFont;
 import org.mt4j.components.visibleComponents.shapes.MTRoundRectangle;
 import org.mt4j.components.visibleComponents.widgets.MTList;
-import org.mt4j.components.visibleComponents.widgets.MTListCell;
 import org.mt4j.components.visibleComponents.widgets.MTTextArea;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
 
-import processing.core.PApplet;
 import view.widgets.AbstractWindow;
+import controllers.SuggestableScene;
 
 public class KeywordWidget extends AbstractWindow {
-	private ArrayList<String> keywords = new ArrayList<String>();
+	private HashMap<String,KeywordCell> keywords = new HashMap<String,KeywordCell>();
 	private final MTList list;
 	private final MTRoundRectangle cloud;
-	private final PApplet pApplet;
+	private final SuggestableScene scene;
+	private final MTTextArea warning;
 	
-	public KeywordWidget(PApplet pApplet, float x, float y, float w, float h) {
-		super(pApplet, x, y, w, h, "Keywords");
+	public KeywordWidget(SuggestableScene scene, float x, float y, float w, float h) {
+		super(scene.getMTApplication(), x, y, w, h, "Keywords");
+		this.scene = scene;
 		
-		this.pApplet = pApplet;
-		cloud = new MTRoundRectangle(pApplet, 0, 0, 0, w-15, h-40, 5, 5);
+		IFont font = FontManager.getInstance().createFont(scene.getMTApplication(), "fonts/Trebuchet MS.ttf", 
+				16, 	//Font size
+				new MTColor(255,255,255));	//Font color
+		
+		cloud = new MTRoundRectangle(scene.getMTApplication(), 0, 0, 0, w-15, h-40, 5, 5);
 		this.addChild(cloud);
 		cloud.setPositionRelativeToParent(new Vector3D(7.5f,32,0).addLocal(cloud.getCenterOfMass2DLocal()));
 		cloud.setFillColor(new MTColor(0, 0, 0, 150));
 		cloud.setNoStroke(true);
 		cloud.removeAllGestureEventListeners();
 		
-		list = new MTList(pApplet, 0, 0, w-25, h-50);
+		list = new MTList(scene.getMTApplication(), 0, 0, w-25, h-50);
 		cloud.addChild(list);
 		list.setPositionRelativeToParent(new Vector3D(5,5,0).addLocal(list.getCenterOfMass2DLocal()));
 		list.setNoFill(true);
 		list.setNoStroke(true);
+		
+		warning = new MTTextArea(scene.getMTApplication(), font);
+		this.addChild(warning);
+		warning.setText("No keywords found");
+		warning.setPositionRelativeToOther(cloud, cloud.getCenterPointLocal());
+		warning.setNoStroke(true);
+		warning.setNoFill(true);
 	}
 	
-	public void setKeywords(ArrayList<String> keywords) {
-		list.removeAllListElements();
-		this.keywords = keywords;
+	public void addKeyword(String keyword) {
+		keyword = keyword.toLowerCase();
+		KeywordCell cell = keywords.get(keyword);
 		
-		Collections.sort(keywords);
-		String previous = null;
-		int count = 1;
+		if (cell == null) {
+			cell = new KeywordCell(scene, list.getWidthXY(TransformSpace.LOCAL), 30, keyword);
+			keywords.put(keyword, cell);
+			list.addChild(cell);
+		} else
+			cell.raiseCount();
 		
-		IFont font = FontManager.getInstance().createFont(pApplet, "fonts/Trebuchet MS.ttf", 
-				16, 	//Font size
-				new MTColor(255,255,255));	//Font color
-		
-		for (String keyword : keywords) {
-			if (keyword.equals(previous))
-				count++;
-			else {
-				MTListCell cell = new MTListCell(pApplet, this.getWidthXYGlobal()-25, 30);
-				MTTextArea text = new MTTextArea(pApplet, font);
-				list.addChild(cell);
-				cell.setNoStroke(true);
-				cell.setFillColor(new MTColor(0,0,0,255));
-				text.setText(keyword + " (" + count + ")");
-				text.setNoStroke(true);
-				text.setNoFill(true);
-				cell.addChild(text);
-				
-				count = 1;
-			}
-			
-			previous = keyword;
-		}
+		if (!keywords.isEmpty())
+			warning.setVisible(false);
 	}
 	
-	public ArrayList<String> getKeywords() {
-		return this.keywords;
+	public void addKeywords(ArrayList<String> keywords) {
+		for (String keyword : keywords)
+			addKeyword(keyword);
+	}
+	
+	public void removeKeyword(String keyword) {
+		keyword = keyword.toLowerCase();
+		KeywordCell cell = keywords.get(keyword);
+		
+		if (cell != null && cell.getCount()>1)
+			cell.lowerCount();
+		else
+			list.removeChild(keywords.remove(keyword));
+		
+		if (keywords.isEmpty())
+			warning.setVisible(true);
+	}
+	
+	public void removeKeywords(ArrayList<String> keywords) {
+		for (String keyword : keywords)
+			removeKeyword(keyword);
+	}
+	
+	public void removeKeywords() {
+		keywords.clear();
+		list.removeAllChildren();
+		warning.setVisible(true);
 	}
 }

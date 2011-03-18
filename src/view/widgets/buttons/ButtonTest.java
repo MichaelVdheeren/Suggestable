@@ -4,7 +4,8 @@ import org.mt4j.input.inputProcessors.IGestureEventListener;
 import org.mt4j.input.inputProcessors.MTGestureEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProcessor;
 
-import view.SuggestableScene;
+import controllers.SuggestableScene;
+
 import view.elements.observers.RetrievedElementBirthObserver;
 import view.widgets.custom.OrbButton;
 import bookshelf.apis.libis.LibisBookProcessor;

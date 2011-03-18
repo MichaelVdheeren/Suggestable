@@ -4,8 +4,12 @@ import java.awt.Image;
 import java.io.IOException;
 
 import org.mt4j.components.TransformSpace;
+import org.mt4j.components.visibleComponents.font.FontManager;
+import org.mt4j.components.visibleComponents.font.IFont;
+import org.mt4j.components.visibleComponents.shapes.MTRectangle.PositionAnchor;
 import org.mt4j.components.visibleComponents.shapes.MTRoundRectangle;
 import org.mt4j.components.visibleComponents.widgets.MTImage;
+import org.mt4j.components.visibleComponents.widgets.MTTextArea;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
 
@@ -45,6 +49,34 @@ public class InformationWidget extends AbstractWindow {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		
+		IFont font = FontManager.getInstance().createFont(pApplet, "fonts/Trebuchet MS.ttf", 
+				14, 	//Font size
+				new MTColor(255,255,255));	//Font color
+		
+		MTTextArea title = new MTTextArea(getpApplet(),font);
+		container.addChild(title);
+		title.setAnchor(PositionAnchor.UPPER_LEFT);
+		title.setPositionRelativeToParent(new Vector3D(100f,7.5f,0));
+		title.setText(getBook().getTitle());
+		title.setNoStroke(true);
+		title.setNoFill(true);
+		
+		MTTextArea authors = new MTTextArea(getpApplet(),font);
+		container.addChild(authors);
+		authors.setAnchor(PositionAnchor.UPPER_LEFT);
+		authors.setPositionRelativeToParent(new Vector3D(100f,23.5f,0));
+		authors.setText(getBook().getAuthors().toString());
+		authors.setNoStroke(true);
+		authors.setNoFill(true);
+		
+		MTTextArea summary = new MTTextArea(getpApplet(),font);
+		container.addChild(summary);
+		summary.setAnchor(PositionAnchor.UPPER_LEFT);
+		summary.setPositionRelativeToParent(new Vector3D(100f,50f,0));
+		summary.setText(getBook().getSummary());
+		summary.setNoStroke(true);
+		summary.setNoFill(true);
 	}
 	
 	private PApplet getpApplet() {

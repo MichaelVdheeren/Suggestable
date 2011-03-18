@@ -1,6 +1,6 @@
 package view.widgets.buttons;
 
-import view.SuggestableScene;
+import controllers.SuggestableScene;
 import view.widgets.custom.OrbButton;
 
 public class ButtonRemove extends OrbButton {

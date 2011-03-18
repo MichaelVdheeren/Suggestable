@@ -9,6 +9,7 @@ public class CreatedElementListener implements IPreDrawAction {
 	private final AbstractShape component2;
 	private static final float springK = 0.01f;
 	private static final float targetLength = 250;
+	private boolean stopLoop = false;
 	
 	public CreatedElementListener(AbstractShape component1, AbstractShape component2) {
 		this.component1 = component1;
@@ -25,13 +26,13 @@ public class CreatedElementListener implements IPreDrawAction {
 		
 		double distance = Math.sqrt(dx*dx+dy*dy);
 		
+		if(distance > targetLength) {
+			stopLoop = true;
+			return;
+		}
+		
 		double diffX = dx/distance*springK*(distance-targetLength);
 		double diffY = dy/distance*springK*(distance-targetLength);
-		
-		if(distance > targetLength) {
-			diffX = 0;
-			diffY = 0;
-		}
 		
 		Vector3D diff2 = new Vector3D((float)diffX,(float)diffY,0);
 		Vector3D diff1 = new Vector3D(-(float)diffX,-(float)diffY,0);
@@ -44,6 +45,6 @@ public class CreatedElementListener implements IPreDrawAction {
 
 	@Override
 	public boolean isLoop() {
-		return true;
+		return !stopLoop;
 	}
 }

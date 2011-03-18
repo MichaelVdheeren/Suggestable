@@ -3,7 +3,8 @@ package view.elements.observers;
 import java.util.Observable;
 import java.util.Observer;
 
-import view.SuggestableScene;
+import controllers.SuggestableScene;
+
 import view.elements.RetrievedElement;
 import bookshelf.apis.libis.LibisBook;
 
@@ -17,8 +18,8 @@ public class RetrievedElementBirthObserver implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		LibisBook book = (LibisBook) arg;
-		RetrievedElement p = new RetrievedElement(getScene().getMTApplication(), 200, 200, 50, book);
-		getScene().addPlaceholder(p);
+		RetrievedElement p = new RetrievedElement(getScene(), 200, 200, 50, book);
+		getScene().addRetrievedElement(p);
 	}
 
 	private SuggestableScene getScene() {

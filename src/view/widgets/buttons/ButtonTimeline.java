@@ -5,7 +5,8 @@ import org.mt4j.input.inputProcessors.MTGestureEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProcessor;
 
-import view.SuggestableScene;
+import controllers.SuggestableScene;
+
 import view.widgets.custom.OrbButton;
 
 public class ButtonTimeline extends OrbButton {

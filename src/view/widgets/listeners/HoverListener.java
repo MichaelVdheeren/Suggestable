@@ -6,7 +6,8 @@ import org.mt4j.components.PickResult.PickEntry;
 import org.mt4j.sceneManagement.IPreDrawAction;
 import org.mt4j.util.math.Vector3D;
 
-import view.SuggestableScene;
+import controllers.SuggestableScene;
+
 import view.elements.RetrievedElement;
 import view.widgets.buttons.ButtonRemove;
 

@@ -1,4 +1,4 @@
-package application;
+package controllers;
 
 import bookshelf.AbstractBook;
 import bookshelf.apis.google.GoogleBookProcessor;
@@ -10,10 +10,9 @@ import bookshelf.exceptions.BookNotFoundException;
 import bookshelf.exceptions.BookshelfUnavailableException;
 import bookshelf.exceptions.InvalidBarcodeException;
 
-public class ModelController {
-	private final String libisKey = "BF3GHC6VRII49461TDXE3DN8R6GEHMX1Y54TRTMUAIG8N46795-57123";
+public class BookshelfController {
 	private final GoogleBookshelf googleBookshelf = new GoogleBookshelf();
-	private final LibisBookshelf libisBookshelf = new LibisBookshelf(libisKey);
+	private final LibisBookshelf libisBookshelf = new LibisBookshelf();
 	
 	public LibisBookProcessor getBook(String strBarcode) 
 			throws InvalidBarcodeException, BookshelfUnavailableException, BookNotFoundException {

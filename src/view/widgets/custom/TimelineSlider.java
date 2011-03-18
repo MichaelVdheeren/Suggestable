@@ -1,38 +1,26 @@
 package view.widgets.custom;
 
-import org.mt4j.components.MTComponent;
+import org.mt4j.components.TransformSpace;
 import org.mt4j.components.visibleComponents.shapes.MTEllipse;
-import org.mt4j.components.visibleComponents.shapes.MTRoundRectangle;
+import org.mt4j.components.visibleComponents.shapes.MTLine;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
 
-import processing.core.PApplet;
-
-public class TimelineSlider extends MTComponent {
-	public TimelineSlider(PApplet pApplet, float x1, float y1, float x2, float y2) {
-		super(pApplet);
-		float d = (float) Math.toDegrees(Math.atan2(y2-y1,x2-x1));
+public class TimelineSlider extends MTLine {
+	private final TimelineWidget widget;
+	
+	public TimelineSlider(TimelineWidget widget) {
+		super(widget.getpApplet(),0,0,0,widget.getGraph().getHeightXY(TransformSpace.GLOBAL)+40);
+		this.widget = widget;
+		this.setStrokeWeight(5);
 		
-		Vector3D xy1 = new Vector3D(x1,y1);
-		Vector3D xy2 = new Vector3D(x2,y2);
-		
-		MTRoundRectangle line = new MTRoundRectangle(pApplet, x1, y1-2.5f, 0, xy1.distance(xy2), 5, 2.5f, 2.5f);
-		line.rotateZ(xy1, d);
-		line.setNoStroke(true);
-		line.setFillColor(new MTColor(255, 255, 255, 150));
-		
-		Vector3D handlerCenter = xy2.getCopy();
-		handlerCenter.translate(new Vector3D(9.5f,0));
-		handlerCenter.rotateZ(xy2, d);
-		
-		MTEllipse handler = new MTEllipse(pApplet, handlerCenter, 12, 12);
-		
-		handler.setFillColor(new MTColor(0, 0, 0, 180));
+		MTEllipse handler = new MTEllipse(widget.getpApplet(), new Vector3D(0,widget.getGraph().getHeightXY(TransformSpace.GLOBAL)+60), 20, 20);
+		handler.setFillColor(new MTColor(0, 0, 0, 100));
 		handler.setStrokeWeight(2.5f);
-		handler.setStrokeColor(new MTColor(255, 255, 255, 150));
-
-		this.addChild(line);
+		handler.setStrokeColor(new MTColor(255, 255, 255, 255));
+		
 		this.addChild(handler);
 		this.setComposite(true);
+		this.setVisible(false);
 	}
 }
