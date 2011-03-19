@@ -16,6 +16,8 @@ import view.widgets.custom.KeywordWidget;
 import view.widgets.custom.TimelineWidget;
 import bookshelf.apis.google.GoogleBookProcessor;
 import bookshelf.exceptions.BookshelfUnavailableException;
+import bookshelf.filters.KeywordFilter;
+import bookshelf.filters.PublishingYearFilter;
 
 public class SuggestableScene extends AbstractScene {
 	private final BookshelfController controller = new BookshelfController();
@@ -24,6 +26,9 @@ public class SuggestableScene extends AbstractScene {
 	
 	private KeywordWidget keywordWidget;
 	private TimelineWidget timelineWidget;
+	
+	private KeywordFilter keywordFilter = new KeywordFilter(new ArrayList<String>());
+	private PublishingYearFilter publishingYearFilter = new PublishingYearFilter(0, 2012);
 	
 	public WidgetLayer widgetLayer = new WidgetLayer(this);
 	
@@ -40,7 +45,7 @@ public class SuggestableScene extends AbstractScene {
 		getCanvas().addChild(background);
 		
 		this.keywordWidget = new KeywordWidget(this, 500, 500, 400, 400);
-		this.timelineWidget = new TimelineWidget(getMTApplication(), 500, 500, 400, 200);
+		this.timelineWidget = new TimelineWidget(this, 500, 500, 400, 200);
 		getKeywordWidget().setVisible(false);
 		getTimelineWidget().setVisible(false);
 		widgetLayer.addChild(getKeywordWidget());
@@ -75,6 +80,7 @@ public class SuggestableScene extends AbstractScene {
 		}
 		
 		timelineWidget.removeValues();
+		keywordWidget.removeKeywords();
 		retrievedElements.clear();
 		suggestedElements.clear();
 		// TODO: unregister listeners
@@ -140,5 +146,40 @@ public class SuggestableScene extends AbstractScene {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public KeywordFilter getKeywordFilter() {
+		return keywordFilter;
+	}
+
+	public void setKeywordFilter(KeywordFilter keywordFilter) {
+		this.keywordFilter = keywordFilter;
+		updateFilters();
+	}
+
+	public PublishingYearFilter getPublishingYearFilter() {
+		return publishingYearFilter;
+	}
+
+	public void setPublishingYearFilter(PublishingYearFilter publishingYearFilter) {
+		this.publishingYearFilter = publishingYearFilter;
+		updateFilters();
+	}
+
+	public void updateFilters() {
+		for (SuggestedElement element : suggestedElements) {
+			applyFilters(element);
+		}
+	}
+	
+	public void applyFilters(SuggestedElement element) {
+		boolean filterPY = getPublishingYearFilter().applyTo(element.getBook());
+		boolean filterK = getKeywordFilter().applyTo(element.getBook());
+		
+		// TODO: add keyword filter
+		if (filterPY)
+			element.setVisible(false);
+		else
+			element.setVisible(true);
 	}
 }

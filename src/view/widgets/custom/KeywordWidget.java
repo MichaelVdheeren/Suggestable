@@ -9,8 +9,14 @@ import org.mt4j.components.visibleComponents.font.IFont;
 import org.mt4j.components.visibleComponents.shapes.MTRoundRectangle;
 import org.mt4j.components.visibleComponents.widgets.MTList;
 import org.mt4j.components.visibleComponents.widgets.MTTextArea;
+import org.mt4j.input.inputProcessors.IGestureEventListener;
+import org.mt4j.input.inputProcessors.MTGestureEvent;
+import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent;
+import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProcessor;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
+
+import bookshelf.filters.KeywordFilter;
 
 import view.widgets.AbstractWindow;
 import controllers.SuggestableScene;
@@ -53,14 +59,25 @@ public class KeywordWidget extends AbstractWindow {
 	
 	public void addKeyword(String keyword) {
 		keyword = keyword.toLowerCase();
-		KeywordCell cell = keywords.get(keyword);
 		
-		if (cell == null) {
-			cell = new KeywordCell(scene, list.getWidthXY(TransformSpace.LOCAL), 30, keyword);
+		if (keywords.containsKey(keyword)) {
+			final KeywordCell cell = new KeywordCell(scene, list.getWidthXY(TransformSpace.LOCAL), 30, keyword);
+			cell.registerInputProcessor(new TapProcessor(scene.getMTApplication()));
+			cell.addGestureListener(TapProcessor.class, new IGestureEventListener() {
+				@Override
+				public boolean processGestureEvent(MTGestureEvent ge) {
+					TapEvent te = (TapEvent) ge;
+					
+					if (te.getTapID() == TapEvent.TAPPED)
+						cell.inverseSelection();
+					
+					return true;
+				}
+			});
 			keywords.put(keyword, cell);
 			list.addChild(cell);
 		} else
-			cell.raiseCount();
+			keywords.get(keyword).raiseCount();
 		
 		if (!keywords.isEmpty())
 			warning.setVisible(false);

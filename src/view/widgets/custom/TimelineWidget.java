@@ -18,6 +18,8 @@ import org.mt4j.util.math.Vector3D;
 
 import processing.core.PApplet;
 import view.widgets.AbstractWindow;
+import bookshelf.filters.PublishingYearFilter;
+import controllers.SuggestableScene;
 
 public class TimelineWidget extends AbstractWindow {
 	private final ArrayList<Integer> values = new ArrayList<Integer>();
@@ -30,6 +32,7 @@ public class TimelineWidget extends AbstractWindow {
 	private float margin = 5.0f;
 	
 	private final PApplet pApplet;
+	private final SuggestableScene scene;
 	private final MTRoundRectangle graph;
 	private final MTTextArea warning;
 	private final TimelineSlider leftSlider, rightSlider;
@@ -40,9 +43,10 @@ public class TimelineWidget extends AbstractWindow {
 	
 	private boolean changed;
 	
-	public TimelineWidget(PApplet pApplet, float x, float y, float w, float h) {
-		super(pApplet, x, y, w, h, "Publications / Year");
-		this.pApplet = pApplet;
+	public TimelineWidget(final SuggestableScene scene, float x, float y, float w, float h) {
+		super(scene.getMTApplication(), x, y, w, h, "Publications / Year");
+		this.pApplet = scene.getMTApplication();
+		this.scene = scene;
 		
 		graph = new MTRoundRectangle(pApplet, 0, 0, 0, this.getWidthXYGlobal()-15, this.getHeightXYGlobal()-60, 5, 5);
 		this.addChild(graph);
@@ -104,6 +108,8 @@ public class TimelineWidget extends AbstractWindow {
 					
 					float distance = graph.getWidthXY(TransformSpace.GLOBAL);
 					
+					int oldLeftValue = leftValue;
+					
 					for (int i=minValue; i<=maxValue; i++) {
 						float barX = bars.get(i).getCenterPointGlobal().getX();
 						float barD = Math.abs(x-barX);
@@ -114,6 +120,9 @@ public class TimelineWidget extends AbstractWindow {
 					}
 					
 					updateSliders();
+					
+					if (oldLeftValue != leftValue)
+						scene.setPublishingYearFilter(new PublishingYearFilter(leftValue, rightValue));
 				}
 				
 				return true;
@@ -157,6 +166,8 @@ public class TimelineWidget extends AbstractWindow {
 					
 					float distance = graph.getWidthXY(TransformSpace.GLOBAL);
 					
+					int oldRightValue = rightValue;
+					
 					for (int i=minValue; i<=maxValue; i++) {
 						float barX = bars.get(i).getCenterPointGlobal().getX();
 						float barD = Math.abs(x-barX);
@@ -167,6 +178,9 @@ public class TimelineWidget extends AbstractWindow {
 					}
 					
 					updateSliders();
+					
+					if (oldRightValue != rightValue)
+						scene.setPublishingYearFilter(new PublishingYearFilter(leftValue, rightValue));
 				}
 				
 				return true;

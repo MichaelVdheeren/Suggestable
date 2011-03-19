@@ -47,19 +47,6 @@ public class KeywordCell extends MTListCell {
 		textCounter.setNoStroke(true);
 		textCounter.setNoFill(true);
 		
-		registerInputProcessor(new TapProcessor(scene.getMTApplication()));
-		addGestureListener(TapProcessor.class, new IGestureEventListener() {
-			@Override
-			public boolean processGestureEvent(MTGestureEvent ge) {
-				TapEvent te = (TapEvent) ge;
-				
-				if (te.getTapID() == TapEvent.TAPPED)
-					inverseSelection();
-					
-				return true;
-			}
-		});
-		
 		this.select();
 		this.raiseCount();
 	}
@@ -68,7 +55,7 @@ public class KeywordCell extends MTListCell {
 		return this.selected;
 	}
 	
-	private void inverseSelection() {
+	public void inverseSelection() {
 		if (isSelected())
 			deselect();
 		else
