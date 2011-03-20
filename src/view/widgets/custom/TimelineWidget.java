@@ -108,8 +108,6 @@ public class TimelineWidget extends AbstractWindow {
 					
 					float distance = graph.getWidthXY(TransformSpace.GLOBAL);
 					
-					int oldLeftValue = leftValue;
-					
 					for (int i=minValue; i<=maxValue; i++) {
 						float barX = bars.get(i).getCenterPointGlobal().getX();
 						float barD = Math.abs(x-barX);
@@ -120,9 +118,6 @@ public class TimelineWidget extends AbstractWindow {
 					}
 					
 					updateSliders();
-					
-					if (oldLeftValue != leftValue)
-						scene.setPublishingYearFilter(new PublishingYearFilter(leftValue, rightValue));
 				}
 				
 				return true;
@@ -166,8 +161,6 @@ public class TimelineWidget extends AbstractWindow {
 					
 					float distance = graph.getWidthXY(TransformSpace.GLOBAL);
 					
-					int oldRightValue = rightValue;
-					
 					for (int i=minValue; i<=maxValue; i++) {
 						float barX = bars.get(i).getCenterPointGlobal().getX();
 						float barD = Math.abs(x-barX);
@@ -178,9 +171,6 @@ public class TimelineWidget extends AbstractWindow {
 					}
 					
 					updateSliders();
-					
-					if (oldRightValue != rightValue)
-						scene.setPublishingYearFilter(new PublishingYearFilter(leftValue, rightValue));
 				}
 				
 				return true;
@@ -324,6 +314,8 @@ public class TimelineWidget extends AbstractWindow {
 		
 		for (int i=minValue; i<=maxValue; i++)
 			updateColor(i);
+		
+		scene.setPublishingYearFilter(new PublishingYearFilter(leftValue, rightValue));
 	}
 	
 	private void updateColor(int value) {

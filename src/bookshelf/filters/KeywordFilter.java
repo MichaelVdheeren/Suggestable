@@ -8,6 +8,7 @@ import bookshelf.apis.google.GoogleBook;
 public class KeywordFilter implements BookFilter<GoogleBook> {
 	private final ArrayList<String> keywords;
 	
+	// Keywords you want!
 	public KeywordFilter(ArrayList<String> keywords) {
 		this.keywords = keywords;
 	}
@@ -24,8 +25,9 @@ public class KeywordFilter implements BookFilter<GoogleBook> {
 	}
 	
 	public boolean applyTo(GoogleBook book) {
-		if (book.getKeywords().containsAll(keywords))
-			return false;
+		for (String keyword : book.getKeywords())
+			if (keywords.contains(keyword.toLowerCase()))
+				return false;
 		
 		return true;
 	}

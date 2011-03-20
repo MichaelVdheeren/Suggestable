@@ -177,7 +177,7 @@ public class SuggestableScene extends AbstractScene {
 		boolean filterK = getKeywordFilter().applyTo(element.getBook());
 		
 		// TODO: add keyword filter
-		if (filterPY)
+		if (filterPY || filterK)
 			element.setVisible(false);
 		else
 			element.setVisible(true);

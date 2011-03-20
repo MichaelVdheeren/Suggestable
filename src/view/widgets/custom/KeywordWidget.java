@@ -9,6 +9,7 @@ import org.mt4j.components.visibleComponents.font.IFont;
 import org.mt4j.components.visibleComponents.shapes.MTRoundRectangle;
 import org.mt4j.components.visibleComponents.widgets.MTList;
 import org.mt4j.components.visibleComponents.widgets.MTTextArea;
+import org.mt4j.components.visibleComponents.widgets.MTTextField;
 import org.mt4j.input.inputProcessors.IGestureEventListener;
 import org.mt4j.input.inputProcessors.MTGestureEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent;
@@ -27,6 +28,7 @@ public class KeywordWidget extends AbstractWindow {
 	private final MTRoundRectangle cloud;
 	private final SuggestableScene scene;
 	private final MTTextArea warning;
+//	private final MTTextField selectAll;
 	
 	public KeywordWidget(SuggestableScene scene, float x, float y, float w, float h) {
 		super(scene.getMTApplication(), x, y, w, h, "Keywords");
@@ -57,10 +59,10 @@ public class KeywordWidget extends AbstractWindow {
 		warning.setNoFill(true);
 	}
 	
-	public void addKeyword(String keyword) {
+	private void addKeyword(String keyword) {
 		keyword = keyword.toLowerCase();
 		
-		if (keywords.containsKey(keyword)) {
+		if (!keywords.containsKey(keyword)) {
 			final KeywordCell cell = new KeywordCell(scene, list.getWidthXY(TransformSpace.LOCAL), 30, keyword);
 			cell.registerInputProcessor(new TapProcessor(scene.getMTApplication()));
 			cell.addGestureListener(TapProcessor.class, new IGestureEventListener() {
@@ -70,6 +72,8 @@ public class KeywordWidget extends AbstractWindow {
 					
 					if (te.getTapID() == TapEvent.TAPPED)
 						cell.inverseSelection();
+					
+					updateFilter();
 					
 					return true;
 				}
@@ -86,9 +90,11 @@ public class KeywordWidget extends AbstractWindow {
 	public void addKeywords(ArrayList<String> keywords) {
 		for (String keyword : keywords)
 			addKeyword(keyword);
+		
+		updateFilter();
 	}
 	
-	public void removeKeyword(String keyword) {
+	private void removeKeyword(String keyword) {
 		keyword = keyword.toLowerCase();
 		KeywordCell cell = keywords.get(keyword);
 		
@@ -108,7 +114,16 @@ public class KeywordWidget extends AbstractWindow {
 	
 	public void removeKeywords() {
 		keywords.clear();
-		list.removeAllChildren();
+		list.removeAllListElements();
 		warning.setVisible(true);
+	}
+	
+	private void updateFilter() {
+		ArrayList<String> filter = new ArrayList<String>();
+		for (KeywordCell cell : keywords.values())
+			if (cell.isSelected())
+				filter.add(cell.getKeyword());
+		
+		scene.setKeywordFilter(new KeywordFilter(filter));
 	}
 }
