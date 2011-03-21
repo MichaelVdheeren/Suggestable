@@ -1,8 +1,5 @@
 package view.elements;
 
-import java.util.List;
-
-import org.mt4j.components.PickResult.PickEntry;
 import org.mt4j.components.visibleComponents.font.FontManager;
 import org.mt4j.components.visibleComponents.font.IFont;
 import org.mt4j.components.visibleComponents.shapes.MTEllipse;
@@ -14,13 +11,9 @@ import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProc
 import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
 
-import controllers.SuggestableScene;
-
-import processing.core.PApplet;
-import view.elements.listeners.DragElementListener;
-import view.widgets.buttons.ButtonRemove;
 import bookshelf.AbstractBook;
 import bookshelf.apis.libis.LibisBook;
+import controllers.SuggestableScene;
 
 public class RetrievedElement extends MTEllipse implements IElement {
 	private final LibisBook book;
@@ -64,13 +57,6 @@ public class RetrievedElement extends MTEllipse implements IElement {
 				// Then check if we are dropping a suggestion on this
 				if (de.getId() == DragEvent.GESTURE_ENDED) {
 					
-					Vector3D location = de.getTo();
-					List<PickEntry> components = getScene().widgetLayer.pick(location.x, location.y).getPickList();
-					
-					for( PickEntry pe : components ) {
-                        if (pe.hitObj instanceof ButtonRemove)
-                        	getScene().removeRetrievedElement(self);
-                    }
 				}
 				
 				return true;

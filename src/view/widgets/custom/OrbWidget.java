@@ -4,27 +4,31 @@ import java.util.ArrayList;
 
 import org.mt4j.components.TransformSpace;
 import org.mt4j.components.visibleComponents.shapes.MTEllipse;
+import org.mt4j.components.visibleComponents.widgets.MTSvg;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
 
-import processing.core.PApplet;
+import view.widgets.listeners.HoverListener;
+import controllers.SuggestableScene;
 
 public class OrbWidget extends MTEllipse {
 	private ArrayList<OrbButton> buttonList = new ArrayList<OrbButton>();
 	
-	public OrbWidget(float x, float y, PApplet pApplet) {
-		super(pApplet, new Vector3D(x, y), 100,100);
+	public OrbWidget(SuggestableScene scene, float x, float y) {
+		super(scene.getMTApplication(), new Vector3D(x, y), 100,100);
 		
 		this.setFillColor(new MTColor(0, 0, 0, 200));
 		this.setStrokeWeight(2.5f);
 		this.setStrokeColor(new MTColor(255, 255, 255, 150));
 		
-//		Svg svg = new Svg(pApplet, "data/icons/rfid.svg");
-//		svg.setPositionGlobal(this.getCenterPointGlobal());
-//		svg.scale(2.5f, 2.5f, 0, svg.getCenterPointGlobal());
-//		this.addChild(svg);
-//		svg.setPickable(false);
-//		
+		MTSvg svg = new MTSvg(scene.getMTApplication(), "data/icons/trash.svg");
+		this.addChild(svg);
+		svg.setPositionRelativeToParent(this.getCenterPointLocal());
+		svg.setPickable(false);
+		
+		scene.registerPreDrawAction(new HoverListener(scene, svg, svg.getCenterPointGlobal()));
+		
+		
 //		Animation anim = new Animation("rotate", new MultiPurposeInterpolator( 0,360, 4000, 0, 1f, -1), svg);
 //		anim.addAnimationListener(new IAnimationListener() {
 //			public void processAnimationEvent(AnimationEvent ae) {

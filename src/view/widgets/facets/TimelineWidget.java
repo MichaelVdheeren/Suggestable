@@ -1,4 +1,4 @@
-package view.widgets.custom;
+package view.widgets.facets;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,7 +21,7 @@ import view.widgets.AbstractWindow;
 import bookshelf.filters.PublishingYearFilter;
 import controllers.SuggestableScene;
 
-public class TimelineWidget extends AbstractWindow {
+public class TimelineWidget extends AbstractWindow implements IFacetWidget {
 	private final ArrayList<Integer> values = new ArrayList<Integer>();
 	private final HashMap<Integer,MTRoundRectangle> bars = new HashMap<Integer,MTRoundRectangle>();
 	
@@ -331,16 +331,18 @@ public class TimelineWidget extends AbstractWindow {
 		return pApplet;
 	}
 	
-	public boolean isChanged() {
+	public MTRoundRectangle getGraph() {
+		return this.graph;
+	}
+
+	@Override
+	public boolean hasChanged() {
 		return this.changed;
 	}
 	
+	@Override
 	public void setChanged(boolean changed) {
 		this.changed = changed;
-	}
-	
-	public MTRoundRectangle getGraph() {
-		return this.graph;
 	}
 }
 

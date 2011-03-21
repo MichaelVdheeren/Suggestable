@@ -1,4 +1,4 @@
-package view.widgets.custom;
+package view.widgets.facets;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,7 +9,6 @@ import org.mt4j.components.visibleComponents.font.IFont;
 import org.mt4j.components.visibleComponents.shapes.MTRoundRectangle;
 import org.mt4j.components.visibleComponents.widgets.MTList;
 import org.mt4j.components.visibleComponents.widgets.MTTextArea;
-import org.mt4j.components.visibleComponents.widgets.MTTextField;
 import org.mt4j.input.inputProcessors.IGestureEventListener;
 import org.mt4j.input.inputProcessors.MTGestureEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent;
@@ -17,12 +16,11 @@ import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProces
 import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
 
-import bookshelf.filters.KeywordFilter;
-
 import view.widgets.AbstractWindow;
+import bookshelf.filters.KeywordFilter;
 import controllers.SuggestableScene;
 
-public class KeywordWidget extends AbstractWindow {
+public class KeywordWidget extends AbstractWindow implements IFacetWidget {
 	private HashMap<String,KeywordCell> keywords = new HashMap<String,KeywordCell>();
 	private final MTList list;
 	private final MTRoundRectangle cloud;
@@ -125,5 +123,17 @@ public class KeywordWidget extends AbstractWindow {
 				filter.add(cell.getKeyword());
 		
 		scene.setKeywordFilter(new KeywordFilter(filter));
+	}
+
+	@Override
+	public boolean hasChanged() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void setChanged(boolean changed) {
+		// TODO Auto-generated method stub
+		
 	}
 }
