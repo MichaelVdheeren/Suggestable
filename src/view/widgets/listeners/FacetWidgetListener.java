@@ -22,8 +22,6 @@ public class FacetWidgetListener implements IPreDrawAction {
 
 	@Override
 	public boolean isLoop() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
-
 }
