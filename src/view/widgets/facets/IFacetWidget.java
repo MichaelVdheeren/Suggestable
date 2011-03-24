@@ -1,6 +1,7 @@
 package view.widgets.facets;
 
+import view.elements.SuggestedElement;
+
 public interface IFacetWidget {
-	public boolean hasChanged();
-	public void setChanged(boolean changed);
+	public boolean withinSelection(SuggestedElement element);
 }

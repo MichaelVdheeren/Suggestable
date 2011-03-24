@@ -1,13 +1,12 @@
 package view.elements.listeners;
 
 import org.mt4j.components.TransformSpace;
-import org.mt4j.sceneManagement.IPreDrawAction;
 import org.mt4j.util.math.Vector3D;
 
 import view.elements.RetrievedElement;
 import view.elements.SuggestedElement;
 
-public class RelatedElementListener implements IPreDrawAction {
+public class RelatedElementListener extends ElementPreDrawAction {
 	private final RetrievedElement component1;
 	private final SuggestedElement component2;
 	private static final float springK = 0.01f;
@@ -16,6 +15,8 @@ public class RelatedElementListener implements IPreDrawAction {
 	public RelatedElementListener(RetrievedElement component1, SuggestedElement component2) {
 		this.component1 = component1;
 		this.component2 = component2;
+		addAssociatedElement(component1);
+		addAssociatedElement(component2);
 	}
 	
 	@Override
@@ -59,6 +60,10 @@ public class RelatedElementListener implements IPreDrawAction {
 		double dy = centerTN1.y-centerTN2.y;
 		
 		double distance = Math.sqrt(dx*dx+dy*dy);
+		
+		// TODO: find better solution for this
+		if (distance == 0)
+			distance = 0.00001;
 		
 		double diffX = dx/distance*springK*(distance-targetLength);
 		double diffY = dy/distance*springK*(distance-targetLength);

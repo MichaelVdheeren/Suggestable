@@ -11,20 +11,23 @@ import view.widgets.custom.OrbWidget;
 import controllers.SuggestableScene;
 
 public class WidgetLayer extends MTComponent {
-	private final SuggestableScene scene;
+	private final OrbWidget orbWidget;
 	
 	public WidgetLayer(SuggestableScene scene) {
 		super(scene.getMTApplication(), new MTCamera(scene.getMTApplication()));
-		this.scene = scene;
 		
 		float x = scene.getMTApplication().getWidth()/2;
 		float y = scene.getMTApplication().getHeight()/2;
 		
-		OrbWidget orb = new OrbWidget(scene, x, y);
-		orb.addButton(new ButtonTimeline(scene));
-		orb.addButton(new ButtonKeywords(scene));
-		orb.addButton(new ButtonClearTable(scene));
-		orb.addButton(new ButtonTest(scene));
-		addChild(orb);
+		orbWidget = new OrbWidget(scene, x, y);
+		orbWidget.addButton(new ButtonTimeline(scene));
+		orbWidget.addButton(new ButtonKeywords(scene));
+		orbWidget.addButton(new ButtonClearTable(scene));
+		orbWidget.addButton(new ButtonTest(scene));
+		addChild(orbWidget);
+	}
+	
+	public OrbWidget getOrbWidget() {
+		return this.orbWidget;
 	}
 }

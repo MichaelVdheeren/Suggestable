@@ -13,7 +13,8 @@ import controllers.SuggestableScene;
 
 public class OrbWidget extends MTEllipse {
 	private ArrayList<OrbButton> buttonList = new ArrayList<OrbButton>();
-	
+	private final MTSvg trash;
+
 	public OrbWidget(SuggestableScene scene, float x, float y) {
 		super(scene.getMTApplication(), new Vector3D(x, y), 100,100);
 		
@@ -21,13 +22,12 @@ public class OrbWidget extends MTEllipse {
 		this.setStrokeWeight(2.5f);
 		this.setStrokeColor(new MTColor(255, 255, 255, 150));
 		
-		MTSvg svg = new MTSvg(scene.getMTApplication(), "data/icons/trash.svg");
-		this.addChild(svg);
-		svg.setPositionRelativeToParent(this.getCenterPointLocal());
-		svg.setPickable(false);
+		trash = new MTSvg(scene.getMTApplication(), "data/icons/trash.svg");
+		this.addChild(trash);
+		trash.setPositionRelativeToParent(this.getCenterPointLocal());
+		trash.setPickable(false);
 		
-		scene.registerPreDrawAction(new HoverListener(scene, svg, svg.getCenterPointGlobal()));
-		
+		scene.registerPreDrawAction(new HoverListener(scene, trash, trash.getCenterPointGlobal()));
 		
 //		Animation anim = new Animation("rotate", new MultiPurposeInterpolator( 0,360, 4000, 0, 1f, -1), svg);
 //		anim.addAnimationListener(new IAnimationListener() {
@@ -39,6 +39,10 @@ public class OrbWidget extends MTEllipse {
 //		});
 //		anim.start();
 		this.removeAllGestureEventListeners();
+	}
+	
+	public MTSvg getTrash() {
+		return trash;
 	}
 	
 	/**

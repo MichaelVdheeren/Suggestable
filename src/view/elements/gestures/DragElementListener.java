@@ -1,15 +1,15 @@
-package view.elements.listeners;
+package view.elements.gestures;
 
 import org.mt4j.input.inputProcessors.IGestureEventListener;
 import org.mt4j.input.inputProcessors.MTGestureEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent;
 
-import view.elements.IElement;
+import view.elements.AbstractElement;
 
 public class DragElementListener implements IGestureEventListener {
-	private final IElement element;
+	private final AbstractElement element;
 	
-	public DragElementListener (IElement element) {
+	public DragElementListener (AbstractElement element) {
 		this.element = element;
 	}
 	
@@ -19,10 +19,10 @@ public class DragElementListener implements IGestureEventListener {
 		
 		switch (de.getId()) {
 			case DragEvent.GESTURE_STARTED:
-				element.setDragged();
+				element.setDragged(true);
 				break;
 			case DragEvent.GESTURE_ENDED:
-				element.resetDragged();
+				element.setDragged(false);
 				break;
 			default:
 				break;

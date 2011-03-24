@@ -16,8 +16,8 @@ import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProces
 import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
 
+import view.elements.SuggestedElement;
 import view.widgets.AbstractWindow;
-import bookshelf.filters.KeywordFilter;
 import controllers.SuggestableScene;
 
 public class KeywordWidget extends AbstractWindow implements IFacetWidget {
@@ -71,8 +71,6 @@ public class KeywordWidget extends AbstractWindow implements IFacetWidget {
 					if (te.getTapID() == TapEvent.TAPPED)
 						cell.inverseSelection();
 					
-					updateFilter();
-					
 					return true;
 				}
 			});
@@ -88,8 +86,6 @@ public class KeywordWidget extends AbstractWindow implements IFacetWidget {
 	public void addKeywords(ArrayList<String> keywords) {
 		for (String keyword : keywords)
 			addKeyword(keyword);
-		
-		updateFilter();
 	}
 	
 	private void removeKeyword(String keyword) {
@@ -115,25 +111,10 @@ public class KeywordWidget extends AbstractWindow implements IFacetWidget {
 		list.removeAllListElements();
 		warning.setVisible(true);
 	}
-	
-	private void updateFilter() {
-		ArrayList<String> filter = new ArrayList<String>();
-		for (KeywordCell cell : keywords.values())
-			if (cell.isSelected())
-				filter.add(cell.getKeyword());
-		
-		scene.setKeywordFilter(new KeywordFilter(filter));
-	}
 
 	@Override
-	public boolean hasChanged() {
+	public boolean withinSelection(SuggestedElement element) {
 		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void setChanged(boolean changed) {
-		// TODO Auto-generated method stub
-		
+		return true;
 	}
 }

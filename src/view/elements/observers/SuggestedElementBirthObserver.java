@@ -25,7 +25,7 @@ public class SuggestedElementBirthObserver implements Observer {
 		GoogleBook book = (GoogleBook) arg;
 		SuggestedElement s = new SuggestedElement(getScene(), 0, 0, 75, book);
 		s.setPositionGlobal(p.getCenterPointGlobal().addLocal(new Vector3D(1, 1)));
-		getScene().addSuggestedElement(s,p);
+		getScene().addElement(s, p);
 	}
 
 	private SuggestableScene getScene() {

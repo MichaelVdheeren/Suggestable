@@ -4,7 +4,7 @@ import org.mt4j.components.MTComponent;
 import org.mt4j.sceneManagement.IPreDrawAction;
 import org.mt4j.util.math.Vector3D;
 
-import view.elements.IElement;
+import view.elements.AbstractElement;
 import controllers.SuggestableScene;
 
 public class HoverListener implements IPreDrawAction {
@@ -23,15 +23,15 @@ public class HoverListener implements IPreDrawAction {
 	public void processAction() {		
 		MTComponent component = getScene().getCanvas().pick(center.x, center.y).getNearestPickResult();
 
-        if (component instanceof IElement) {
-        	IElement element = (IElement) component;
+        if (component instanceof AbstractElement) {
+        	AbstractElement element = (AbstractElement) component;
         	if (element.isDragged()) {
-        		setHovered();
+        		setHovered(true);
         		return;
         	}
         }
 		
-		resetHovered();
+		setHovered(false);
 	}
 
 	@Override
@@ -47,23 +47,20 @@ public class HoverListener implements IPreDrawAction {
 		return component;
 	}
 	
-	private boolean isHovered() {
+	public boolean isHovered() {
 		return this.hovered;
 	}
 	
-	private void setHovered() {
-		if (isHovered())
+	private void setHovered(boolean hovered) {
+		if (hovered == this.hovered)
 			return;
 		
-		this.hovered = true;
-		this.getComponent().scaleGlobal(1.2f, 1.2f, 1f, center);
-	}
-	
-	private void resetHovered() {
-		if (!isHovered())
-			return;
+		this.hovered = hovered;
+		float scale = 1.2f;
 		
-		this.hovered = false;
-		this.getComponent().scaleGlobal(1/1.2f, 1/1.2f, 1f, center);
+		if (!hovered)
+			scale = 1/scale;
+		
+		getComponent().scaleGlobal(scale, scale, 1f, center);
 	}
 }

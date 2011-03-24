@@ -1,11 +1,10 @@
 package view.elements.listeners;
 
-import org.mt4j.sceneManagement.IPreDrawAction;
 import org.mt4j.util.math.Vector3D;
 
 import view.elements.SuggestedElement;
 
-public class UnrelatedElementListener implements IPreDrawAction {
+public class UnrelatedElementListener extends ElementPreDrawAction {
 	private final SuggestedElement component1;
 	private final SuggestedElement component2;
 	private static final float springK = 0.01f;
@@ -14,6 +13,8 @@ public class UnrelatedElementListener implements IPreDrawAction {
 	public UnrelatedElementListener(SuggestedElement component1, SuggestedElement component2) {
 		this.component1 = component1;
 		this.component2 = component2;
+		addAssociatedElement(component1);
+		addAssociatedElement(component2);
 	}
 	
 	@Override
@@ -25,6 +26,10 @@ public class UnrelatedElementListener implements IPreDrawAction {
 		double dy = centerTN1.y-centerTN2.y;
 		
 		double distance = Math.sqrt(dx*dx+dy*dy);
+		
+		// TODO: find better solution for this
+		if (distance == 0)
+			distance = 0.00001;
 		
 		double diffX = dx/distance*springK*(distance-targetLength);
 		double diffY = dy/distance*springK*(distance-targetLength);

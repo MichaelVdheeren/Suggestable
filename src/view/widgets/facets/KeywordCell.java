@@ -4,10 +4,6 @@ import org.mt4j.components.visibleComponents.font.FontManager;
 import org.mt4j.components.visibleComponents.font.IFont;
 import org.mt4j.components.visibleComponents.widgets.MTListCell;
 import org.mt4j.components.visibleComponents.widgets.MTTextArea;
-import org.mt4j.input.inputProcessors.IGestureEventListener;
-import org.mt4j.input.inputProcessors.MTGestureEvent;
-import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent;
-import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProcessor;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
 
@@ -18,14 +14,12 @@ public class KeywordCell extends MTListCell {
 	private final IFont font;
 	private final String keyword;
 	private int count = 0;
-	private final SuggestableScene scene;
 	private boolean selected = true;
 	private final MTTextArea textKeyword;
 	private final MTTextArea textCounter;
 
 	public KeywordCell(SuggestableScene scene, float width, float height, String keyword) {
 		super(scene.getMTApplication(), width, height);
-		this.scene = scene;
 		this.keyword = keyword;
 		
 		this.setNoStroke(true);
@@ -96,9 +90,5 @@ public class KeywordCell extends MTListCell {
 	public void lowerCount() {
 		this.count--;
 		updateCount();
-	}
-
-	private SuggestableScene getScene() {
-		return scene;
 	}
 }

@@ -7,18 +7,15 @@ import java.util.HashMap;
 import org.mt4j.components.TransformSpace;
 import org.mt4j.components.visibleComponents.font.FontManager;
 import org.mt4j.components.visibleComponents.font.IFont;
+import org.mt4j.components.visibleComponents.shapes.MTRectangle.PositionAnchor;
 import org.mt4j.components.visibleComponents.shapes.MTRoundRectangle;
 import org.mt4j.components.visibleComponents.widgets.MTTextArea;
-import org.mt4j.input.inputProcessors.IGestureEventListener;
-import org.mt4j.input.inputProcessors.MTGestureEvent;
-import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent;
-import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProcessor;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
 
 import processing.core.PApplet;
+import view.elements.SuggestedElement;
 import view.widgets.AbstractWindow;
-import bookshelf.filters.PublishingYearFilter;
 import controllers.SuggestableScene;
 
 public class TimelineWidget extends AbstractWindow implements IFacetWidget {
@@ -35,13 +32,15 @@ public class TimelineWidget extends AbstractWindow implements IFacetWidget {
 	private final SuggestableScene scene;
 	private final MTRoundRectangle graph;
 	private final MTTextArea warning;
-	private final TimelineSlider leftSlider, rightSlider;
-	private int leftValue, rightValue;
+	private final TimelineSlider sliderOne, sliderTwo;
+	private final MTTextArea lowestValue, highestValue;
 	
+	public HashMap<Integer, MTRoundRectangle> getBars() {
+		return bars;
+	}
+
 	private final MTColor inPeriod = new MTColor(255, 255, 255, 255);
 	private final MTColor outPeriod = new MTColor(255, 255, 255, 50);
-	
-	private boolean changed;
 	
 	public TimelineWidget(final SuggestableScene scene, float x, float y, float w, float h) {
 		super(scene.getMTApplication(), x, y, w, h, "Publications / Year");
@@ -59,6 +58,10 @@ public class TimelineWidget extends AbstractWindow implements IFacetWidget {
 				16, 	//Font size
 				new MTColor(255,255,255));	//Font color
 		
+		IFont legendFont = FontManager.getInstance().createFont(pApplet, "fonts/Trebuchet MS.ttf", 
+				14, 	//Font size
+				new MTColor(0, 0, 0, 150)); // Font color
+		
 		warning = new MTTextArea(pApplet, font);
 		this.addChild(warning);
 		warning.setText("No information on publishing dates found");
@@ -66,116 +69,31 @@ public class TimelineWidget extends AbstractWindow implements IFacetWidget {
 		warning.setNoStroke(true);
 		warning.setNoFill(true);
 		
-		leftSlider = new TimelineSlider(this);
-		rightSlider = new TimelineSlider(this);
-		this.addChild(leftSlider);
-		this.addChild(rightSlider);
+		sliderOne = new TimelineSlider(this);
+		sliderTwo = new TimelineSlider(this);
+		this.addChild(sliderOne);
+		this.addChild(sliderTwo);
 		
-		leftSlider.removeAllGestureEventListeners();
-		leftSlider.addGestureListener(DragProcessor.class, new IGestureEventListener() {
-			@Override
-			public boolean processGestureEvent(MTGestureEvent ge) {
-				DragEvent de = (DragEvent) ge;
-				float y = graph.getCenterPointGlobal().getY()+20;
-				
-				if (de.getId() == DragEvent.GESTURE_UPDATED) {
-					float x = de.getTo().getX();
-					
-					float min = graph.getCenterPointGlobal().getX() - graph.getWidthXY(TransformSpace.GLOBAL)/2 + margin;
-					float max = rightSlider.getCenterPointGlobal().getX()-bars.get(rightValue).getWidthXY(TransformSpace.GLOBAL);
-					
-					if (x < min)
-						x = min;
-					if (x > max)
-						x = max;
-					
-					leftSlider.setPositionGlobal(new Vector3D(x,y));
-				}
-				
-				if (de.getId() == DragEvent.GESTURE_ENDED) {
-					int minValue = Collections.min(values);
-					int maxValue = Collections.max(values);
-					
-					float x = de.getTo().getX();
-					
-					float min = graph.getCenterPointGlobal().getX() - graph.getWidthXY(TransformSpace.GLOBAL)/2 + margin;
-					float max = rightSlider.getCenterPointGlobal().getX()-bars.get(rightValue).getWidthXY(TransformSpace.GLOBAL);
-					
-					if (x < min)
-						x = min;
-					if (x > max)
-						x = max;
-					
-					float distance = graph.getWidthXY(TransformSpace.GLOBAL);
-					
-					for (int i=minValue; i<=maxValue; i++) {
-						float barX = bars.get(i).getCenterPointGlobal().getX();
-						float barD = Math.abs(x-barX);
-						if (barD < distance) {
-							distance = barD;
-							leftValue = i;
-						}
-					}
-					
-					updateSliders();
-				}
-				
-				return true;
-			}
-		});
+		lowestValue = new MTTextArea(pApplet, legendFont);
+		this.addChild(lowestValue);
+		lowestValue.setNoStroke(true);
+		lowestValue.setNoFill(true);
+		lowestValue.setAnchor(PositionAnchor.LOWER_LEFT);
 		
+		highestValue = new MTTextArea(pApplet, legendFont);
+		this.addChild(highestValue);
+		highestValue.setNoStroke(true);
+		highestValue.setNoFill(true);
+		highestValue.setAnchor(PositionAnchor.LOWER_RIGHT);
 		
-		rightSlider.addGestureListener(DragProcessor.class, new IGestureEventListener() {
-			@Override
-			public boolean processGestureEvent(MTGestureEvent ge) {
-				DragEvent de = (DragEvent) ge;
-				float y = graph.getCenterPointGlobal().getY()+20;
-				
-				if (de.getId() == DragEvent.GESTURE_UPDATED) {
-					float x = de.getTo().getX();
-					
-					float max = graph.getCenterPointGlobal().getX() + graph.getWidthXY(TransformSpace.GLOBAL)/2 - margin;
-					float min = leftSlider.getCenterPointGlobal().getX()+bars.get(leftValue).getWidthXY(TransformSpace.GLOBAL);
-					
-					if (x < min)
-						x = min;
-					if (x > max)
-						x = max;
-					
-					rightSlider.setPositionGlobal(new Vector3D(x,y));
-				}
-				
-				if (de.getId() == DragEvent.GESTURE_ENDED) {
-					int minValue = Collections.min(values);
-					int maxValue = Collections.max(values);
-					
-					float x = de.getTo().getX();
-					
-					float max = graph.getCenterPointGlobal().getX() + graph.getWidthXY(TransformSpace.GLOBAL)/2 - margin;
-					float min = leftSlider.getCenterPointGlobal().getX()+bars.get(leftValue).getWidthXY(TransformSpace.GLOBAL);
-					
-					if (x < min)
-						x = min;
-					if (x > max)
-						x = max;
-					
-					float distance = graph.getWidthXY(TransformSpace.GLOBAL);
-					
-					for (int i=minValue; i<=maxValue; i++) {
-						float barX = bars.get(i).getCenterPointGlobal().getX();
-						float barD = Math.abs(x-barX);
-						if (barD < distance) {
-							distance = barD;
-							rightValue = i;
-						}
-					}
-					
-					updateSliders();
-				}
-				
-				return true;
-			}
-		});
+	}
+	
+	public int getLowestValue() {
+		return Collections.min(values);
+	}
+	
+	public int getHighestValue() {
+		return Collections.max(values);
 	}
 	
 	public void addValue(int year) {
@@ -239,8 +157,10 @@ public class TimelineWidget extends AbstractWindow implements IFacetWidget {
 		graph.removeAllChildren();
 		warning.setVisible(true);
 		
-		leftSlider.setVisible(false);
-		rightSlider.setVisible(false);
+		sliderOne.setVisible(false);
+		sliderTwo.setVisible(false);
+		lowestValue.setText("");
+		highestValue.setText("");
 	}
 	
 	private void updateGraph() {
@@ -251,21 +171,17 @@ public class TimelineWidget extends AbstractWindow implements IFacetWidget {
 		int maxValue = Collections.max(values);
 		int oldBarCount = bars.size();
 		
-		
 		if (!bars.isEmpty()) {
-			leftSlider.setVisible(true);
-			rightSlider.setVisible(true);
+			sliderOne.setVisible(true);
+			sliderTwo.setVisible(true);
 			warning.setVisible(false);
 		} else {
-			leftSlider.setVisible(false);
-			rightSlider.setVisible(false);
+			sliderOne.setVisible(false);
+			sliderTwo.setVisible(false);
+			warning.setVisible(true);
+			lowestValue.setText("");
+			highestValue.setText("");
 		}
-		
-		if (oldBarCount <= 2 || bars.size() <= 2) {
-			leftValue = minValue;
-			rightValue = maxValue;
-		}
-		
 		
 		// Remove unwanted bars
 		for (Integer value : bars.keySet())
@@ -277,7 +193,15 @@ public class TimelineWidget extends AbstractWindow implements IFacetWidget {
 			updateBar(i, minValue, maxValue);
 		}
 		
-		updateSliders();
+		lowestValue.setText(Integer.toString(minValue));
+		lowestValue.setPositionRelativeToParent(new Vector3D(10,this.getHeightXY(TransformSpace.LOCAL),1));
+		highestValue.setText(Integer.toString(maxValue));
+		highestValue.setPositionRelativeToParent(new Vector3D(this.getWidthXY(TransformSpace.LOCAL)-10,this.getHeightXY(TransformSpace.LOCAL),1));
+		
+		if (oldBarCount <= 2 || bars.size() <= 2) {
+			sliderOne.setValue(minValue);
+			sliderTwo.setValue(maxValue);
+		}
 	}
 	
 	private void updateBar(int value, int minValue, int maxValue) {
@@ -297,52 +221,45 @@ public class TimelineWidget extends AbstractWindow implements IFacetWidget {
 		bar.setPickable(false);
 		bars.put(value, bar);
 		graph.addChild(bar);
-		
-		updateColor(value);
 	}
 	
-	private void updateSliders() {
-		float leftX = bars.get(leftValue).getCenterPointGlobal().getX();
-		float rightX = bars.get(rightValue).getCenterPointGlobal().getX();
-		float y = graph.getCenterPointGlobal().getY()+20;
+	public synchronized void updateSelection() {
+		int sliderOneValue = sliderOne.getValue();
+		int sliderTwoValue = sliderTwo.getValue();
+		int leftValue = sliderOneValue <= sliderTwoValue ? sliderOneValue : sliderTwoValue;
+		int rightValue = sliderOneValue >= sliderTwoValue ? sliderOneValue : sliderTwoValue;
 		
-		leftSlider.setPositionGlobal(new Vector3D(leftX,y));
-		rightSlider.setPositionGlobal(new Vector3D(rightX,y));
+		for (int i=getLowestValue(); i<= getHighestValue(); i++)
+			if (leftValue <= i && i <= rightValue)
+				bars.get(i).setFillColor(inPeriod);
+			else
+				bars.get(i).setFillColor(outPeriod);
 		
-		int minValue = Collections.min(values);
-		int maxValue = Collections.max(values);
-		
-		for (int i=minValue; i<=maxValue; i++)
-			updateColor(i);
-		
-		scene.setPublishingYearFilter(new PublishingYearFilter(leftValue, rightValue));
-	}
-	
-	private void updateColor(int value) {
-		MTRoundRectangle bar = bars.get(value);
-		
-		if (leftValue <= value && value <= rightValue)
-			bar.setFillColor(inPeriod);
-		else
-			bar.setFillColor(outPeriod);
+		scene.updateElements();
 	}
 
 	PApplet getpApplet() {
 		return pApplet;
 	}
+
+	@Override
+	public boolean withinSelection(SuggestedElement element) {
+		int sliderOneValue = sliderOne.getValue();
+		int sliderTwoValue = sliderTwo.getValue();
+		int leftValue = sliderOneValue <= sliderTwoValue ? sliderOneValue : sliderTwoValue;
+		int rightValue = sliderOneValue >= sliderTwoValue ? sliderOneValue : sliderTwoValue;
+		
+		if (leftValue > element.getBook().getPublishingYear())
+			return false;
+		
+		if (rightValue < element.getBook().getPublishingYear())
+			return false;
+		
+		return true;
+	}
 	
 	public MTRoundRectangle getGraph() {
 		return this.graph;
-	}
-
-	@Override
-	public boolean hasChanged() {
-		return this.changed;
-	}
-	
-	@Override
-	public void setChanged(boolean changed) {
-		this.changed = changed;
 	}
 }
 

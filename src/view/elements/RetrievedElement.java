@@ -1,38 +1,44 @@
 package view.elements;
 
+import javax.media.opengl.GL;
+
+import org.mt4j.components.bounds.IBoundingShape;
 import org.mt4j.components.visibleComponents.font.FontManager;
 import org.mt4j.components.visibleComponents.font.IFont;
 import org.mt4j.components.visibleComponents.shapes.MTEllipse;
 import org.mt4j.components.visibleComponents.widgets.MTTextArea;
-import org.mt4j.input.inputProcessors.IGestureEventListener;
-import org.mt4j.input.inputProcessors.MTGestureEvent;
-import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProcessor;
 import org.mt4j.util.MTColor;
+import org.mt4j.util.math.Ray;
 import org.mt4j.util.math.Vector3D;
 
-import bookshelf.AbstractBook;
+import processing.core.PGraphics;
+import view.elements.gestures.DragElementListener;
+import view.elements.gestures.TrashRetrievedElementListener;
 import bookshelf.apis.libis.LibisBook;
 import controllers.SuggestableScene;
 
-public class RetrievedElement extends MTEllipse implements IElement {
+public class RetrievedElement extends AbstractElement {
 	private final LibisBook book;
 	private final float radius;
-	private boolean dragged;
-	private final SuggestableScene scene;
+	private final MTEllipse child;
 	
 	public RetrievedElement(SuggestableScene scene, float x, float y, float r, LibisBook book) {
-		super(scene.getMTApplication(), new Vector3D(x,y,0), r, r);
+		super(scene);
+		this.child = new MTEllipse(scene.getMTApplication(), new Vector3D(x,y,0), r, r);
 		this.book = book;
 		this.radius = r;
-		this.scene = scene;
 		
-		this.setComposite(true);
-		this.setFillColor(new MTColor(0, 0, 0, 200));
-		this.setStrokeWeight(2.5f);
-		this.setStrokeColor(new MTColor(255, 255, 255, 150));
+		this.addChild(child);
+		this.setVertices(child.getVerticesLocal());
 		
-		IFont font = FontManager.getInstance().createFont(getScene().getMTApplication(), "fonts/Trebuchet MS.ttf", 
+		child.setFillColor(new MTColor(0, 0, 0, 200));
+		child.setStrokeWeight(2.5f);
+		child.setStrokeColor(new MTColor(255, 255, 255, 150));
+		child.setComposite(true);
+		child.setBoundsAutoCompute(true);
+		
+		IFont font = FontManager.getInstance().createFont(scene.getMTApplication(), "fonts/Trebuchet MS.ttf", 
 				16, 	//Font size
 				new MTColor(255,255,255));	//Font color
 		
@@ -41,57 +47,61 @@ public class RetrievedElement extends MTEllipse implements IElement {
 		float dx = t.getX()-x;
 		float dy = t.getY()-y;
 		
-		MTTextArea text = new MTTextArea(getScene().getMTApplication(), x+dx, y+dy, r-dx/2, r-dy/2, font);
+		MTTextArea text = new MTTextArea(scene.getMTApplication(), x+dx, y+dy, r-dx/2, r-dy/2, font);
 		text.setNoStroke(true);
 		text.setNoFill(true);
 		text.setText(getBook().getTitle());
 		//text.setPositionGlobal(center);
 		this.addChild(text);
 		
-		final RetrievedElement self = this;
-		addGestureListener(DragProcessor.class, new IGestureEventListener() {
-			@Override
-			public boolean processGestureEvent(MTGestureEvent ge) {
-				DragEvent de = (DragEvent) ge;
-				// Check if gestured ended on top of this
-				// Then check if we are dropping a suggestion on this
-				if (de.getId() == DragEvent.GESTURE_ENDED) {
-					
-				}
-				
-				return true;
-			}
-		});
+		addGestureListener(DragProcessor.class, new DragElementListener(this));
+		addGestureListener(DragProcessor.class, new TrashRetrievedElementListener(scene,this));
 	}
 	
 	@Override
-	public AbstractBook getBook() {
+	public LibisBook getBook() {
 		return this.book;
-	}
-	
-	private SuggestableScene getScene() {
-		return this.scene;
 	}
 	
 	public float getGForce() {
 		float currentRadius = this.getWidthXYGlobal()/2;
-		return 9.81f*currentRadius/radius;
+		float gForce = 9.81f*currentRadius/radius;
+//		System.out.println("Current G-Force: "+gForce);
+		return gForce;
 	}
 
 	@Override
-	public boolean isDragged() {
-		return this.dragged;
+	protected void drawPureGl(GL gl) {
+		// Nothing.
 	}
 
 	@Override
-	public void setDragged() {
-		this.dragged = true;
+	public Vector3D getGeometryIntersectionLocal(Ray ray) {
+		return child.getGeometryIntersectionLocal(ray);
 	}
 
 	@Override
-	public void resetDragged() {
-		this.dragged = false;
+	public boolean isGeometryContainsPointLocal(Vector3D testPoint) {
+		return child.isGeometryContainsPointLocal(testPoint);
+	}
+
+	@Override
+	public Vector3D getCenterPointLocal() {
+		return child.getCenterPointLocal();
+	}
+
+	@Override
+	protected void destroyComponent() {
+		// Nothing.
+	}
+
+	@Override
+	public void drawComponent(PGraphics g) {
+		// Nothing.
 	}
 	
-	
+	@Override
+	public IBoundingShape getBounds() {
+		return child.getBounds();
+	}
 }

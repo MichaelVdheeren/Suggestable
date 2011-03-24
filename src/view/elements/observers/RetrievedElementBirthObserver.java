@@ -19,7 +19,7 @@ public class RetrievedElementBirthObserver implements Observer {
 	public void update(Observable o, Object arg) {
 		LibisBook book = (LibisBook) arg;
 		RetrievedElement p = new RetrievedElement(getScene(), 200, 200, 50, book);
-		getScene().addRetrievedElement(p);
+		getScene().addElement(p);
 	}
 
 	private SuggestableScene getScene() {
