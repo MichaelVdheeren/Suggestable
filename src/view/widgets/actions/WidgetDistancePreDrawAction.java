@@ -1,20 +1,18 @@
-package view.elements.listeners;
+package view.widgets.actions;
 
+import org.mt4j.components.visibleComponents.shapes.AbstractShape;
+import org.mt4j.sceneManagement.IPreDrawAction;
 import org.mt4j.util.math.Vector3D;
 
-import view.elements.SuggestedElement;
-
-public class UnrelatedElementListener extends ElementPreDrawAction {
-	private final SuggestedElement component1;
-	private final SuggestedElement component2;
+public class WidgetDistancePreDrawAction implements IPreDrawAction {
+	private final AbstractShape component1;
+	private final AbstractShape component2;
 	private static final float springK = 0.01f;
 	private static final float targetLength = 250;
 	
-	public UnrelatedElementListener(SuggestedElement component1, SuggestedElement component2) {
+	public WidgetDistancePreDrawAction(AbstractShape component1, AbstractShape component2) {
 		this.component1 = component1;
 		this.component2 = component2;
-		addAssociatedElement(component1);
-		addAssociatedElement(component2);
 	}
 	
 	@Override
@@ -42,9 +40,9 @@ public class UnrelatedElementListener extends ElementPreDrawAction {
 		Vector3D diff2 = new Vector3D((float)diffX,(float)diffY,0);
 		Vector3D diff1 = new Vector3D(-(float)diffX,-(float)diffY,0);
 		
-		if (!component1.isDragged() && component1.isVisible())
+		if (component1.isVisible())
 			component1.translate(diff1);
-		if (!component2.isDragged() && component2.isVisible())
+		if (component2.isVisible())
 			component2.translate(diff2);
 	}
 

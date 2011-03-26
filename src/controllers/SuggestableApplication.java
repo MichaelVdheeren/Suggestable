@@ -10,6 +10,7 @@ public class SuggestableApplication extends MTApplication {
 	private static final long serialVersionUID = 1L;
 	
 	public static void main(String args[]){
+		System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Suggestable");
 		initialize();
 	}
 

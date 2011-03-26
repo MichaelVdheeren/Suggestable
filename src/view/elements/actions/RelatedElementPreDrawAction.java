@@ -1,4 +1,4 @@
-package view.elements.listeners;
+package view.elements.actions;
 
 import org.mt4j.components.TransformSpace;
 import org.mt4j.util.math.Vector3D;
@@ -6,13 +6,13 @@ import org.mt4j.util.math.Vector3D;
 import view.elements.RetrievedElement;
 import view.elements.SuggestedElement;
 
-public class RelatedElementListener extends ElementPreDrawAction {
+public class RelatedElementPreDrawAction extends ElementPreDrawAction {
 	private final RetrievedElement component1;
 	private final SuggestedElement component2;
 	private static final float springK = 0.01f;
 	private final float forceMultiplier = 10f;
 	
-	public RelatedElementListener(RetrievedElement component1, SuggestedElement component2) {
+	public RelatedElementPreDrawAction(RetrievedElement component1, SuggestedElement component2) {
 		this.component1 = component1;
 		this.component2 = component2;
 		addAssociatedElement(component1);

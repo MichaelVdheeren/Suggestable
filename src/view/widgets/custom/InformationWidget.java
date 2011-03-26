@@ -9,6 +9,8 @@ import org.mt4j.components.visibleComponents.font.IFont;
 import org.mt4j.components.visibleComponents.shapes.MTRectangle.PositionAnchor;
 import org.mt4j.components.visibleComponents.shapes.MTRoundRectangle;
 import org.mt4j.components.visibleComponents.widgets.MTImage;
+import org.mt4j.components.visibleComponents.widgets.MTList;
+import org.mt4j.components.visibleComponents.widgets.MTListCell;
 import org.mt4j.components.visibleComponents.widgets.MTTextArea;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
@@ -34,7 +36,6 @@ public class InformationWidget extends AbstractWindow {
 		container.setNoStroke(true);
 		container.removeAllGestureEventListeners();
 		this.addChild(container);
-		
 		try {
 			Image image = getBook().getCover();
 			MTImage cover = new MTImage(getpApplet(), new PImage(image));
@@ -70,13 +71,24 @@ public class InformationWidget extends AbstractWindow {
 		authors.setNoStroke(true);
 		authors.setNoFill(true);
 		
-		MTTextArea summary = new MTTextArea(getpApplet(),font);
-		container.addChild(summary);
-		summary.setAnchor(PositionAnchor.UPPER_LEFT);
-		summary.setPositionRelativeToParent(new Vector3D(100f,50f,0));
-		summary.setText(getBook().getSummary());
-		summary.setNoStroke(true);
-		summary.setNoFill(true);
+		if (getBook().hasSummary()) {
+			MTList summaryScrollList = new MTList(getpApplet(), 0, 0, w-15f, h-122.5f);
+			container.addChild(summaryScrollList);
+			summaryScrollList.setPositionRelativeToParent(new Vector3D(0f, 115f, 0).addLocal(summaryScrollList.getCenterOfMass2DLocal()));
+			summaryScrollList.setNoFill(true);
+			summaryScrollList.setNoStroke(true);
+			
+			MTTextArea summary = new MTTextArea(getpApplet(), 0, 0, summaryScrollList.getWidthXY(TransformSpace.GLOBAL), 1000, font);
+			summary.setText(getBook().getSummary());
+			summary.setNoStroke(true);
+			summary.setNoFill(true);
+			
+			MTListCell summaryScrollCell = new MTListCell(getpApplet(), summaryScrollList.getWidthXY(TransformSpace.GLOBAL), 1000);
+			summaryScrollList.addListElement(summaryScrollCell);
+			summaryScrollCell.addChild(summary);
+			summaryScrollCell.setNoFill(true);
+			summaryScrollCell.setNoStroke(true);
+		}
 	}
 	
 	private PApplet getpApplet() {

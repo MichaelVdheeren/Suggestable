@@ -18,14 +18,16 @@ import org.mt4j.util.math.Vector3D;
 
 import view.elements.SuggestedElement;
 import view.widgets.AbstractWindow;
+import bookshelf.Keyword;
 import controllers.SuggestableScene;
 
 public class KeywordWidget extends AbstractWindow implements IFacetWidget {
-	private HashMap<String,KeywordCell> keywords = new HashMap<String,KeywordCell>();
+	private HashMap<Keyword,KeywordCell> keywords = new HashMap<Keyword,KeywordCell>();
 	private final MTList list;
 	private final MTRoundRectangle cloud;
 	private final SuggestableScene scene;
 	private final MTTextArea warning;
+	private final float minImportance = 0.5f;
 //	private final MTTextField selectAll;
 	
 	public KeywordWidget(SuggestableScene scene, float x, float y, float w, float h) {
@@ -57,19 +59,22 @@ public class KeywordWidget extends AbstractWindow implements IFacetWidget {
 		warning.setNoFill(true);
 	}
 	
-	private void addKeyword(String keyword) {
-		keyword = keyword.toLowerCase();
-		
+	private void addKeyword(Keyword keyword) {
 		if (!keywords.containsKey(keyword)) {
-			final KeywordCell cell = new KeywordCell(scene, list.getWidthXY(TransformSpace.LOCAL), 30, keyword);
+			if (keyword.getImportance() < minImportance)
+				return;
+			
+			final KeywordCell cell = new KeywordCell(scene, list.getWidthXY(TransformSpace.LOCAL), 30, keyword.getValue());
 			cell.registerInputProcessor(new TapProcessor(scene.getMTApplication()));
 			cell.addGestureListener(TapProcessor.class, new IGestureEventListener() {
 				@Override
 				public boolean processGestureEvent(MTGestureEvent ge) {
 					TapEvent te = (TapEvent) ge;
 					
-					if (te.getTapID() == TapEvent.TAPPED)
+					if (te.getTapID() == TapEvent.TAPPED) {
 						cell.inverseSelection();
+						scene.updateElements();
+					}
 					
 					return true;
 				}
@@ -83,26 +88,28 @@ public class KeywordWidget extends AbstractWindow implements IFacetWidget {
 			warning.setVisible(false);
 	}
 	
-	public void addKeywords(ArrayList<String> keywords) {
-		for (String keyword : keywords)
+	public void addKeywords(ArrayList<Keyword> keywords) {
+		for (Keyword keyword : keywords)
 			addKeyword(keyword);
 	}
 	
-	private void removeKeyword(String keyword) {
-		keyword = keyword.toLowerCase();
+	private void removeKeyword(Keyword keyword) {
 		KeywordCell cell = keywords.get(keyword);
 		
-		if (cell != null && cell.getCount()>1)
+		if (cell == null)
+			return;
+		
+		if (cell.getCount()>1)
 			cell.lowerCount();
 		else
-			list.removeChild(keywords.remove(keyword));
+			list.removeListElement(keywords.remove(keyword));
 		
 		if (keywords.isEmpty())
 			warning.setVisible(true);
 	}
 	
-	public void removeKeywords(ArrayList<String> keywords) {
-		for (String keyword : keywords)
+	public void removeKeywords(ArrayList<Keyword> keywords) {
+		for (Keyword keyword : keywords)
 			removeKeyword(keyword);
 	}
 	
@@ -114,7 +121,15 @@ public class KeywordWidget extends AbstractWindow implements IFacetWidget {
 
 	@Override
 	public boolean withinSelection(SuggestedElement element) {
-		// TODO Auto-generated method stub
-		return true;
+		boolean found = false;
+		
+		for (Keyword keyword : element.getBook().getKeywords()) {
+			if (keywords.containsKey(keyword))
+				found = true;
+			if (keywords.containsKey(keyword) && keywords.get(keyword).isSelected())
+				return true;
+		}
+		
+		return !found;
 	}
 }

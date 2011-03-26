@@ -8,11 +8,12 @@ import org.mt4j.sceneManagement.AbstractScene;
 import view.elements.AbstractElement;
 import view.elements.RetrievedElement;
 import view.elements.SuggestedElement;
-import view.elements.listeners.ElementPreDrawAction;
-import view.elements.listeners.RelatedElementListener;
-import view.elements.listeners.UnrelatedElementListener;
+import view.elements.actions.ElementPreDrawAction;
+import view.elements.actions.RelatedElementPreDrawAction;
+import view.elements.actions.UnrelatedElementPreDrawAction;
 import view.elements.observers.SuggestedElementBirthObserver;
 import view.widgets.WidgetLayer;
+import view.widgets.actions.WidgetDistancePreDrawAction;
 import view.widgets.custom.InformationWidget;
 import view.widgets.custom.OrbWidget;
 import view.widgets.facets.KeywordWidget;
@@ -49,6 +50,7 @@ public class SuggestableScene extends AbstractScene {
 		getTimelineWidget().setVisible(false);
 		widgetLayer.addChild(getKeywordWidget());
 		widgetLayer.addChild(getTimelineWidget());
+		this.registerPreDrawAction(new WidgetDistancePreDrawAction(getTimelineWidget(), getKeywordWidget()));
 		
 		this.getCanvas().addChild(widgetLayer);
 	}
@@ -104,17 +106,18 @@ public class SuggestableScene extends AbstractScene {
 			s = suggestedElements.get(i);
 		else {
 			suggestedElements.add(s);
-			timelineWidget.addValue(s.getBook().getPublishingYear());
+			if (s.getBook().hasPublishingYear())
+				timelineWidget.addValue(s.getBook().getPublishingYear());
 			keywordWidget.addKeywords(s.getBook().getKeywords());
 			getCanvas().addChild(s);
 			updateElement(s);
 		}
 		
 		s.addAssociatedElement(element);
-		registerAssiciatedAction(new RelatedElementListener(element, s));
+		registerAssiciatedAction(new RelatedElementPreDrawAction(element, s));
 		
 		for (SuggestedElement so : this.suggestedElements) {
-			registerAssiciatedAction(new UnrelatedElementListener(so, s));
+			registerAssiciatedAction(new UnrelatedElementPreDrawAction(so, s));
 		}
 	}
 
@@ -135,7 +138,6 @@ public class SuggestableScene extends AbstractScene {
 	}
 	
 	public void removeElement(RetrievedElement element) {
-		retrievedElements.remove(element);
 		int i=0;
 		
 		while (i<suggestedElements.size()) {
@@ -148,13 +150,20 @@ public class SuggestableScene extends AbstractScene {
 			}		
 		}
 		
+		element.destroy();
+		retrievedElements.remove(element);
 		unregisterAssociatedActions(element);
 	}
 	
 	public void removeElement(SuggestedElement element) {
+		if (element.getBook().hasPublishingYear())
+			timelineWidget.removeValue(element.getBook().getPublishingYear());
+		keywordWidget.removeKeywords(element.getBook().getKeywords());
+
 		element.removeAllAssociatedElements();
-		suggestedElements.remove(element);
 		
+		element.destroy();
+		suggestedElements.remove(element);
 		unregisterAssociatedActions(element);
 	}
 	
@@ -166,13 +175,19 @@ public class SuggestableScene extends AbstractScene {
 	
 	public void updateElement(SuggestedElement element) {
 		boolean evaluation = true;
-		evaluation &= timelineWidget.withinSelection(element);
+		
+		if (element.getBook().hasPublishingYear())
+			evaluation &= timelineWidget.withinSelection(element);
+		
 		evaluation &= keywordWidget.withinSelection(element);
+		
 		element.setVisible(evaluation);
 	}
 	
-	public void showInformationWindow(GoogleBook book) {
-		getCanvas().addChild(new InformationWidget(getMTApplication(), 0, 0, 400, 200, book));
+	public void showInformationWindow(SuggestedElement element) {
+		InformationWidget widget = new InformationWidget(getMTApplication(), 0, 0, 600, 400, element.getBook());
+		getCanvas().addChild(widget);
+		widget.setPositionGlobal(element.getCenterPointGlobal());
 	}
 	
 	public void registerAssiciatedAction(ElementPreDrawAction action) {

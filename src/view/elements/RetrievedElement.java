@@ -7,7 +7,10 @@ import org.mt4j.components.visibleComponents.font.FontManager;
 import org.mt4j.components.visibleComponents.font.IFont;
 import org.mt4j.components.visibleComponents.shapes.MTEllipse;
 import org.mt4j.components.visibleComponents.widgets.MTTextArea;
+import org.mt4j.input.inputProcessors.IGestureEventListener;
+import org.mt4j.input.inputProcessors.MTGestureEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProcessor;
+import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProcessor;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Ray;
 import org.mt4j.util.math.Vector3D;
@@ -22,6 +25,7 @@ public class RetrievedElement extends AbstractElement {
 	private final LibisBook book;
 	private final float radius;
 	private final MTEllipse child;
+	private final MTTextArea text;
 	
 	public RetrievedElement(SuggestableScene scene, float x, float y, float r, LibisBook book) {
 		super(scene);
@@ -47,7 +51,7 @@ public class RetrievedElement extends AbstractElement {
 		float dx = t.getX()-x;
 		float dy = t.getY()-y;
 		
-		MTTextArea text = new MTTextArea(scene.getMTApplication(), x+dx, y+dy, r-dx/2, r-dy/2, font);
+		text = new MTTextArea(scene.getMTApplication(), x+dx, y+dy, r-dx/2, r-dy/2, font);
 		text.setNoStroke(true);
 		text.setNoFill(true);
 		text.setText(getBook().getTitle());
@@ -56,6 +60,15 @@ public class RetrievedElement extends AbstractElement {
 		
 		addGestureListener(DragProcessor.class, new DragElementListener(this));
 		addGestureListener(DragProcessor.class, new TrashRetrievedElementListener(scene,this));
+		
+		registerInputProcessor(new TapProcessor(scene.getMTApplication()));
+		addGestureListener(TapProcessor.class, new IGestureEventListener() {
+			@Override
+			public boolean processGestureEvent(MTGestureEvent ge) {
+				// TODO: show resize helper animation!
+				return true;
+			}
+		});
 	}
 	
 	@Override

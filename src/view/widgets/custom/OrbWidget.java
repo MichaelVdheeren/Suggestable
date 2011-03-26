@@ -8,7 +8,7 @@ import org.mt4j.components.visibleComponents.widgets.MTSvg;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
 
-import view.widgets.listeners.HoverListener;
+import view.widgets.actions.HoverPreDrawAction;
 import controllers.SuggestableScene;
 
 public class OrbWidget extends MTEllipse {
@@ -27,7 +27,7 @@ public class OrbWidget extends MTEllipse {
 		trash.setPositionRelativeToParent(this.getCenterPointLocal());
 		trash.setPickable(false);
 		
-		scene.registerPreDrawAction(new HoverListener(scene, trash, trash.getCenterPointGlobal()));
+		scene.registerPreDrawAction(new HoverPreDrawAction(scene, trash, trash.getCenterPointGlobal()));
 		
 //		Animation anim = new Animation("rotate", new MultiPurposeInterpolator( 0,360, 4000, 0, 1f, -1), svg);
 //		anim.addAnimationListener(new IAnimationListener() {

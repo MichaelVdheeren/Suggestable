@@ -1,4 +1,4 @@
-package view.widgets.listeners;
+package view.widgets.actions;
 
 import org.mt4j.components.MTComponent;
 import org.mt4j.sceneManagement.IPreDrawAction;
@@ -7,13 +7,13 @@ import org.mt4j.util.math.Vector3D;
 import view.elements.AbstractElement;
 import controllers.SuggestableScene;
 
-public class HoverListener implements IPreDrawAction {
+public class HoverPreDrawAction implements IPreDrawAction {
 	private final SuggestableScene scene;
 	private final MTComponent component;
 	private final Vector3D center;
 	private boolean hovered = false;
 	
-	public HoverListener(SuggestableScene scene, MTComponent component, Vector3D center) {
+	public HoverPreDrawAction(SuggestableScene scene, MTComponent component, Vector3D center) {
 		this.scene = scene;
 		this.component = component;
 		this.center = center;

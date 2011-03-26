@@ -36,7 +36,6 @@ public abstract class AbstractWindow extends MTRoundRectangle {
 		title.setPickable(false);
 		this.addChild(title);
 		
-		
 		final MTSvgButton btnClose = new MTSvgButton(pApplet, "data/icons/close.svg");
 		btnClose.setSizeXYGlobal(20, 20);
 		btnClose.setPositionRelativeToParent(new Vector3D(-15,15).addLocal(new Vector3D(w,0)));
@@ -45,8 +44,9 @@ public abstract class AbstractWindow extends MTRoundRectangle {
 			@Override
 			public boolean processGestureEvent(MTGestureEvent ge) {
 				TapEvent te = (TapEvent) ge;
-				if (te.getTapID() == TapEvent.TAPPED)
+				if (te.getTapID() == TapEvent.TAPPED) {
 					setVisible(false);
+				}
 				
 				return true;
 			}

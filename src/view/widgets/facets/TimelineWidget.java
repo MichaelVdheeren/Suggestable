@@ -89,17 +89,14 @@ public class TimelineWidget extends AbstractWindow implements IFacetWidget {
 	}
 	
 	public int getLowestValue() {
-		return Collections.min(values);
+		return this.values.isEmpty() ? 0 : Collections.min(this.values);
 	}
 	
 	public int getHighestValue() {
-		return Collections.max(values);
+		return this.values.isEmpty() ? 0 : Collections.max(this.values);
 	}
 	
 	public void addValue(int year) {
-		if (year <= 0)
-			return;
-		
 		values.add(year);
 
 		int amount = Collections.frequency(values, year);
@@ -120,8 +117,8 @@ public class TimelineWidget extends AbstractWindow implements IFacetWidget {
 		int minValue, maxValue;
 		
 		if (values.size() > 0) {
-			minValue = Collections.min(values);
-			maxValue = Collections.max(values);
+			minValue = getLowestValue();
+			maxValue = getHighestValue();
 		} else {
 			minValue = -1;
 			maxValue = -2;
@@ -133,9 +130,7 @@ public class TimelineWidget extends AbstractWindow implements IFacetWidget {
 			maxAmount = 0;
 			Collections.sort(values);
 			for (int i=minValue; i<=maxValue; i++) {
-				System.out.println(i);
 				int tmpIndex = values.lastIndexOf(i);
-				System.out.println(tmpIndex);
 				int tmpAmount = tmpIndex-previousIndex;
 				if (tmpAmount > maxAmount)
 					maxAmount = tmpAmount;
@@ -144,10 +139,8 @@ public class TimelineWidget extends AbstractWindow implements IFacetWidget {
 			}
 			
 			updateGraph();
-			System.out.println("Removed and updated graph:"+maxAmount);
 		} else {
 			updateBar(year,minValue,maxValue);
-			System.out.println("Removed and updated bar:"+year);
 		}
 	}
 	
@@ -161,14 +154,15 @@ public class TimelineWidget extends AbstractWindow implements IFacetWidget {
 		sliderTwo.setVisible(false);
 		lowestValue.setText("");
 		highestValue.setText("");
+		maxAmount = 0;
 	}
 	
 	private void updateGraph() {
 		maxBarHeight = graph.getHeightXY(TransformSpace.LOCAL) - 2*margin;
 		stepBarHeight = (maxBarHeight-minBarHeight) / maxAmount;
 		
-		int minValue = Collections.min(values);
-		int maxValue = Collections.max(values);
+		int minValue = getLowestValue();
+		int maxValue = getHighestValue();
 		int oldBarCount = bars.size();
 		
 		if (!bars.isEmpty()) {
@@ -184,9 +178,12 @@ public class TimelineWidget extends AbstractWindow implements IFacetWidget {
 		}
 		
 		// Remove unwanted bars
-		for (Integer value : bars.keySet())
-			if (value < minValue || maxValue < value)
-				graph.removeChild(bars.remove(value));
+		int oldMinValue = bars.isEmpty() ? 0 : Collections.min(bars.keySet());
+		int oldMaxValue = bars.isEmpty() ? -1 : Collections.max(bars.keySet());
+		
+		for (int i=oldMinValue; i<=oldMaxValue; i++)
+			if (i < minValue || maxValue < i)
+				bars.remove(i).destroy();
 		
 		// Update each bar
 		for (int i=minValue; i<=maxValue; i++) {
@@ -206,7 +203,7 @@ public class TimelineWidget extends AbstractWindow implements IFacetWidget {
 	
 	private void updateBar(int value, int minValue, int maxValue) {
 		if (bars.containsKey(value)) {
-			graph.removeChild(bars.remove(value));
+			bars.remove(value).destroy();
 		}
 		
 		int amount = Collections.frequency(values, value);

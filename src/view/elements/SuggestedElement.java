@@ -58,6 +58,7 @@ public class SuggestedElement extends AbstractElement {
 			e1.printStackTrace();
 		}
 		
+		final SuggestedElement self = this;
 		registerInputProcessor(new TapProcessor(scene.getMTApplication()));
 		addGestureListener(TapProcessor.class, new IGestureEventListener() {
 			@Override
@@ -65,7 +66,7 @@ public class SuggestedElement extends AbstractElement {
 				TapEvent te = (TapEvent) ge;
 				
 				if (te.getTapID() == TapEvent.TAPPED) {
-					scene.showInformationWindow(getBook());
+					scene.showInformationWindow(self);
 				}
 				return true;
 			}
