@@ -21,8 +21,7 @@ public class TrashRetrievedElementListener implements IGestureEventListener {
 		DragEvent de = (DragEvent) ge;
 		
 		if (de.getId() == DragEvent.GESTURE_ENDED) {
-			// TODO: change to SVG when bug in MT4j is fixed
-	        if (scene.getOrbWidget().containsPointGlobal(de.getTo())) {
+	        if (scene.getOrbWidget().getTrash().containsPointGlobal(de.getTo())) {
 	        	scene.removeElement(element);
 	        }
 		}
