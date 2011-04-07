@@ -7,6 +7,8 @@ import org.mt4j.components.visibleComponents.widgets.MTTextArea;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
 
+import view.widgets.Progressbar;
+
 import controllers.SuggestableScene;
 
 public class KeywordCell extends MTListCell {
@@ -16,7 +18,7 @@ public class KeywordCell extends MTListCell {
 	private int count = 0;
 	private boolean selected = true;
 	private final MTTextArea textKeyword;
-	private final MTTextArea textCounter;
+	private final Progressbar barImportance;
 
 	public KeywordCell(SuggestableScene scene, float width, float height, String keyword) {
 		super(scene.getMTApplication(), width, height);
@@ -34,14 +36,13 @@ public class KeywordCell extends MTListCell {
 		textKeyword.setNoStroke(true);
 		textKeyword.setNoFill(true);
 		
-		textCounter = new MTTextArea(scene.getMTApplication(), font);
-		addChild(textCounter);
-		textCounter.setAnchor(PositionAnchor.LOWER_RIGHT);
-		textCounter.setPositionRelativeToParent(new Vector3D(width-10, height));
-		textCounter.setNoStroke(true);
-		textCounter.setNoFill(true);
+		barImportance = new Progressbar(scene.getMTApplication(), 50, 15);
+		addChild(barImportance);
+		barImportance.setAnchor(PositionAnchor.LOWER_RIGHT);
+		barImportance.setPositionRelativeToParent(new Vector3D(width-10, height-7.5f));
 		
-		this.select();
+		this.setFillColor(new MTColor(255, 255, 255, 50));
+		
 		this.raiseCount();
 	}
 
@@ -58,16 +59,10 @@ public class KeywordCell extends MTListCell {
 	
 	public void select() {
 		this.selected = true;
-
-		this.setFillColor(new MTColor(255, 255, 255, 255));
-		font.setFillColor(new MTColor(0, 0, 0));
 	}
 	
 	public void deselect() {
 		this.selected = false;
-
-		this.setFillColor(new MTColor(255, 255, 255, 50));
-		font.setFillColor(new MTColor(255, 255, 255));
 	}
 	
 	public String getKeyword() {
@@ -79,7 +74,6 @@ public class KeywordCell extends MTListCell {
 	}
 	
 	private void updateCount() {
-		textCounter.setText(Integer.toString(getCount()));
 	}
 	
 	public void raiseCount() {
