@@ -74,10 +74,7 @@ public class RelatedElementPreDrawAction extends ElementPreDrawAction {
 		}
 		
 		Vector3D diff2 = new Vector3D((diffX < 1 ? 0 : (float)diffX),(float)diffY,0);
-		Vector3D diff1 = new Vector3D(-(float)diffX,-(float)diffY,0);
-		
-		if (!component1.isDragged())
-			component1.translate(diff1);
+
 		if (!component2.isDragged())
 			component2.translate(diff2);
 	}

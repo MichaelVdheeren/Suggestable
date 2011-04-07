@@ -14,11 +14,11 @@ import org.mt4j.util.math.Vector3D;
 
 import processing.core.PApplet;
 
-public abstract class AbstractWindow extends MTRoundRectangle {
+public abstract class MTAbstractWindow extends MTRoundRectangle {
 	private final MTTextArea title;
 	private final MTRoundRectangle container;
 	
-	public AbstractWindow(PApplet pApplet, float x, float y, float w, float h) {
+	public MTAbstractWindow(PApplet pApplet, float x, float y, float w, float h) {
 		super(pApplet, 0, 0,  0, w, h, 5, 5);
 		this.setPositionRelativeToParent(new Vector3D(x,y));
 		
@@ -64,7 +64,7 @@ public abstract class AbstractWindow extends MTRoundRectangle {
 		
 	}
 	
-	public AbstractWindow(PApplet pApplet, float x, float y, float w, float h, String title) {
+	public MTAbstractWindow(PApplet pApplet, float x, float y, float w, float h, String title) {
 		this(pApplet, x, y, w, h);
 		this.setTitle(title);
 	}

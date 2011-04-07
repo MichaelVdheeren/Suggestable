@@ -7,7 +7,7 @@ import org.mt4j.components.visibleComponents.widgets.MTTextArea;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
 
-import view.widgets.Progressbar;
+import view.widgets.MTProgressbar;
 
 import controllers.SuggestableScene;
 
@@ -18,7 +18,7 @@ public class KeywordCell extends MTListCell {
 	private int count = 0;
 	private boolean selected = true;
 	private final MTTextArea textKeyword;
-	private final Progressbar barImportance;
+	private final MTProgressbar barImportance;
 
 	public KeywordCell(SuggestableScene scene, float width, float height, String keyword) {
 		super(scene.getMTApplication(), width, height);
@@ -36,7 +36,7 @@ public class KeywordCell extends MTListCell {
 		textKeyword.setNoStroke(true);
 		textKeyword.setNoFill(true);
 		
-		barImportance = new Progressbar(scene.getMTApplication(), 50, 15);
+		barImportance = new MTProgressbar(scene.getMTApplication(), 50, 15);
 		addChild(barImportance);
 		barImportance.setAnchor(PositionAnchor.LOWER_RIGHT);
 		barImportance.setPositionRelativeToParent(new Vector3D(width-10, height-7.5f));

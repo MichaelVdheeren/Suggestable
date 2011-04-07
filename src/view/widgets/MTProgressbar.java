@@ -5,12 +5,12 @@ import org.mt4j.util.math.Vector3D;
 
 import processing.core.PApplet;
 
-public class Progressbar extends MTRectangle {
+public class MTProgressbar extends MTRectangle {
 	private float value;
 	private final float margin = 3;
 	private MTRectangle bars[] = new MTRectangle[10];
 	
-	public Progressbar(PApplet pApplet, float width, float height) {
+	public MTProgressbar(PApplet pApplet, float width, float height) {
 		super(pApplet, 0, 0, 0, width, height);
 		setComposite(true);
 		float sWidth = (width-9*margin)/10;

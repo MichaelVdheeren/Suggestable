@@ -17,10 +17,10 @@ import org.mt4j.util.math.Vector3D;
 
 import processing.core.PApplet;
 import processing.core.PImage;
-import view.widgets.AbstractWindow;
+import view.widgets.MTAbstractWindow;
 import bookshelf.apis.google.GoogleBook;
 
-public class InformationWidget extends AbstractWindow {
+public class InformationWidget extends MTAbstractWindow {
 	MTRoundRectangle container;
 	private final GoogleBook book;
 	private final PApplet pApplet;

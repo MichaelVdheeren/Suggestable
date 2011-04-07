@@ -15,10 +15,10 @@ import org.mt4j.util.math.Vector3D;
 
 import processing.core.PApplet;
 import view.elements.SuggestedElement;
-import view.widgets.AbstractWindow;
+import view.widgets.MTAbstractWindow;
 import controllers.SuggestableScene;
 
-public class TimelineWidget extends AbstractWindow implements IFacetWidget {
+public class TimelineWidget extends MTAbstractWindow implements IFacetWidget {
 	private final ArrayList<Integer> values = new ArrayList<Integer>();
 	private final HashMap<Integer,MTRoundRectangle> bars = new HashMap<Integer,MTRoundRectangle>();
 	
@@ -30,7 +30,6 @@ public class TimelineWidget extends AbstractWindow implements IFacetWidget {
 	
 	private final PApplet pApplet;
 	private final SuggestableScene scene;
-	private final MTRoundRectangle graph;
 	private final MTTextArea warning;
 	private final TimelineSlider sliderOne, sliderTwo;
 	private final MTTextArea lowestValue, highestValue;
@@ -47,13 +46,6 @@ public class TimelineWidget extends AbstractWindow implements IFacetWidget {
 		this.pApplet = scene.getMTApplication();
 		this.scene = scene;
 		
-		graph = new MTRoundRectangle(pApplet, 0, 0, 0, this.getWidthXYGlobal()-15, this.getHeightXYGlobal()-60, 5, 5);
-		this.addChild(graph);
-		graph.setPositionRelativeToParent(new Vector3D(7.5f,32,0).addLocal(graph.getCenterOfMass2DLocal()));
-		graph.setFillColor(new MTColor(0, 0, 0, 150));
-		graph.setNoStroke(true);
-		graph.removeAllGestureEventListeners();
-		
 		IFont font = FontManager.getInstance().createFont(pApplet, "fonts/Trebuchet MS.ttf", 
 				16, 	//Font size
 				new MTColor(255,255,255));	//Font color
@@ -65,7 +57,7 @@ public class TimelineWidget extends AbstractWindow implements IFacetWidget {
 		warning = new MTTextArea(pApplet, font);
 		this.addChild(warning);
 		warning.setText("No information on publishing dates found");
-		warning.setPositionRelativeToOther(graph, graph.getCenterPointLocal());
+		warning.setPositionRelativeToOther(getContainer(), getContainer().getCenterPointLocal());
 		warning.setNoStroke(true);
 		warning.setNoFill(true);
 		
@@ -147,7 +139,7 @@ public class TimelineWidget extends AbstractWindow implements IFacetWidget {
 	public void removeValues() {
 		values.clear();
 		bars.clear();
-		graph.removeAllChildren();
+		getContainer().removeAllChildren();
 		warning.setVisible(true);
 		
 		sliderOne.setVisible(false);
@@ -158,7 +150,7 @@ public class TimelineWidget extends AbstractWindow implements IFacetWidget {
 	}
 	
 	private void updateGraph() {
-		maxBarHeight = graph.getHeightXY(TransformSpace.LOCAL) - 2*margin;
+		maxBarHeight = getContainer().getHeightXY(TransformSpace.LOCAL) - 2*margin;
 		stepBarHeight = (maxBarHeight-minBarHeight) / maxAmount;
 		
 		int minValue = getLowestValue();
@@ -208,16 +200,16 @@ public class TimelineWidget extends AbstractWindow implements IFacetWidget {
 		
 		int amount = Collections.frequency(values, value);
 		
-		float w = (graph.getWidthXY(TransformSpace.LOCAL) - margin)/(maxValue-minValue+1)-margin;
+		float w = (getContainer().getWidthXY(TransformSpace.LOCAL) - margin)/(maxValue-minValue+1)-margin;
 		float h = minBarHeight + amount * stepBarHeight;
 		
-		float x = graph.getCenterPointLocal().x - graph.getWidthXY(TransformSpace.LOCAL)/2 + margin + (value-minValue)*(w+margin);
-		float y = graph.getCenterPointLocal().y + graph.getHeightXY(TransformSpace.LOCAL)/2 - margin - h;
+		float x = getContainer().getCenterPointLocal().x - getContainer().getWidthXY(TransformSpace.LOCAL)/2 + margin + (value-minValue)*(w+margin);
+		float y = getContainer().getCenterPointLocal().y + getContainer().getHeightXY(TransformSpace.LOCAL)/2 - margin - h;
 		
 		MTRoundRectangle bar = new MTRoundRectangle(getpApplet(), x,y,0f,w,h,5f,5f);
 		bar.setPickable(false);
 		bars.put(value, bar);
-		graph.addChild(bar);
+		getContainer().addChild(bar);
 	}
 	
 	public synchronized void updateSelection() {
@@ -256,7 +248,7 @@ public class TimelineWidget extends AbstractWindow implements IFacetWidget {
 	}
 	
 	public MTRoundRectangle getGraph() {
-		return this.graph;
+		return this.getContainer();
 	}
 }
 

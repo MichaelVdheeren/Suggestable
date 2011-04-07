@@ -6,7 +6,6 @@ import java.util.HashMap;
 import org.mt4j.components.TransformSpace;
 import org.mt4j.components.visibleComponents.font.FontManager;
 import org.mt4j.components.visibleComponents.font.IFont;
-import org.mt4j.components.visibleComponents.shapes.MTRoundRectangle;
 import org.mt4j.components.visibleComponents.widgets.MTList;
 import org.mt4j.components.visibleComponents.widgets.MTTextArea;
 import org.mt4j.input.inputProcessors.IGestureEventListener;
@@ -17,14 +16,13 @@ import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
 
 import view.elements.SuggestedElement;
-import view.widgets.AbstractWindow;
+import view.widgets.MTAbstractWindow;
 import bookshelf.Keyword;
 import controllers.SuggestableScene;
 
-public class KeywordWidget extends AbstractWindow implements IFacetWidget {
+public class KeywordWidget extends MTAbstractWindow implements IFacetWidget {
 	private HashMap<Keyword,KeywordCell> keywords = new HashMap<Keyword,KeywordCell>();
 	private final MTList list;
-	private final MTRoundRectangle cloud;
 	private final SuggestableScene scene;
 	private final MTTextArea warning;
 	private final float minImportance = 0.5f;
@@ -38,15 +36,8 @@ public class KeywordWidget extends AbstractWindow implements IFacetWidget {
 				16, 	//Font size
 				new MTColor(255,255,255));	//Font color
 		
-		cloud = new MTRoundRectangle(scene.getMTApplication(), 0, 0, 0, w-15, h-40, 5, 5);
-		this.addChild(cloud);
-		cloud.setPositionRelativeToParent(new Vector3D(7.5f,32,0).addLocal(cloud.getCenterOfMass2DLocal()));
-		cloud.setFillColor(new MTColor(0, 0, 0, 150));
-		cloud.setNoStroke(true);
-		cloud.removeAllGestureEventListeners();
-		
-		list = new MTList(scene.getMTApplication(), 0, 0, w-25, h-50);
-		cloud.addChild(list);
+		list = new MTList(scene.getMTApplication(), 0, 0, getContainer().getWidthXY(TransformSpace.LOCAL)-10, getContainer().getHeightXY(TransformSpace.LOCAL)-10);
+		getContainer().addChild(list);
 		list.setPositionRelativeToParent(new Vector3D(5,5,0).addLocal(list.getCenterOfMass2DLocal()));
 		list.setNoFill(true);
 		list.setNoStroke(true);
@@ -54,7 +45,7 @@ public class KeywordWidget extends AbstractWindow implements IFacetWidget {
 		warning = new MTTextArea(scene.getMTApplication(), font);
 		this.addChild(warning);
 		warning.setText("No keywords found");
-		warning.setPositionRelativeToOther(cloud, cloud.getCenterPointLocal());
+		warning.setPositionRelativeToOther(getContainer(), getContainer().getCenterPointLocal());
 		warning.setNoStroke(true);
 		warning.setNoFill(true);
 	}
