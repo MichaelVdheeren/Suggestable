@@ -15,7 +15,7 @@ import bookshelf.exceptions.InvalidBarcodeException;
 
 public class ButtonTest extends OrbButton {
 	public ButtonTest(final SuggestableScene scene) {
-		super(scene.getMTApplication(),"TESTRUN");
+		super(scene.getMTApplication(),"Test It!");
 		registerInputProcessor(new TapProcessor(scene.getMTApplication()));
 		addGestureListener(TapProcessor.class, new IGestureEventListener() {
 			

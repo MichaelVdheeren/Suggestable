@@ -27,9 +27,9 @@ public class RetrievedElement extends AbstractElement {
 	private final MTEllipse child;
 	private final MTTextArea text;
 	
-	public RetrievedElement(SuggestableScene scene, float x, float y, float r, LibisBook book) {
+	public RetrievedElement(SuggestableScene scene,float r, LibisBook book) {
 		super(scene);
-		this.child = new MTEllipse(scene.getMTApplication(), new Vector3D(x,y,0), r, r);
+		this.child = new MTEllipse(scene.getMTApplication(), new Vector3D(0,0,0), r, r);
 		this.book = book;
 		this.radius = r;
 		
@@ -48,10 +48,10 @@ public class RetrievedElement extends AbstractElement {
 		
 		Vector3D t = getCenterPointGlobal().addLocal(new Vector3D(-r,0,0));
 		t.rotateZ(getCenterPointGlobal(), 45);
-		float dx = t.getX()-x;
-		float dy = t.getY()-y;
+		float dx = t.getX();
+		float dy = t.getY();
 		
-		text = new MTTextArea(scene.getMTApplication(), x+dx, y+dy, r-dx/2, r-dy/2, font);
+		text = new MTTextArea(scene.getMTApplication(), dx, dy, r-dx/2, r-dy/2, font);
 		text.setNoStroke(true);
 		text.setNoFill(true);
 		text.setText(getBook().getTitle());

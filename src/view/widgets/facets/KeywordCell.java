@@ -4,11 +4,11 @@ import org.mt4j.components.visibleComponents.font.FontManager;
 import org.mt4j.components.visibleComponents.font.IFont;
 import org.mt4j.components.visibleComponents.widgets.MTListCell;
 import org.mt4j.components.visibleComponents.widgets.MTTextArea;
+import org.mt4j.components.visibleComponents.widgets.buttons.MTSvgButton;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
 
 import view.widgets.MTProgressbar;
-
 import controllers.SuggestableScene;
 
 public class KeywordCell extends MTListCell {
@@ -16,9 +16,9 @@ public class KeywordCell extends MTListCell {
 	private final IFont font;
 	private final String keyword;
 	private int count = 0;
-	private boolean selected = true;
 	private final MTTextArea textKeyword;
 	private final MTProgressbar barImportance;
+	private final MTSvgButton btnCheck;
 
 	public KeywordCell(SuggestableScene scene, float width, float height, String keyword) {
 		super(scene.getMTApplication(), width, height);
@@ -30,8 +30,14 @@ public class KeywordCell extends MTListCell {
 				16, 	//Font size
 				new MTColor(255,255,255));	//Font color
 		
+		btnCheck = new MTSvgButton(scene.getMTApplication(), "src/data/icons/check.svg");
+		btnCheck.setSizeXYGlobal(18, 18);
+		this.addChild(btnCheck);
+		
 		textKeyword = new MTTextArea(scene.getMTApplication(), font);
 		addChild(textKeyword);
+		textKeyword.setAnchor(PositionAnchor.UPPER_LEFT);
+		textKeyword.setPositionRelativeToParent(new Vector3D(35, 0));
 		textKeyword.setText(keyword);
 		textKeyword.setNoStroke(true);
 		textKeyword.setNoFill(true);
@@ -44,10 +50,11 @@ public class KeywordCell extends MTListCell {
 		this.setFillColor(new MTColor(255, 255, 255, 50));
 		
 		this.raiseCount();
+		this.setComposite(true);
 	}
 
 	public boolean isSelected() {
-		return this.selected;
+		return btnCheck.isVisible();
 	}
 	
 	public void inverseSelection() {
@@ -58,11 +65,11 @@ public class KeywordCell extends MTListCell {
 	}
 	
 	public void select() {
-		this.selected = true;
+		btnCheck.setVisible(true);
 	}
 	
 	public void deselect() {
-		this.selected = false;
+		btnCheck.setVisible(false);
 	}
 	
 	public String getKeyword() {

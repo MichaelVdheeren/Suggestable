@@ -8,6 +8,7 @@ import org.mt4j.sceneManagement.AbstractScene;
 import view.elements.AbstractElement;
 import view.elements.RetrievedElement;
 import view.elements.SuggestedElement;
+import view.elements.actions.CreatedElementPreDrawAction;
 import view.elements.actions.ElementPreDrawAction;
 import view.elements.actions.RelatedElementPreDrawAction;
 import view.elements.actions.UnrelatedElementPreDrawAction;
@@ -18,7 +19,6 @@ import view.widgets.custom.InformationWidget;
 import view.widgets.custom.OrbWidget;
 import view.widgets.facets.KeywordWidget;
 import view.widgets.facets.TimelineWidget;
-import bookshelf.apis.google.GoogleBook;
 import bookshelf.apis.google.GoogleBookProcessor;
 import bookshelf.exceptions.BookshelfUnavailableException;
 
@@ -77,18 +77,20 @@ public class SuggestableScene extends AbstractScene {
 	}
 
 	public void removeAllElements() {
-		for (RetrievedElement p : retrievedElements)
+		for (RetrievedElement p : retrievedElements) {
 			p.destroy();
+			unregisterAssociatedActions(p);
+		}
 		
 		for (SuggestedElement s : suggestedElements) {
 			s.destroy();
+			unregisterAssociatedActions(s);
 		}
 		
 		timelineWidget.removeValues();
 		keywordWidget.removeKeywords();
 		retrievedElements.clear();
 		suggestedElements.clear();
-		// TODO: unregister listeners
 	}
 
 	public void showKeywordWidget() {
@@ -124,11 +126,12 @@ public class SuggestableScene extends AbstractScene {
 	public synchronized void addElement(RetrievedElement element) {
 		retrievedElements.add(element);
 		getCanvas().addChild(element);
+		registerAssiciatedAction(new CreatedElementPreDrawAction(getOrbWidget(), element));
 		
 		try {
 			GoogleBookProcessor gp = this.controller.getRelatedBooks(element.getBook());
 			gp.addObserver(new SuggestedElementBirthObserver(this,element));
-			gp.setLimit(5);
+			gp.setLimit(20);
 			Thread thread = new Thread(gp);
 			thread.start();
 		} catch (BookshelfUnavailableException e) {

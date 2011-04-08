@@ -1,7 +1,8 @@
 package view.widgets.facets;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.TreeMap;
 
 import org.mt4j.components.TransformSpace;
 import org.mt4j.components.visibleComponents.font.FontManager;
@@ -21,7 +22,7 @@ import bookshelf.Keyword;
 import controllers.SuggestableScene;
 
 public class KeywordWidget extends MTAbstractWindow implements IFacetWidget {
-	private HashMap<Keyword,KeywordCell> keywords = new HashMap<Keyword,KeywordCell>();
+	private TreeMap<Keyword,KeywordCell> keywords = new TreeMap<Keyword,KeywordCell>();
 	private final MTList list;
 	private final SuggestableScene scene;
 	private final MTTextArea warning;
@@ -71,7 +72,7 @@ public class KeywordWidget extends MTAbstractWindow implements IFacetWidget {
 				}
 			});
 			keywords.put(keyword, cell);
-			list.addChild(cell);
+			list.addListElement(keywords.headMap(keyword,false).size(),cell);
 		} else
 			keywords.get(keyword).raiseCount();
 		

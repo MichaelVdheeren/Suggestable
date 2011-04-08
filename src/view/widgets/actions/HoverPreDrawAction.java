@@ -21,7 +21,7 @@ public class HoverPreDrawAction implements IPreDrawAction {
 	
 	@Override
 	public void processAction() {		
-		MTComponent component = getScene().getCanvas().pick(center.x, center.y).getNearestPickResult();
+		MTComponent component = pick();
 
         if (component instanceof AbstractElement) {
         	AbstractElement element = (AbstractElement) component;
@@ -32,6 +32,10 @@ public class HoverPreDrawAction implements IPreDrawAction {
         }
 		
 		setHovered(false);
+	}
+	
+	private synchronized MTComponent pick() {
+		return getScene().getCanvas().pick(center.x, center.y).getNearestPickResult();
 	}
 
 	@Override

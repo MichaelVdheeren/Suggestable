@@ -45,8 +45,8 @@ public abstract class MTAbstractWindow extends MTRoundRectangle {
 		container.removeAllGestureEventListeners();
 		
 		final MTSvgButton btnClose = new MTSvgButton(pApplet, "data/icons/close.svg");
-		btnClose.setSizeXYGlobal(20, 20);
-		btnClose.setPositionRelativeToParent(new Vector3D(-15,15).addLocal(new Vector3D(w,0)));
+		btnClose.setSizeXYGlobal(24, 24);
+		btnClose.setPositionRelativeToParent(new Vector3D(-17,17).addLocal(new Vector3D(w,0)));
 		btnClose.removeAllGestureEventListeners();
 		btnClose.addGestureListener(TapProcessor.class, new IGestureEventListener() {
 			@Override

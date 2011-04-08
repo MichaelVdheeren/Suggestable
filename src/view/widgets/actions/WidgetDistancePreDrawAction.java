@@ -17,6 +17,9 @@ public class WidgetDistancePreDrawAction implements IPreDrawAction {
 	
 	@Override
 	public void processAction() {
+		if (!(component2.isVisible() && component1.isVisible()))
+			return;
+		
 		Vector3D centerTN1 = component1.getCenterPointGlobal();
 		Vector3D centerTN2 = component2.getCenterPointGlobal();
 		
@@ -39,11 +42,9 @@ public class WidgetDistancePreDrawAction implements IPreDrawAction {
 		
 		Vector3D diff2 = new Vector3D((float)diffX,(float)diffY,0);
 		Vector3D diff1 = new Vector3D(-(float)diffX,-(float)diffY,0);
-		
-		if (component1.isVisible())
-			component1.translate(diff1);
-		if (component2.isVisible())
-			component2.translate(diff2);
+
+		component1.translate(diff1);
+		component2.translate(diff2);
 	}
 
 	@Override

@@ -31,9 +31,9 @@ public class SuggestedElement extends AbstractElement {
 
 	private final ArrayList<RetrievedElement> associatedElements = new ArrayList<RetrievedElement>();
 	
-	public SuggestedElement(final SuggestableScene scene, final float x, final float y, float s, GoogleBook book) {
+	public SuggestedElement(final SuggestableScene scene, float s, GoogleBook book) {
 		super(scene);
-		this.child = new MTRoundRectangle(scene.getMTApplication(), x, y, 0, s, s, 5, 5);
+		this.child = new MTRoundRectangle(scene.getMTApplication(), 0, 0, 0, s, s, 5, 5);
 		
 		this.book = book;
 		

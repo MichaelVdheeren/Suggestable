@@ -7,7 +7,6 @@ import org.mt4j.components.TransformSpace;
 import org.mt4j.components.visibleComponents.font.FontManager;
 import org.mt4j.components.visibleComponents.font.IFont;
 import org.mt4j.components.visibleComponents.shapes.MTRectangle.PositionAnchor;
-import org.mt4j.components.visibleComponents.shapes.MTRoundRectangle;
 import org.mt4j.components.visibleComponents.widgets.MTImage;
 import org.mt4j.components.visibleComponents.widgets.MTList;
 import org.mt4j.components.visibleComponents.widgets.MTListCell;
@@ -21,7 +20,6 @@ import view.widgets.MTAbstractWindow;
 import bookshelf.apis.google.GoogleBook;
 
 public class InformationWidget extends MTAbstractWindow {
-	MTRoundRectangle container;
 	private final GoogleBook book;
 	private final PApplet pApplet;
 	
@@ -30,16 +28,10 @@ public class InformationWidget extends MTAbstractWindow {
 		this.pApplet = pApplet;
 		this.book = book;
 		
-		container = new MTRoundRectangle(pApplet, 0, 0, 0, this.getWidthXYGlobal()-15, this.getHeightXYGlobal()-40, 5, 5);
-		container.setPositionRelativeToParent(new Vector3D(7.5f,32,0).addLocal(container.getCenterOfMass2DLocal()));
-		container.setFillColor(new MTColor(0, 0, 0, 150));
-		container.setNoStroke(true);
-		container.removeAllGestureEventListeners();
-		this.addChild(container);
 		try {
 			Image image = getBook().getCover();
 			MTImage cover = new MTImage(getpApplet(), new PImage(image));
-			container.addChild(cover);
+			getContainer().addChild(cover);
 			float s = 100/cover.getHeightXY(TransformSpace.GLOBAL);
 			cover.scaleGlobal(s, s, 1, cover.getCenterPointGlobal());
 			cover.setPositionRelativeToParent(new Vector3D(7.5f,7.5f,0).addLocal(
@@ -56,7 +48,7 @@ public class InformationWidget extends MTAbstractWindow {
 				new MTColor(255,255,255));	//Font color
 		
 		MTTextArea title = new MTTextArea(getpApplet(),font);
-		container.addChild(title);
+		getContainer().addChild(title);
 		title.setAnchor(PositionAnchor.UPPER_LEFT);
 		title.setPositionRelativeToParent(new Vector3D(100f,7.5f,0));
 		title.setText(getBook().getTitle());
@@ -64,7 +56,7 @@ public class InformationWidget extends MTAbstractWindow {
 		title.setNoFill(true);
 		
 		MTTextArea authors = new MTTextArea(getpApplet(),font);
-		container.addChild(authors);
+		getContainer().addChild(authors);
 		authors.setAnchor(PositionAnchor.UPPER_LEFT);
 		authors.setPositionRelativeToParent(new Vector3D(100f,23.5f,0));
 		authors.setText(getBook().getAuthors().toString());
@@ -73,7 +65,7 @@ public class InformationWidget extends MTAbstractWindow {
 		
 		if (getBook().hasSummary()) {
 			MTList summaryScrollList = new MTList(getpApplet(), 0, 0, w-15f, h-122.5f);
-			container.addChild(summaryScrollList);
+			getContainer().addChild(summaryScrollList);
 			summaryScrollList.setPositionRelativeToParent(new Vector3D(0f, 115f, 0).addLocal(summaryScrollList.getCenterOfMass2DLocal()));
 			summaryScrollList.setNoFill(true);
 			summaryScrollList.setNoStroke(true);

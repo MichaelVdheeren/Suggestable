@@ -3,6 +3,8 @@ package view.elements.observers;
 import java.util.Observable;
 import java.util.Observer;
 
+import org.mt4j.util.math.Vector3D;
+
 import controllers.SuggestableScene;
 
 import view.elements.RetrievedElement;
@@ -18,7 +20,8 @@ public class RetrievedElementBirthObserver implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		LibisBook book = (LibisBook) arg;
-		RetrievedElement p = new RetrievedElement(getScene(), 200, 200, 50, book);
+		RetrievedElement p = new RetrievedElement(getScene(), 50, book);
+		p.setPositionGlobal(scene.getOrbWidget().getCenterPointGlobal().addLocal(new Vector3D(1, 1)));
 		getScene().addElement(p);
 	}
 
