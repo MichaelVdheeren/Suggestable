@@ -190,6 +190,9 @@ public class TimelineWidget extends MTAbstractWindow implements IFacetWidget {
 		if (oldBarCount <= 2 || bars.size() <= 2) {
 			sliderOne.setValue(minValue);
 			sliderTwo.setValue(maxValue);
+		} else {
+//			sliderOne.setValue(sliderOne.getValue());
+//			sliderTwo.setValue(sliderTwo.getValue());
 		}
 	}
 	

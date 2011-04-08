@@ -1,7 +1,6 @@
 package view.widgets.facets;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.TreeMap;
 
 import org.mt4j.components.TransformSpace;
@@ -25,8 +24,8 @@ public class KeywordWidget extends MTAbstractWindow implements IFacetWidget {
 	private TreeMap<Keyword,KeywordCell> keywords = new TreeMap<Keyword,KeywordCell>();
 	private final MTList list;
 	private final SuggestableScene scene;
-	private final MTTextArea warning;
 	private final float minImportance = 0.5f;
+	private final MTTextArea warning;
 //	private final MTTextField selectAll;
 	
 	public KeywordWidget(SuggestableScene scene, float x, float y, float w, float h) {
@@ -52,11 +51,11 @@ public class KeywordWidget extends MTAbstractWindow implements IFacetWidget {
 	}
 	
 	private void addKeyword(Keyword keyword) {
-		if (!keywords.containsKey(keyword)) {
-			if (keyword.getImportance() < minImportance)
-				return;
-			
-			final KeywordCell cell = new KeywordCell(scene, list.getWidthXY(TransformSpace.LOCAL), 30, keyword.getValue());
+		if (keyword.getImportance()<minImportance)
+			return;
+		
+		if (!keywords.containsKey(keyword)) {		
+			final KeywordCell cell = new KeywordCell(scene, list.getWidthXY(TransformSpace.LOCAL), 30, keyword);
 			cell.registerInputProcessor(new TapProcessor(scene.getMTApplication()));
 			cell.addGestureListener(TapProcessor.class, new IGestureEventListener() {
 				@Override
@@ -73,8 +72,10 @@ public class KeywordWidget extends MTAbstractWindow implements IFacetWidget {
 			});
 			keywords.put(keyword, cell);
 			list.addListElement(keywords.headMap(keyword,false).size(),cell);
-		} else
+		} else {
 			keywords.get(keyword).raiseCount();
+			keywords.get(keyword).updateImportance(keyword.getImportance());
+		}
 		
 		if (!keywords.isEmpty())
 			warning.setVisible(false);
@@ -91,9 +92,10 @@ public class KeywordWidget extends MTAbstractWindow implements IFacetWidget {
 		if (cell == null)
 			return;
 		
-		if (cell.getCount()>1)
+		if (cell.getCount()>1) {
 			cell.lowerCount();
-		else
+			keywords.get(keyword).updateImportance(-keyword.getImportance());
+		} else
 			list.removeListElement(keywords.remove(keyword));
 		
 		if (keywords.isEmpty())

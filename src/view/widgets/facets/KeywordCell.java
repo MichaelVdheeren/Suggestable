@@ -8,7 +8,9 @@ import org.mt4j.components.visibleComponents.widgets.buttons.MTSvgButton;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
 
-import view.widgets.MTProgressbar;
+import bookshelf.Keyword;
+
+import view.widgets.MTPercentageIndicator;
 import controllers.SuggestableScene;
 
 public class KeywordCell extends MTListCell {
@@ -16,13 +18,14 @@ public class KeywordCell extends MTListCell {
 	private final IFont font;
 	private final String keyword;
 	private int count = 0;
+	private float totalImportance = 0;
 	private final MTTextArea textKeyword;
-	private final MTProgressbar barImportance;
+	private final MTPercentageIndicator barImportance;
 	private final MTSvgButton btnCheck;
 
-	public KeywordCell(SuggestableScene scene, float width, float height, String keyword) {
+	public KeywordCell(SuggestableScene scene, float width, float height, Keyword keyword) {
 		super(scene.getMTApplication(), width, height);
-		this.keyword = keyword;
+		this.keyword = keyword.getValue();
 		
 		this.setNoStroke(true);
 		
@@ -38,11 +41,11 @@ public class KeywordCell extends MTListCell {
 		addChild(textKeyword);
 		textKeyword.setAnchor(PositionAnchor.UPPER_LEFT);
 		textKeyword.setPositionRelativeToParent(new Vector3D(35, 0));
-		textKeyword.setText(keyword);
+		textKeyword.setText(this.keyword);
 		textKeyword.setNoStroke(true);
 		textKeyword.setNoFill(true);
 		
-		barImportance = new MTProgressbar(scene.getMTApplication(), 50, 15);
+		barImportance = new MTPercentageIndicator(scene.getMTApplication(), 50, 15);
 		addChild(barImportance);
 		barImportance.setAnchor(PositionAnchor.LOWER_RIGHT);
 		barImportance.setPositionRelativeToParent(new Vector3D(width-10, height-7.5f));
@@ -50,6 +53,7 @@ public class KeywordCell extends MTListCell {
 		this.setFillColor(new MTColor(255, 255, 255, 50));
 		
 		this.raiseCount();
+		this.updateImportance(keyword.getImportance());
 		this.setComposite(true);
 	}
 
@@ -80,16 +84,18 @@ public class KeywordCell extends MTListCell {
 		return this.count;
 	}
 	
-	private void updateCount() {
-	}
-	
 	public void raiseCount() {
 		this.count++;
-		updateCount();
 	}
 	
 	public void lowerCount() {
 		this.count--;
-		updateCount();
+	}
+
+	public void updateImportance(double importance) {
+		totalImportance += importance;
+		float mixedImportance = totalImportance/count;
+		
+		barImportance.setValue(mixedImportance);
 	}
 }
