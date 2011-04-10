@@ -43,5 +43,4 @@ public class MTPercentageIndicator extends MTRectangle {
 	public float getValue() {
 		return this.value;
 	}
-
 }
