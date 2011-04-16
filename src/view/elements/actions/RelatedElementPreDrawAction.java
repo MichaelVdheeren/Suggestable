@@ -7,31 +7,31 @@ import view.elements.RetrievedElement;
 import view.elements.SuggestedElement;
 
 public class RelatedElementPreDrawAction extends ElementPreDrawAction {
-	private final RetrievedElement component1;
-	private final SuggestedElement component2;
+	private final RetrievedElement retrieved;
+	private final SuggestedElement suggested;
 	private static final float springK = 0.01f;
 	private final float forceMultiplier = 10f;
 	
-	public RelatedElementPreDrawAction(RetrievedElement component1, SuggestedElement component2) {
-		this.component1 = component1;
-		this.component2 = component2;
-		addAssociatedElement(component1);
-		addAssociatedElement(component2);
+	public RelatedElementPreDrawAction(RetrievedElement retrieved, SuggestedElement suggested) {
+		this.retrieved = retrieved;
+		this.suggested = suggested;
+		addAssociatedElement(retrieved);
+		addAssociatedElement(suggested);
 	}
 	
 	@Override
 	public void processAction() {
-		Vector3D centerTN1 = component1.getCenterPointGlobal();
-		Vector3D centerTN2 = component2.getCenterPointGlobal();
+		Vector3D centerTN1 = retrieved.getCenterPointGlobal();
+		Vector3D centerTN2 = suggested.getCenterPointGlobal();
 		
 		float width1 = 0, width2 = 0, height1 = 0, height2 = 0;
-		float targetLength = component1.getGForce()*forceMultiplier;
+		float targetLength = retrieved.getGForce()*forceMultiplier;
 		
 		try {
-			width1 = component1.getWidthXY(TransformSpace.GLOBAL);
-			height1 = component1.getHeightXY(TransformSpace.GLOBAL);
-			width2 = component2.getWidthXY(TransformSpace.GLOBAL);
-			height2 = component2.getHeightXY(TransformSpace.GLOBAL);
+			width1 = retrieved.getWidthXY(TransformSpace.GLOBAL);
+			height1 = retrieved.getHeightXY(TransformSpace.GLOBAL);
+			width2 = suggested.getWidthXY(TransformSpace.GLOBAL);
+			height2 = suggested.getHeightXY(TransformSpace.GLOBAL);
 			
 			float x1 = centerTN1.x - centerTN2.x;
 			float y1 = centerTN1.y - centerTN2.y;
@@ -75,8 +75,8 @@ public class RelatedElementPreDrawAction extends ElementPreDrawAction {
 		
 		Vector3D diff2 = new Vector3D((diffX < 1 ? 0 : (float)diffX),(float)diffY,0);
 
-		if (!component2.isDragged())
-			component2.translate(diff2);
+		if (!suggested.isDragged())
+			suggested.translate(diff2);
 	}
 
 	@Override

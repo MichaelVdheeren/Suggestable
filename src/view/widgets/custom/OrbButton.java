@@ -17,7 +17,7 @@ public class OrbButton extends MTRoundRectangle {
 		super(pApplet, 100, 200, 0, 110, 30, 5, 5);
 		setDescription(description);
 		
-		this.setFillColor(new MTColor(0, 0, 0, 200));
+		this.setFillColor(new MTColor(0, 0, 0, 255));
 		this.setStrokeWeight(2.5f);
 		this.setStrokeColor(new MTColor(255, 255, 255, 150));
 		
