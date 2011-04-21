@@ -31,18 +31,22 @@ public class MTSpinner extends MTEllipse {
 			double alpha = beta * i - Math.PI / 2;
 			float cos = (float) Math.cos(alpha);
 			float sin = (float) Math.sin(alpha);
-			opacity[i] = new MTColor(255,255,255,255/sectorCount*i) ;
+			System.out.println(255/sectorCount*(i+1));
+			opacity[i] = new MTColor(255,255,255,255/sectorCount*(i+1)) ;
 			Vertex start = new Vertex(center.x + radiusInner * cos, center.y + radiusInner * sin);
 			Vertex end = new Vertex(center.x + radiusOuter * cos, center.y + radiusOuter * sin);
 			sectors[i] = new MTLine(pApplet, start, end);
 			sectors[i].setStrokeWeight(10);
+			this.addChild(sectors[i]);
 		}
 		
-		anim = new Animation("spinner", new MultiPurposeInterpolator( 0 , sectorCount, 4000, 0, 1f, -1), this);
+		anim = new Animation("spinner", new MultiPurposeInterpolator( sectorCount , 0, 4000, 0, 1f, -1), this);
 		anim.addAnimationListener(new IAnimationListener() {
 			public void processAnimationEvent(AnimationEvent ae) {
-				for (int i = Math.round(ae.getValue()); i < ae.getValue()+sectorCount; i++)
-					sectors[i].setFillColor(opacity[i]);
+				for (int i = 0; i < sectorCount; i++) {
+					int index = (i+Math.round(ae.getValue()))%sectorCount;
+					sectors[i].setStrokeColor(opacity[index]);
+				}
 			}
 		});
 	}

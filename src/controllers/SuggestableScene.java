@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.mt4j.components.visibleComponents.widgets.MTBackgroundImage;
 import org.mt4j.sceneManagement.AbstractScene;
+import org.mt4j.util.math.Vector3D;
 
 import view.elements.AbstractElement;
 import view.elements.RetrievedElement;
@@ -13,6 +14,7 @@ import view.elements.actions.ElementPreDrawAction;
 import view.elements.actions.RelatedElementPreDrawAction;
 import view.elements.actions.UnrelatedElementPreDrawAction;
 import view.elements.observers.SuggestedElementBirthObserver;
+import view.widgets.MTSpinner;
 import view.widgets.WidgetLayer;
 import view.widgets.actions.WidgetDistancePreDrawAction;
 import view.widgets.custom.InformationWidget;
@@ -53,6 +55,10 @@ public class SuggestableScene extends AbstractScene {
 		this.registerPreDrawAction(new WidgetDistancePreDrawAction(getTimelineWidget(), getKeywordWidget()));
 		
 		this.getCanvas().addChild(widgetLayer);
+		
+		MTSpinner spinner = new MTSpinner(getMTApplication(), new Vector3D(300,300), 50, 100, 12);
+		this.getCanvas().addChild(spinner);
+		spinner.start();
 	}
 
 	@Override
