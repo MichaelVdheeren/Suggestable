@@ -22,7 +22,7 @@ public class MTSpinner extends MTEllipse {
 		float margin = 15;
 		radiusOuter -= margin;
 		this.setStrokeColor(new MTColor(255, 255, 255, 150));
-		this.setFillColor(new MTColor(0, 0, 0, 150));
+		this.setFillColor(new MTColor(0, 0, 0, 200));
 		setComposite(true);
 		
 		sectors = new MTLine[sectorCount];

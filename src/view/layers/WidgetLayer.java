@@ -1,4 +1,4 @@
-package view.widgets;
+package view.layers;
 
 import org.mt4j.components.MTComponent;
 import org.mt4j.util.camera.MTCamera;

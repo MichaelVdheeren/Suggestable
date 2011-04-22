@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.mt4j.components.visibleComponents.widgets.MTBackgroundImage;
 import org.mt4j.sceneManagement.AbstractScene;
-import org.mt4j.util.math.Vector3D;
 
 import view.elements.AbstractElement;
 import view.elements.RetrievedElement;
@@ -14,8 +13,8 @@ import view.elements.actions.ElementPreDrawAction;
 import view.elements.actions.RelatedElementPreDrawAction;
 import view.elements.actions.UnrelatedElementPreDrawAction;
 import view.elements.observers.SuggestedElementBirthObserver;
-import view.widgets.MTSpinner;
-import view.widgets.WidgetLayer;
+import view.layers.PannLayer;
+import view.layers.WidgetLayer;
 import view.widgets.actions.WidgetDistancePreDrawAction;
 import view.widgets.custom.InformationWidget;
 import view.widgets.custom.OrbWidget;
@@ -42,8 +41,7 @@ public class SuggestableScene extends AbstractScene {
 	@Override
 	public void init() {
 		MTBackgroundImage background = 
-			new MTBackgroundImage(getMTApplication(), 
-					getMTApplication().loadImage("data/images/stripes.png"), false);
+			new MTBackgroundImage(getMTApplication(), getMTApplication().loadImage("data/images/stripes.png"), false);
 		getCanvas().addChild(background);
 		
 		this.keywordWidget = new KeywordWidget(this, 500, 500, 400, 400);
@@ -52,13 +50,10 @@ public class SuggestableScene extends AbstractScene {
 		getTimelineWidget().setVisible(false);
 		widgetLayer.addChild(getKeywordWidget());
 		widgetLayer.addChild(getTimelineWidget());
+		
 		this.registerPreDrawAction(new WidgetDistancePreDrawAction(getTimelineWidget(), getKeywordWidget()));
 		
 		this.getCanvas().addChild(widgetLayer);
-		
-		MTSpinner spinner = new MTSpinner(getMTApplication(), new Vector3D(300,300), 50, 100, 12);
-		this.getCanvas().addChild(spinner);
-		spinner.start();
 	}
 
 	@Override
@@ -108,6 +103,11 @@ public class SuggestableScene extends AbstractScene {
 	}
 
 	public synchronized void addElement(SuggestedElement s, RetrievedElement element) {
+		// Nasty solution to prevent adding suggestions for deleted items
+		// Should in fact stop the thread, need to look more in depth for that
+		if (!retrievedElements.contains(element))
+			return;
+		
 		int i = suggestedElements.indexOf(s);
 		
 		if (i >= 0)
@@ -116,7 +116,9 @@ public class SuggestableScene extends AbstractScene {
 			suggestedElements.add(s);
 			if (s.getBook().hasPublishingYear())
 				timelineWidget.addValue(s.getBook().getPublishingYear());
-			keywordWidget.addKeywords(s.getBook().getKeywords());
+			if (s.getBook().hasKeywords())
+				keywordWidget.addKeywords(s.getBook().getKeywords());
+			
 			getCanvas().addChild(s);
 			updateElement(s);
 		}
