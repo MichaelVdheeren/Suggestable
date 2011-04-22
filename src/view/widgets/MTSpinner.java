@@ -19,8 +19,10 @@ public class MTSpinner extends MTEllipse {
 	
 	public MTSpinner(PApplet pApplet, Vector3D center, float radiusInner,  float radiusOuter, final int sectorCount) {
 		super(pApplet, center, radiusOuter, radiusOuter);
-		setNoFill(true);
-		setNoStroke(true);
+		float margin = 15;
+		radiusOuter -= margin;
+		this.setStrokeColor(new MTColor(255, 255, 255, 150));
+		this.setFillColor(new MTColor(0, 0, 0, 150));
 		setComposite(true);
 		
 		sectors = new MTLine[sectorCount];
@@ -31,7 +33,6 @@ public class MTSpinner extends MTEllipse {
 			double alpha = beta * i - Math.PI / 2;
 			float cos = (float) Math.cos(alpha);
 			float sin = (float) Math.sin(alpha);
-			System.out.println(255/sectorCount*(i+1));
 			opacity[i] = new MTColor(255,255,255,255/sectorCount*(i+1)) ;
 			Vertex start = new Vertex(center.x + radiusInner * cos, center.y + radiusInner * sin);
 			Vertex end = new Vertex(center.x + radiusOuter * cos, center.y + radiusOuter * sin);
@@ -40,7 +41,7 @@ public class MTSpinner extends MTEllipse {
 			this.addChild(sectors[i]);
 		}
 		
-		anim = new Animation("spinner", new MultiPurposeInterpolator( sectorCount , 0, 4000, 0, 1f, -1), this);
+		anim = new Animation("spinner", new MultiPurposeInterpolator( sectorCount , 0, 2000, 0, 1f, -1), this);
 		anim.addAnimationListener(new IAnimationListener() {
 			public void processAnimationEvent(AnimationEvent ae) {
 				for (int i = 0; i < sectorCount; i++) {
