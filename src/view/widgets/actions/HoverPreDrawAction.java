@@ -35,6 +35,7 @@ public class HoverPreDrawAction implements IPreDrawAction {
 	}
 	
 	private synchronized MTComponent pick() {
+		// TODO: still problems with concurrency here! Pick can't handle that
 		return getScene().getCanvas().pick(center.x, center.y).getNearestPickResult();
 	}
 

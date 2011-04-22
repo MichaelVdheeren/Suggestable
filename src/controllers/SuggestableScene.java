@@ -9,7 +9,7 @@ import view.elements.AbstractElement;
 import view.elements.RetrievedElement;
 import view.elements.SuggestedElement;
 import view.elements.actions.CreatedElementPreDrawAction;
-import view.elements.actions.ElementPreDrawAction;
+import view.elements.actions.AbstractElementPreDrawAction;
 import view.elements.actions.RelatedElementPreDrawAction;
 import view.elements.actions.UnrelatedElementPreDrawAction;
 import view.elements.observers.SuggestedElementBirthObserver;
@@ -27,7 +27,7 @@ public class SuggestableScene extends AbstractScene {
 	private final BookshelfController controller = new BookshelfController();
 	private final ArrayList<RetrievedElement> retrievedElements = new ArrayList<RetrievedElement>();
 	private final ArrayList<SuggestedElement> suggestedElements = new ArrayList<SuggestedElement>();
-	private final ArrayList<ElementPreDrawAction> associatedActions = new ArrayList<ElementPreDrawAction>();
+	private final ArrayList<AbstractElementPreDrawAction> associatedActions = new ArrayList<AbstractElementPreDrawAction>();
 	
 	private KeywordWidget keywordWidget;
 	private TimelineWidget timelineWidget;
@@ -201,7 +201,7 @@ public class SuggestableScene extends AbstractScene {
 		widget.setPositionGlobal(element.getCenterPointGlobal());
 	}
 	
-	public void registerAssiciatedAction(ElementPreDrawAction action) {
+	public void registerAssiciatedAction(AbstractElementPreDrawAction action) {
 		super.registerPreDrawAction(action);
 		associatedActions.add(action);
 	}
@@ -210,7 +210,7 @@ public class SuggestableScene extends AbstractScene {
 		int i=0;
 		
 		while(i<associatedActions.size()) {
-			ElementPreDrawAction action = associatedActions.get(i);
+			AbstractElementPreDrawAction action = associatedActions.get(i);
 			if (action.getAssociatedElements().contains(element)) {
 				unregisterPreDrawAction(action);
 				associatedActions.remove(i);

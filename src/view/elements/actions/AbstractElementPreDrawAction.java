@@ -6,7 +6,7 @@ import org.mt4j.sceneManagement.IPreDrawAction;
 
 import view.elements.AbstractElement;
 
-public abstract class ElementPreDrawAction implements IPreDrawAction {
+public abstract class AbstractElementPreDrawAction implements IPreDrawAction {
 	private final ArrayList<AbstractElement> associatedElements = new ArrayList<AbstractElement>();
 	
 	protected void addAssociatedElement(AbstractElement element) {

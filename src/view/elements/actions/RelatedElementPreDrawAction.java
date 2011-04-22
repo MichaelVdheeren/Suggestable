@@ -6,7 +6,8 @@ import org.mt4j.util.math.Vector3D;
 import view.elements.RetrievedElement;
 import view.elements.SuggestedElement;
 
-public class RelatedElementPreDrawAction extends ElementPreDrawAction {
+// TODO: some calculations in here can be done quite better!
+public class RelatedElementPreDrawAction extends AbstractElementPreDrawAction {
 	private final RetrievedElement retrieved;
 	private final SuggestedElement suggested;
 	private static final float springK = 0.01f;
@@ -73,7 +74,7 @@ public class RelatedElementPreDrawAction extends ElementPreDrawAction {
 			diffY = 0;
 		}
 		
-		Vector3D diff2 = new Vector3D((diffX < 1 ? 0 : (float)diffX),(float)diffY,0);
+		Vector3D diff2 = new Vector3D((float)diffX,(float)diffY);
 
 		if (!suggested.isDragged())
 			suggested.translate(diff2);

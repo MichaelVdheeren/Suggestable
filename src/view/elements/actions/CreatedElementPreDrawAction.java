@@ -5,7 +5,7 @@ import org.mt4j.util.math.Vector3D;
 
 import view.widgets.custom.OrbWidget;
 
-public class CreatedElementPreDrawAction extends ElementPreDrawAction {
+public class CreatedElementPreDrawAction extends AbstractElementPreDrawAction {
 	private final AbstractShape component1;
 	private final AbstractShape component2;
 	private static final float springK = 0.01f;
