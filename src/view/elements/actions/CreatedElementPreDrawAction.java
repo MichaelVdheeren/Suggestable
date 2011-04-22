@@ -22,23 +22,21 @@ public class CreatedElementPreDrawAction extends AbstractElementPreDrawAction {
 		Vector3D centerTN1 = component1.getCenterPointGlobal();
 		Vector3D centerTN2 = component2.getCenterPointGlobal();
 		
-		double dx = centerTN1.x-centerTN2.x;
-		double dy = centerTN1.y-centerTN2.y;
+		float distance = centerTN1.distance2D(centerTN2);
+		Vector3D distanceVector = centerTN1.getSubtracted(centerTN2);
 		
-		double distance = Math.sqrt(dx*dx+dy*dy);
+		// TODO: find better solution for this
+		if (distance == 0)
+			distance = 0.00001f;
+		
+		distanceVector.scaleLocal(1/distance*springK*(distance-targetLength));
 		
 		if(distance > targetLength) {
 			stopLoop = true;
-			return;
 		}
-		
-		double diffX = dx/distance*springK*(distance-targetLength);
-		double diffY = dy/distance*springK*(distance-targetLength);
-		
-		Vector3D diff2 = new Vector3D((float)diffX,(float)diffY,0);
 
 		if (component2.isVisible())
-			component2.translate(diff2);
+			component2.translate(distanceVector);
 	}
 
 	@Override

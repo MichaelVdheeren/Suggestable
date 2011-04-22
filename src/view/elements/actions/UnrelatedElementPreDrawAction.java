@@ -23,30 +23,22 @@ public class UnrelatedElementPreDrawAction extends AbstractElementPreDrawAction 
 		Vector3D centerTN1 = component1.getCenterPointGlobal();
 		Vector3D centerTN2 = component2.getCenterPointGlobal();
 		
-		double dx = centerTN1.x-centerTN2.x;
-		double dy = centerTN1.y-centerTN2.y;
-		
-		double distance = Math.sqrt(dx*dx+dy*dy);
-		
+		float distance = centerTN2.distance2D(centerTN1);
+		Vector3D distanceVector = centerTN2.getSubtracted(centerTN1);
 		// TODO: find better solution for this
 		if (distance == 0)
-			distance = 0.00001;
+			distance = 0.00001f;
 		
-		double diffX = dx/distance*springK*(distance-targetLength);
-		double diffY = dy/distance*springK*(distance-targetLength);
+		distanceVector.scaleLocal(1/distance*springK*(distance-targetLength));
 		
 		if(distance > targetLength) {
-			diffX = 0;
-			diffY = 0;
+			distanceVector = new Vector3D(0,0);
 		}
 		
-		Vector3D diff2 = new Vector3D((float)diffX,(float)diffY,0);
-		Vector3D diff1 = new Vector3D(-(float)diffX,-(float)diffY,0);
-		
 		if (!component1.isDragged() && component1.isVisible())
-			component1.translate(diff1);
+			component1.translate(distanceVector);
 		if (!component2.isDragged() && component2.isVisible())
-			component2.translate(diff2);
+			component2.translate(distanceVector.getInverted());
 	}
 
 	@Override

@@ -56,28 +56,22 @@ public class RelatedElementPreDrawAction extends AbstractElementPreDrawAction {
 		} catch(NullPointerException exc) {
 			System.out.println("We have a problem");
 		}
-		
-		double dx = centerTN1.x-centerTN2.x;
-		double dy = centerTN1.y-centerTN2.y;
-		
-		double distance = Math.sqrt(dx*dx+dy*dy);
+
+		float distance = centerTN1.distance2D(centerTN2);
+		Vector3D distanceVector = centerTN1.getSubtracted(centerTN2);
 		
 		// TODO: find better solution for this
 		if (distance == 0)
-			distance = 0.00001;
+			distance = 0.00001f;
 		
-		double diffX = dx/distance*springK*(distance-targetLength);
-		double diffY = dy/distance*springK*(distance-targetLength);
+		distanceVector.scaleLocal(1/distance*springK*(distance-targetLength));
 		
 		if(Math.abs(distance-targetLength) < 1) {
-			diffX = 0;
-			diffY = 0;
+			distanceVector = new Vector3D(0,0);
 		}
-		
-		Vector3D diff2 = new Vector3D((float)diffX,(float)diffY);
 
 		if (!suggested.isDragged())
-			suggested.translate(diff2);
+			suggested.translate(distanceVector);
 	}
 
 	@Override

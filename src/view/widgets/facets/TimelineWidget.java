@@ -89,59 +89,66 @@ public class TimelineWidget extends MTAbstractWindow implements IFacetWidget {
 	}
 	
 	public void addValue(int year) {
+		if (values.isEmpty()) {
+			sliderOne.setVisible(true);
+			sliderTwo.setVisible(true);
+			warning.setVisible(false);
+		}
+		
 		values.add(year);
-
 		int amount = Collections.frequency(values, year);
+		
 		if (bars.containsKey(year) && amount <= maxAmount) {
-			int minValue = Collections.min(values);
-			int maxValue = Collections.max(values);
-			updateBar(year,minValue,maxValue);
+			updateBar(year,getLowestValue(),getHighestValue());
 		} else {
-			maxAmount = (amount > maxAmount) ? amount : maxAmount;
+			maxAmount = Math.max(amount,maxAmount);
 			updateGraph();
 		}
 	}
 	
 	public void removeValue(int year) {
-		int amount = Collections.frequency(values, year);
 		values.remove(new Integer(year));
+		int amount = Collections.frequency(values, year);
 		
-		int minValue, maxValue;
-		
-		if (values.size() > 0) {
-			minValue = getLowestValue();
-			maxValue = getHighestValue();
-		} else {
-			minValue = -1;
-			maxValue = -2;
-			warning.setVisible(true);
+		if (values.isEmpty()) {
+			removeValues();
+			return;
 		}
 		
-		if (amount == maxAmount) {
-			int previousIndex = -1;
-			maxAmount = 0;
-			Collections.sort(values);
-			for (int i=minValue; i<=maxValue; i++) {
-				int tmpIndex = values.lastIndexOf(i);
-				int tmpAmount = tmpIndex-previousIndex;
-				if (tmpAmount > maxAmount)
-					maxAmount = tmpAmount;
-				if (tmpIndex > -1)
-					previousIndex = tmpIndex;
-			}
-			
+		if ((amount==0) || (getHighestFrequence() < maxAmount)) {
 			updateGraph();
 		} else {
-			updateBar(year,minValue,maxValue);
+			updateBar(year,getLowestValue(),getHighestValue());
 		}
+		
+		maxAmount = getHighestFrequence();
+	}
+
+	private int getHighestFrequence() {
+		int minValue = getLowestValue();
+		int maxValue = getHighestValue();
+		int previousIndex = -1;
+		int highestFreq = 0;
+		Collections.sort(values);
+		
+		for (int i=minValue; i<=maxValue; i++) {
+			int tmpIndex = values.lastIndexOf(i);
+			int tmpFreq = tmpIndex-previousIndex;
+			if (tmpFreq > highestFreq)
+				highestFreq = tmpFreq;
+			if (tmpIndex > -1)
+				previousIndex = tmpIndex;
+		}
+		
+		return maxAmount;
 	}
 	
 	public void removeValues() {
 		values.clear();
 		bars.clear();
 		getContainer().removeAllChildren();
-		warning.setVisible(true);
 		
+		warning.setVisible(true);
 		sliderOne.setVisible(false);
 		sliderTwo.setVisible(false);
 		lowestValue.setText("");
@@ -156,18 +163,6 @@ public class TimelineWidget extends MTAbstractWindow implements IFacetWidget {
 		int minValue = getLowestValue();
 		int maxValue = getHighestValue();
 		int oldBarCount = bars.size();
-		
-		if (!bars.isEmpty()) {
-			sliderOne.setVisible(true);
-			sliderTwo.setVisible(true);
-			warning.setVisible(false);
-		} else {
-			sliderOne.setVisible(false);
-			sliderTwo.setVisible(false);
-			warning.setVisible(true);
-			lowestValue.setText("");
-			highestValue.setText("");
-		}
 		
 		// Remove unwanted bars
 		int oldMinValue = bars.isEmpty() ? 0 : Collections.min(bars.keySet());
@@ -191,13 +186,19 @@ public class TimelineWidget extends MTAbstractWindow implements IFacetWidget {
 			sliderOne.setValue(minValue);
 			sliderTwo.setValue(maxValue);
 		} else {
-//			sliderOne.setValue(sliderOne.getValue());
-//			sliderTwo.setValue(sliderTwo.getValue());
+			int currMinValue = Math.max(Math.min(sliderOne.getValue(), sliderTwo.getValue()),minValue);
+			int currMaxValue = Math.min(Math.max(sliderOne.getValue(), sliderTwo.getValue()),maxValue);
+
+			sliderOne.setValue(currMinValue);
+			sliderTwo.setValue(currMaxValue);
 		}
 	}
 	
 	private void updateBar(int value, int minValue, int maxValue) {
+		MTColor color = outPeriod;
+		
 		if (bars.containsKey(value)) {
+			color = bars.get(value).getFillColor();
 			bars.remove(value).destroy();
 		}
 		
@@ -211,6 +212,7 @@ public class TimelineWidget extends MTAbstractWindow implements IFacetWidget {
 		
 		MTRoundRectangle bar = new MTRoundRectangle(getpApplet(), x,y,0f,w,h,5f,5f);
 		bar.setPickable(false);
+		bar.setFillColor(color);
 		bars.put(value, bar);
 		getContainer().addChild(bar);
 	}
@@ -218,8 +220,8 @@ public class TimelineWidget extends MTAbstractWindow implements IFacetWidget {
 	public synchronized void updateSelection() {
 		int sliderOneValue = sliderOne.getValue();
 		int sliderTwoValue = sliderTwo.getValue();
-		int leftValue = sliderOneValue <= sliderTwoValue ? sliderOneValue : sliderTwoValue;
-		int rightValue = sliderOneValue >= sliderTwoValue ? sliderOneValue : sliderTwoValue;
+		int leftValue = Math.min(sliderOneValue, sliderTwoValue);
+		int rightValue = Math.max(sliderOneValue, sliderTwoValue);
 		
 		for (int i=getLowestValue(); i<= getHighestValue(); i++)
 			if (leftValue <= i && i <= rightValue)
@@ -238,8 +240,8 @@ public class TimelineWidget extends MTAbstractWindow implements IFacetWidget {
 	public boolean withinSelection(SuggestedElement element) {
 		int sliderOneValue = sliderOne.getValue();
 		int sliderTwoValue = sliderTwo.getValue();
-		int leftValue = sliderOneValue <= sliderTwoValue ? sliderOneValue : sliderTwoValue;
-		int rightValue = sliderOneValue >= sliderTwoValue ? sliderOneValue : sliderTwoValue;
+		int leftValue = Math.min(sliderOneValue, sliderTwoValue);
+		int rightValue = Math.max(sliderOneValue, sliderTwoValue);
 		
 		if (leftValue > element.getBook().getPublishingYear())
 			return false;

@@ -25,7 +25,7 @@ public class TimelineSlider extends MTLine {
 		Matrix transformation = widget.getGraph().getGlobalInverseMatrix();
 		Vector3D position = getCenterPointGlobal();
 		position.transform(transformation);
-		position.setX(widget.getBars().get(getValue()).getCenterPointRelativeToParent().getX());
+		position.setX(widget.getBars().get(value).getCenterPointRelativeToParent().getX());
 		setPositionRelativeToOther(widget.getGraph(), position);
 		widget.updateSelection();
 	}
