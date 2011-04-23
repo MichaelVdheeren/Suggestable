@@ -35,9 +35,12 @@ public class UnrelatedElementPreDrawAction extends AbstractElementPreDrawAction 
 			distanceVector = new Vector3D(0,0);
 		}
 		
-		if (!component1.isDragged() && component1.isVisible())
+		// If one of the two components is not visible, then don't translate
+		boolean visibility = component1.isVisible() && component2.isVisible();
+		
+		if (!component1.isDragged() && visibility)
 			component1.translate(distanceVector);
-		if (!component2.isDragged() && component2.isVisible())
+		if (!component2.isDragged() && visibility)
 			component2.translate(distanceVector.getInverted());
 	}
 

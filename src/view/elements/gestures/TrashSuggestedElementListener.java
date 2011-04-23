@@ -21,7 +21,7 @@ public class TrashSuggestedElementListener implements IGestureEventListener {
 		DragEvent de = (DragEvent) ge;
 		
 		if (de.getId() == DragEvent.GESTURE_ENDED) {
-	        if (scene.getOrbWidget().getTrash().containsPointGlobal(de.getTo())) {
+	        if (scene.getOrbWidget().getTrashcan().containsPointGlobal(de.getTo())) {
 	        	scene.removeElement(element);
 	        }
 		}

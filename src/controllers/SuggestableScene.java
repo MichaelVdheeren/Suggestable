@@ -15,6 +15,7 @@ import view.elements.actions.UnrelatedElementPreDrawAction;
 import view.elements.observers.SuggestedElementBirthObserver;
 import view.layers.PannLayer;
 import view.layers.WidgetLayer;
+import view.widgets.MTMessage;
 import view.widgets.actions.WidgetDistancePreDrawAction;
 import view.widgets.custom.InformationWidget;
 import view.widgets.custom.OrbWidget;
@@ -134,6 +135,7 @@ public class SuggestableScene extends AbstractScene {
 	public synchronized void addElement(RetrievedElement element) {
 		retrievedElements.add(element);
 		getCanvas().addChild(element);
+		widgetLayer.getOrbWidget().showTrashcan(true);
 		registerAssiciatedAction(new CreatedElementPreDrawAction(getOrbWidget(), element));
 		
 		try {
@@ -158,12 +160,15 @@ public class SuggestableScene extends AbstractScene {
 				removeElement(suggestedElements.get(i));
 			} else {
 				i++;
-			}		
+			}
 		}
 		
 		element.destroy();
 		retrievedElements.remove(element);
 		unregisterAssociatedActions(element);
+		
+		if (retrievedElements.isEmpty())
+			widgetLayer.getOrbWidget().showTrashcan(false);
 	}
 	
 	public void removeElement(SuggestedElement element) {
