@@ -40,7 +40,7 @@ public abstract class MTAbstractWindow extends MTRoundRectangle {
 		container = new MTRoundRectangle(pApplet, 0, 0, 0, this.getWidthXYGlobal()-60, this.getHeightXYGlobal()-60, 5, 5);
 		this.addChild(container);
 		container.setPositionRelativeToParent(this.getCenterPointLocal());
-		container.setFillColor(new MTColor(0, 0, 0, 150));
+		container.setFillColor(new MTColor(0, 0, 0, 200));
 		container.setNoStroke(true);
 		container.removeAllGestureEventListeners();
 		

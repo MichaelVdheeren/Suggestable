@@ -1,12 +1,18 @@
 package view.widgets.custom;
 
+import java.awt.Image;
+import java.io.IOException;
+
 import org.mt4j.components.TransformSpace;
-import org.mt4j.components.visibleComponents.widgets.buttons.MTSvgButton;
-import org.mt4j.util.MTColor;
+import org.mt4j.components.visibleComponents.widgets.MTImage;
+import org.mt4j.util.math.Vector3D;
 
 import processing.core.PApplet;
+import processing.core.PImage;
 import view.widgets.MTAbstractWindow;
+import view.widgets.MTBookPreviewPanel;
 import view.widgets.MTPanel;
+import view.widgets.MTPanelButton;
 import view.widgets.MTPanelContainer;
 import bookshelf.apis.google.GoogleBook;
 
@@ -25,30 +31,41 @@ public class InformationWidget extends MTAbstractWindow {
 		this.getContainer().addChild(panelContainer);
 		panelContainer.setPositionRelativeToParent(this.getContainer().getCenterPointLocal());
 		
-		MTSvgButton infoIcon = new MTSvgButton(pApplet, "data/icons/circle-eye.svg");
-		MTPanel infoPanel = new MTPanel(pApplet, width-20, height-60,infoIcon);
-		infoPanel.setFillColor(new MTColor(255, 0, 0));
-		panelContainer.addPanel(infoPanel);
+		MTPanelButton metaIcon = new MTPanelButton(pApplet, "data/icons/circle-tag.svg");
+		MTPanel metaPanel = new MTPanel(pApplet, width-20, height-60,metaIcon);
+		metaPanel.setNoFill(true);
+		metaPanel.setNoStroke(true);
+		metaPanel.setComposite(true);
+		panelContainer.addPanel(metaPanel);
 		
-		MTSvgButton locationIcon = new MTSvgButton(pApplet, "data/icons/circle-pointer.svg");
+		if (book.hasPagePreviews()) {
+			MTPanel previewPanel = new MTBookPreviewPanel(pApplet, width-20, height-60,book);
+			previewPanel.setNoFill(true);
+			previewPanel.setNoStroke(true);
+			panelContainer.addPanel(previewPanel);
+		}
+		
+		MTPanelButton locationIcon = new MTPanelButton(pApplet, "data/icons/circle-pointer.svg");
 		MTPanel locationPanel = new MTPanel(pApplet, width-20, height-60,locationIcon);
-		locationPanel.setFillColor(new MTColor(0, 0, 255));
+		locationPanel.setNoFill(true);
+		locationPanel.setNoStroke(true);
+		locationPanel.setComposite(true);
 		panelContainer.addPanel(locationPanel);
 		
-//		try {
-//			Image image = getBook().getCover();
-//			MTImage cover = new MTImage(getpApplet(), new PImage(image));
-//			getContainer().addChild(cover);
-//			float s = 100/cover.getHeightXY(TransformSpace.GLOBAL);
-//			cover.scaleGlobal(s, s, 1, cover.getCenterPointGlobal());
-//			cover.setPositionRelativeToParent(new Vector3D(7.5f,7.5f,0).addLocal(
-//					new Vector3D(cover.getWidthXY(TransformSpace.GLOBAL)/2, cover.getHeightXY(TransformSpace.GLOBAL)/2)
-//				));
-//			
-//		} catch (IOException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
+		try {
+			Image image = getBook().getCover();
+			MTImage cover = new MTImage(getpApplet(), new PImage(image));
+			metaPanel.addChild(cover);
+			float s = 100/cover.getHeightXY(TransformSpace.GLOBAL);
+			cover.scaleGlobal(s, s, 1, cover.getCenterPointGlobal());
+			cover.setPositionRelativeToParent(new Vector3D(7.5f,7.5f,0).addLocal(
+					new Vector3D(cover.getWidthXY(TransformSpace.GLOBAL)/2, cover.getHeightXY(TransformSpace.GLOBAL)/2)
+				));
+			
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 //		IFont font = FontManager.getInstance().createFont(pApplet, "fonts/Trebuchet MS.ttf", 
 //				14, 	//Font size

@@ -201,7 +201,7 @@ public class SuggestableScene extends AbstractScene {
 	}
 	
 	public void showInformationWindow(SuggestedElement element) {
-		InformationWidget widget = new InformationWidget(getMTApplication(), 0, 0, 600, 400, element.getBook());
+		InformationWidget widget = new InformationWidget(getMTApplication(), 0, 0, 550, 400, element.getBook());
 		getCanvas().addChild(widget);
 		widget.setPositionGlobal(element.getCenterPointGlobal());
 	}
