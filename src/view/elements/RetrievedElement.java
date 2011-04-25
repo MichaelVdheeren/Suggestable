@@ -43,7 +43,7 @@ public class RetrievedElement extends AbstractElement {
 		child.setBoundsAutoCompute(true);
 		
 		IFont font = FontManager.getInstance().createFont(scene.getMTApplication(), "fonts/Trebuchet MS.ttf", 
-				16, 	//Font size
+				9, 	//Font size
 				new MTColor(255,255,255));	//Font color
 		
 		Vector3D t = getCenterPointGlobal().addLocal(new Vector3D(-r,0,0));

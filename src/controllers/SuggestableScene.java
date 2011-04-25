@@ -2,20 +2,20 @@ package controllers;
 
 import java.util.ArrayList;
 
+import org.mt4j.components.visibleComponents.font.FontManager;
 import org.mt4j.components.visibleComponents.widgets.MTBackgroundImage;
 import org.mt4j.sceneManagement.AbstractScene;
+import org.mt4j.util.MTColor;
 
 import view.elements.AbstractElement;
 import view.elements.RetrievedElement;
 import view.elements.SuggestedElement;
-import view.elements.actions.CreatedElementPreDrawAction;
 import view.elements.actions.AbstractElementPreDrawAction;
+import view.elements.actions.CreatedElementPreDrawAction;
 import view.elements.actions.RelatedElementPreDrawAction;
 import view.elements.actions.UnrelatedElementPreDrawAction;
 import view.elements.observers.SuggestedElementBirthObserver;
-import view.layers.PannLayer;
 import view.layers.WidgetLayer;
-import view.widgets.MTMessage;
 import view.widgets.actions.WidgetDistancePreDrawAction;
 import view.widgets.custom.InformationWidget;
 import view.widgets.custom.OrbWidget;
@@ -55,6 +55,10 @@ public class SuggestableScene extends AbstractScene {
 		this.registerPreDrawAction(new WidgetDistancePreDrawAction(getTimelineWidget(), getKeywordWidget()));
 		
 		this.getCanvas().addChild(widgetLayer);
+		
+		FontManager.getInstance().createFont(getMTApplication(), "fonts/Trebuchet MS.ttf", 
+				9, 	//Font size
+				new MTColor(255,255,255));	//Font color
 	}
 
 	@Override
