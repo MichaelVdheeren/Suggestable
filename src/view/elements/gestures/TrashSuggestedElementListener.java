@@ -20,8 +20,11 @@ public class TrashSuggestedElementListener implements IGestureEventListener {
 	public boolean processGestureEvent(MTGestureEvent ge) {
 		DragEvent de = (DragEvent) ge;
 		
-		if (de.getId() == DragEvent.GESTURE_ENDED) {
+		if (de.getId() == DragEvent.GESTURE_UPDATED) {
+	        scene.getOrbWidget().getTrashcan().setHovered(scene.getOrbWidget().getTrashcan().containsPointGlobal(de.getTo()));
+		} else if (de.getId() == DragEvent.GESTURE_ENDED) {
 	        if (scene.getOrbWidget().getTrashcan().containsPointGlobal(de.getTo())) {
+	        	scene.getOrbWidget().getTrashcan().setHovered(false);
 	        	scene.removeElement(element);
 	        }
 		}

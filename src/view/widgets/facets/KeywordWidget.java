@@ -6,6 +6,7 @@ import java.util.TreeMap;
 import org.mt4j.components.TransformSpace;
 import org.mt4j.components.visibleComponents.font.FontManager;
 import org.mt4j.components.visibleComponents.font.IFont;
+import org.mt4j.components.visibleComponents.shapes.MTRectangle.PositionAnchor;
 import org.mt4j.components.visibleComponents.widgets.MTList;
 import org.mt4j.components.visibleComponents.widgets.MTTextArea;
 import org.mt4j.input.inputProcessors.IGestureEventListener;
@@ -28,7 +29,7 @@ public class KeywordWidget extends MTAbstractWindow implements IFacetWidget {
 	private final MTTextArea warning;
 //	private final MTTextField selectAll;
 	
-	public KeywordWidget(SuggestableScene scene, float x, float y, float w, float h) {
+	public KeywordWidget(final SuggestableScene scene, float x, float y, float w, float h) {
 		super(scene.getMTApplication(), x, y, w, h, "Keywords");
 		this.scene = scene;
 		
@@ -36,11 +37,63 @@ public class KeywordWidget extends MTAbstractWindow implements IFacetWidget {
 				16, 	//Font size
 				new MTColor(255,255,255));	//Font color
 		
-		list = new MTList(scene.getMTApplication(), 0, 0, getContainer().getWidthXY(TransformSpace.LOCAL)-10, getContainer().getHeightXY(TransformSpace.LOCAL)-10);
+		list = new MTList(scene.getMTApplication(), 0, 0, getContainer().getWidthXY(TransformSpace.LOCAL)-10, getContainer().getHeightXY(TransformSpace.LOCAL)-53);
 		getContainer().addChild(list);
 		list.setPositionRelativeToParent(new Vector3D(5,5,0).addLocal(list.getCenterOfMass2DLocal()));
 		list.setNoFill(true);
 		list.setNoStroke(true);
+		
+		MTTextArea selectAllButton = new MTTextArea(scene.getMTApplication(), font);
+		getContainer().addChild(selectAllButton);
+		selectAllButton.setText("Select All");
+		selectAllButton.setFillColor(new MTColor(0, 0, 0, 255));
+		selectAllButton.setStrokeWeight(2.5f);
+		selectAllButton.setStrokeColor(new MTColor(255, 255, 255, 150));
+		selectAllButton.setAnchor(PositionAnchor.LOWER_RIGHT);
+		selectAllButton.setPositionRelativeToParent(new Vector3D(getContainer().getWidthXY(TransformSpace.LOCAL)-10, getContainer().getHeightXY(TransformSpace.LOCAL)-10));
+		selectAllButton.removeAllGestureEventListeners();
+		selectAllButton.registerInputProcessor(new TapProcessor(scene.getMTApplication()));
+		selectAllButton.addGestureListener(TapProcessor.class, new IGestureEventListener() {
+			@Override
+			public boolean processGestureEvent(MTGestureEvent ge) {
+				TapEvent te = (TapEvent) ge;
+				
+				if (te.getTapID() == TapEvent.TAPPED) {
+					for (KeywordCell cell : keywords.values())
+						cell.select();
+					
+					scene.updateElements();
+				}
+				
+				return true;
+			}
+		});
+		
+		MTTextArea deselectAllButton = new MTTextArea(scene.getMTApplication(), font);
+		getContainer().addChild(deselectAllButton);
+		deselectAllButton.setText("Deselect All");
+		deselectAllButton.setFillColor(new MTColor(0, 0, 0, 255));
+		deselectAllButton.setStrokeWeight(2.5f);
+		deselectAllButton.setStrokeColor(new MTColor(255, 255, 255, 150));
+		deselectAllButton.setAnchor(PositionAnchor.LOWER_LEFT);
+		deselectAllButton.setPositionRelativeToParent(new Vector3D(10, getContainer().getHeightXY(TransformSpace.LOCAL)-10));
+		deselectAllButton.removeAllGestureEventListeners();
+		deselectAllButton.registerInputProcessor(new TapProcessor(scene.getMTApplication()));
+		deselectAllButton.addGestureListener(TapProcessor.class, new IGestureEventListener() {
+			@Override
+			public boolean processGestureEvent(MTGestureEvent ge) {
+				TapEvent te = (TapEvent) ge;
+				
+				if (te.getTapID() == TapEvent.TAPPED) {
+					for (KeywordCell cell : keywords.values())
+						cell.deselect();
+					
+					scene.updateElements();
+				}
+				
+				return true;
+			}
+		});
 		
 		warning = new MTTextArea(scene.getMTApplication(), font);
 		this.addChild(warning);

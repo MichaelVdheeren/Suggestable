@@ -1,4 +1,4 @@
-package view.widgets.custom;
+package view.widgets.specific;
 
 import org.mt4j.components.visibleComponents.font.FontManager;
 import org.mt4j.components.visibleComponents.font.IFont;

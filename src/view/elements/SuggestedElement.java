@@ -7,8 +7,11 @@ import javax.media.opengl.GL;
 
 import org.mt4j.components.TransformSpace;
 import org.mt4j.components.bounds.IBoundingShape;
+import org.mt4j.components.visibleComponents.font.FontManager;
+import org.mt4j.components.visibleComponents.font.IFont;
 import org.mt4j.components.visibleComponents.shapes.MTRoundRectangle;
 import org.mt4j.components.visibleComponents.widgets.MTImage;
+import org.mt4j.components.visibleComponents.widgets.MTTextArea;
 import org.mt4j.input.inputProcessors.IGestureEventListener;
 import org.mt4j.input.inputProcessors.MTGestureEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProcessor;
@@ -28,6 +31,7 @@ import controllers.SuggestableScene;
 public class SuggestedElement extends AbstractElement {
 	private final GoogleBook book;
 	private final MTRoundRectangle child;
+//	private final MTTextArea text;
 
 	private final ArrayList<RetrievedElement> associatedElements = new ArrayList<RetrievedElement>();
 	
@@ -36,13 +40,14 @@ public class SuggestedElement extends AbstractElement {
 		this.child = new MTRoundRectangle(scene.getMTApplication(), 0, 0, 0, s, s, 5, 5);
 		
 		this.book = book;
-		
 		this.addChild(child);
 		this.setVertices(child.getVerticesLocal());
 		
-		child.setFillColor(new MTColor(0, 0, 0, 200));
-		child.setStrokeWeight(2.5f);
-		child.setStrokeColor(new MTColor(255, 255, 255, 150));
+		//child.setFillColor(new MTColor(0, 0, 0, 200));
+		child.setNoFill(true);
+		child.setNoStroke(true);
+		//child.setStrokeWeight(2.5f);
+		//child.setStrokeColor(new MTColor(255, 255, 255, 150));
 		child.setComposite(true);
 		child.setBoundsAutoCompute(true);
 		
@@ -57,6 +62,17 @@ public class SuggestedElement extends AbstractElement {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		
+//		IFont font = FontManager.getInstance().createFont(scene.getMTApplication(), "fonts/Trebuchet MS.ttf", 
+//				9, 	//Font size
+//				new MTColor(255,255,255));	//Font color
+//		
+//		text = new MTTextArea(scene.getMTApplication(), -10, s+5, s+20, 30, font);
+//		text.setNoStroke(true);
+//		text.setNoFill(true);
+//		text.setText(getBook().getTitle());
+//		//text.setPositionGlobal(center);
+//		this.addChild(text);
 		
 		final SuggestedElement self = this;
 		registerInputProcessor(new TapProcessor(scene.getMTApplication()));

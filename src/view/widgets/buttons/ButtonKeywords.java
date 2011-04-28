@@ -7,7 +7,7 @@ import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProces
 
 import controllers.SuggestableScene;
 
-import view.widgets.custom.OrbButton;
+import view.widgets.specific.OrbButton;
 
 public class ButtonKeywords extends OrbButton {
 	public ButtonKeywords(final SuggestableScene scene) {

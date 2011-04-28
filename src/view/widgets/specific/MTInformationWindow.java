@@ -1,4 +1,4 @@
-package view.widgets.custom;
+package view.widgets.specific;
 
 import java.awt.Image;
 import java.io.IOException;
@@ -10,17 +10,16 @@ import org.mt4j.util.math.Vector3D;
 import processing.core.PApplet;
 import processing.core.PImage;
 import view.widgets.MTAbstractWindow;
-import view.widgets.MTBookPreviewPanel;
 import view.widgets.MTPanel;
 import view.widgets.MTPanelButton;
 import view.widgets.MTPanelContainer;
 import bookshelf.apis.google.GoogleBook;
 
-public class InformationWidget extends MTAbstractWindow {
+public class MTInformationWindow extends MTAbstractWindow {
 	private final GoogleBook book;
 	private final PApplet pApplet;
 	
-	public InformationWidget(PApplet pApplet, float x, float y, float w, float h, GoogleBook book) {
+	public MTInformationWindow(PApplet pApplet, float x, float y, float w, float h, GoogleBook book) {
 		super(pApplet, x, y, w, h, "Information");
 		this.pApplet = pApplet;
 		this.book = book;
@@ -45,12 +44,9 @@ public class InformationWidget extends MTAbstractWindow {
 			panelContainer.addPanel(previewPanel);
 		}
 		
-		MTPanelButton locationIcon = new MTPanelButton(pApplet, "data/icons/circle-pointer.svg");
-		MTPanel locationPanel = new MTPanel(pApplet, width-20, height-60,locationIcon);
-		locationPanel.setNoFill(true);
-		locationPanel.setNoStroke(true);
-		locationPanel.setComposite(true);
-		panelContainer.addPanel(locationPanel);
+//		MTLocationPreviewPanel locationPanel = new MTLocationPreviewPanel(pApplet, width-20, height-60);
+//		locationPanel.setNoStroke(true);
+//		panelContainer.addPanel(locationPanel);
 		
 		try {
 			Image image = getBook().getCover();

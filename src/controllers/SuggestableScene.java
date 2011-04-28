@@ -15,12 +15,13 @@ import view.elements.actions.CreatedElementPreDrawAction;
 import view.elements.actions.RelatedElementPreDrawAction;
 import view.elements.actions.UnrelatedElementPreDrawAction;
 import view.elements.observers.SuggestedElementBirthObserver;
+import view.layers.PannLayer;
 import view.layers.WidgetLayer;
 import view.widgets.actions.WidgetDistancePreDrawAction;
-import view.widgets.custom.InformationWidget;
-import view.widgets.custom.OrbWidget;
 import view.widgets.facets.KeywordWidget;
 import view.widgets.facets.TimelineWidget;
+import view.widgets.specific.MTInformationWindow;
+import view.widgets.specific.OrbWidget;
 import bookshelf.apis.google.GoogleBookProcessor;
 import bookshelf.exceptions.BookshelfUnavailableException;
 
@@ -204,8 +205,15 @@ public class SuggestableScene extends AbstractScene {
 		element.setVisible(evaluation);
 	}
 	
+	public ArrayList<AbstractElement> getElements() {
+		ArrayList<AbstractElement> result = new ArrayList<AbstractElement>();
+		result.addAll(retrievedElements);
+		result.addAll(suggestedElements);
+		return result;
+	}
+	
 	public void showInformationWindow(SuggestedElement element) {
-		InformationWidget widget = new InformationWidget(getMTApplication(), 0, 0, 550, 400, element.getBook());
+		MTInformationWindow widget = new MTInformationWindow(getMTApplication(), 0, 0, 550, 400, element.getBook());
 		getCanvas().addChild(widget);
 		widget.setPositionGlobal(element.getCenterPointGlobal());
 	}

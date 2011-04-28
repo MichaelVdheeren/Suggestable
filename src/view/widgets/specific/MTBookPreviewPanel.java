@@ -1,4 +1,4 @@
-package view.widgets;
+package view.widgets.specific;
 
 import java.io.IOException;
 
@@ -12,6 +12,8 @@ import org.mt4j.util.math.Vector3D;
 
 import processing.core.PApplet;
 import processing.core.PImage;
+import view.widgets.MTPanel;
+import view.widgets.MTPanelButton;
 import bookshelf.apis.google.GoogleBook;
 
 public class MTBookPreviewPanel extends MTPanel {
@@ -41,7 +43,7 @@ public class MTBookPreviewPanel extends MTPanel {
 			leftPage = new MTImage(pApplet, new PImage(book.getPage(leftPageId)));
 			addChild(leftPage);
 			leftPage.setHeightXYGlobal(getHeightXYGlobal());
-			leftPage.setPositionRelativeToParent(getCenterPointLocal().addLocal(new Vector3D(-leftPage.getWidthXY(TransformSpace.GLOBAL)/2-5,0)));
+			leftPage.setPositionRelativeToParent(getCenterPointLocal().addLocal(new Vector3D(-leftPage.getWidthXY(TransformSpace.RELATIVE_TO_PARENT)/2-5,0)));
 			leftPage.removeAllGestureEventListeners();
 			leftPage.registerInputProcessor(new TapProcessor(pApplet));
 			leftPage.addGestureListener(TapProcessor.class, new IGestureEventListener() {
@@ -59,7 +61,7 @@ public class MTBookPreviewPanel extends MTPanel {
 			rightPage = new MTImage(pApplet, new PImage(book.getPage(rightPageId)));
 			addChild(rightPage);
 			rightPage.setHeightXYGlobal(getHeightXYGlobal());
-			rightPage.setPositionRelativeToParent(getCenterPointLocal().addLocal(new Vector3D(rightPage.getWidthXY(TransformSpace.GLOBAL)/2+5,0)));
+			rightPage.setPositionRelativeToParent(getCenterPointLocal().addLocal(new Vector3D(rightPage.getWidthXY(TransformSpace.RELATIVE_TO_PARENT)/2+5,0)));
 			rightPage.removeAllGestureEventListeners();
 			rightPage.registerInputProcessor(new TapProcessor(pApplet));
 			rightPage.addGestureListener(TapProcessor.class, new IGestureEventListener() {

@@ -7,7 +7,7 @@ import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProces
 
 import controllers.SuggestableScene;
 
-import view.widgets.custom.OrbButton;
+import view.widgets.specific.OrbButton;
 
 public class ButtonClearTable extends OrbButton {
 	public ButtonClearTable(final SuggestableScene scene) {

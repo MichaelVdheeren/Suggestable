@@ -1,4 +1,4 @@
-package view.widgets.custom;
+package view.widgets.specific;
 
 import java.util.ArrayList;
 
@@ -11,12 +11,12 @@ import org.mt4j.components.visibleComponents.widgets.MTTextArea;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
 
-import view.widgets.actions.HoverPreDrawAction;
 import controllers.SuggestableScene;
 
 public class OrbWidget extends MTEllipse {
 	private ArrayList<OrbButton> buttonList = new ArrayList<OrbButton>();
-	private final MTSvg trash, book;
+	private final MTTrashCan trash;
+	private final MTSvg book;
 	private final static float radius = 100;
 
 	public OrbWidget(SuggestableScene scene, float x, float y) {
@@ -26,13 +26,13 @@ public class OrbWidget extends MTEllipse {
 		this.setStrokeWeight(2.5f);
 		this.setStrokeColor(new MTColor(255, 255, 255, 150));
 		
-		trash = new MTSvg(scene.getMTApplication(), "data/icons/trash.svg");
+		trash = new MTTrashCan(scene.getMTApplication());
 		this.addChild(trash);
 		trash.setPositionRelativeToParent(this.getCenterPointLocal());
 		trash.setPickable(false);
 		trash.setVisible(false);
 		
-		scene.registerPreDrawAction(new HoverPreDrawAction(scene, trash, trash.getCenterPointGlobal()));
+		//scene.registerPreDrawAction(new HoverPreDrawAction(scene, trash, trash.getCenterPointGlobal()));
 		
 		book = new MTSvg(scene.getMTApplication(), "data/icons/book.svg");
 		this.addChild(book);
@@ -60,7 +60,7 @@ public class OrbWidget extends MTEllipse {
 		this.removeAllGestureEventListeners();
 	}
 	
-	public MTSvg getTrashcan() {
+	public MTTrashCan getTrashcan() {
 		return trash;
 	}
 	

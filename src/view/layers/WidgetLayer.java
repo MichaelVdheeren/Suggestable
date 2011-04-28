@@ -7,7 +7,7 @@ import view.widgets.buttons.ButtonClearTable;
 import view.widgets.buttons.ButtonKeywords;
 import view.widgets.buttons.ButtonTest;
 import view.widgets.buttons.ButtonTimeline;
-import view.widgets.custom.OrbWidget;
+import view.widgets.specific.OrbWidget;
 import controllers.SuggestableScene;
 
 public class WidgetLayer extends MTComponent {

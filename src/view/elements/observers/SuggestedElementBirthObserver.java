@@ -2,6 +2,7 @@ package view.elements.observers;
 
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Random;
 
 import org.mt4j.util.math.Vector3D;
 
@@ -23,8 +24,13 @@ public class SuggestedElementBirthObserver implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		GoogleBook book = (GoogleBook) arg;
-		SuggestedElement s = new SuggestedElement(getScene(), 75, book);
-		s.setPositionGlobal(p.getCenterPointGlobal().addLocal(new Vector3D(1, 1)));
+		SuggestedElement s = new SuggestedElement(getScene(), 125, book);
+		
+		Vector3D position = new Vector3D(50, 50);
+		Random r = new Random();
+		position.rotateZ(r.nextInt(360));
+		
+		s.setPositionGlobal(p.getCenterPointGlobal().addLocal(position));
 		getScene().addElement(s, p);
 	}
 

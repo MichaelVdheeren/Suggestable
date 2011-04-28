@@ -7,7 +7,7 @@ import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProces
 import controllers.SuggestableScene;
 
 import view.elements.observers.RetrievedElementBirthObserver;
-import view.widgets.custom.OrbButton;
+import view.widgets.specific.OrbButton;
 import bookshelf.apis.libis.LibisBookProcessor;
 import bookshelf.exceptions.BookNotFoundException;
 import bookshelf.exceptions.BookshelfUnavailableException;

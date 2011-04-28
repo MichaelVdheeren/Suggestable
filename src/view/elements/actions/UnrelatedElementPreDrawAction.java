@@ -9,7 +9,7 @@ public class UnrelatedElementPreDrawAction extends AbstractElementPreDrawAction 
 	private final SuggestedElement component1;
 	private final SuggestedElement component2;
 	private static final float springK = 0.01f;
-	private static final float targetLength = 250;
+	private static final float targetLength = 200;
 	
 	public UnrelatedElementPreDrawAction(SuggestedElement component1, SuggestedElement component2) {
 		this.component1 = component1;

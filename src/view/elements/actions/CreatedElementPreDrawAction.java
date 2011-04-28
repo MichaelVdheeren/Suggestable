@@ -3,7 +3,7 @@ package view.elements.actions;
 import org.mt4j.components.visibleComponents.shapes.AbstractShape;
 import org.mt4j.util.math.Vector3D;
 
-import view.widgets.custom.OrbWidget;
+import view.widgets.specific.OrbWidget;
 
 public class CreatedElementPreDrawAction extends AbstractElementPreDrawAction {
 	private final AbstractShape component1;
