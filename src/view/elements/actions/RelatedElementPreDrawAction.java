@@ -27,7 +27,7 @@ public class RelatedElementPreDrawAction extends AbstractElementPreDrawAction {
 		
 		float width1 = 0, width2 = 0, height1 = 0, height2 = 0;
 		float targetLength = 0f;// = retrieved.getGForce()*forceMultiplier;
-		
+
 		try {
 			width1 = retrieved.getWidthXY(TransformSpace.GLOBAL);
 			height1 = retrieved.getHeightXY(TransformSpace.GLOBAL);

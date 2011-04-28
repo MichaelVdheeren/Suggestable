@@ -1,16 +1,29 @@
 package view.widgets.specific;
 
+import org.mt4j.components.visibleComponents.shapes.MTEllipse;
 import org.mt4j.components.visibleComponents.widgets.MTSvg;
+import org.mt4j.util.MTColor;
+import org.mt4j.util.math.Vector3D;
 
-import processing.core.PApplet;
+import controllers.SuggestableScene;
 
-public class MTTrashCan extends MTSvg {
+public class MTTrashCan extends MTEllipse {
 	private float scale = 1/1.2f;
 	private boolean hovered = false;
+	private final MTSvg trash;
 	
-	public MTTrashCan(PApplet applet) {
-		super(applet, "data/icons/trash.svg");
-		// TODO Auto-generated constructor stub
+	public MTTrashCan(SuggestableScene scene) {
+		super(scene.getMTApplication(), new Vector3D(0, 0),100,100);
+		this.setFillColor(new MTColor(0, 0, 0, 200));
+		this.setStrokeWeight(2.5f);
+		this.setStrokeColor(new MTColor(255, 255, 255, 150));
+		this.removeAllGestureEventListeners();
+		
+		trash = new MTSvg(scene.getMTApplication(),"data/icons/trash.svg");
+		this.addChild(trash);
+		trash.setWidthXYGlobal(60);
+		trash.setPositionRelativeToParent(getCenterPointLocal().addLocal(new Vector3D(-45,0)));
+		trash.setPickable(false);
 	}
 	
 	public void setHovered(boolean hovered) {
@@ -18,7 +31,7 @@ public class MTTrashCan extends MTSvg {
 			return;
 		
 		scale = 1/scale;
-		scaleGlobal(scale, scale, 1f, getCenterPointGlobal());
+		trash.scaleGlobal(scale, scale, 1f, trash.getCenterPointGlobal());
 		this.hovered = hovered;
 	}
 	

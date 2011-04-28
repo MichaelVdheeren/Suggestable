@@ -21,10 +21,10 @@ public class TrashRetrievedElementListener implements IGestureEventListener {
 		DragEvent de = (DragEvent) ge;
 		
 		if (de.getId() == DragEvent.GESTURE_UPDATED) {
-	        scene.getOrbWidget().getTrashcan().setHovered(scene.getOrbWidget().getTrashcan().containsPointGlobal(de.getTo()));
+	        scene.getTrashcan().setHovered(scene.getTrashcan().containsPointGlobal(de.getTo()));
 		} else if (de.getId() == DragEvent.GESTURE_ENDED) {
-	        if (scene.getOrbWidget().getTrashcan().containsPointGlobal(de.getTo())) {
-	        	scene.getOrbWidget().getTrashcan().setHovered(false);
+	        if (scene.getTrashcan().containsPointGlobal(de.getTo())) {
+	        	scene.getTrashcan().setHovered(false);
 	        	scene.removeElement(element);
 	        }
 		}

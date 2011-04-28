@@ -22,11 +22,11 @@ public class RetrievedElementBirthObserver implements Observer {
 		LibisBook book = (LibisBook) arg;
 		RetrievedElement p = new RetrievedElement(getScene(), 50, book);
 		
-		Vector3D position = new Vector3D(100, 100);
-		Random r = new Random();
-		position.rotateZ(r.nextInt(360));
+//		Vector3D position = new Vector3D(100, -100);
+//		Random r = new Random();
+//		position.rotateZ(r.nextInt(90));
 		
-		p.setPositionGlobal(scene.getOrbWidget().getCenterPointGlobal().addLocal(position));
+		p.setPositionGlobal(new Vector3D(scene.getMTApplication().getWidth()/2, scene.getMTApplication().getHeight()/2));
 		getScene().addElement(p);
 	}
 

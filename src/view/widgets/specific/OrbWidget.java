@@ -3,11 +3,8 @@ package view.widgets.specific;
 import java.util.ArrayList;
 
 import org.mt4j.components.TransformSpace;
-import org.mt4j.components.visibleComponents.font.FontManager;
-import org.mt4j.components.visibleComponents.font.IFont;
 import org.mt4j.components.visibleComponents.shapes.MTEllipse;
 import org.mt4j.components.visibleComponents.widgets.MTSvg;
-import org.mt4j.components.visibleComponents.widgets.MTTextArea;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
 
@@ -15,58 +12,41 @@ import controllers.SuggestableScene;
 
 public class OrbWidget extends MTEllipse {
 	private ArrayList<OrbButton> buttonList = new ArrayList<OrbButton>();
-	private final MTTrashCan trash;
-	private final MTSvg book;
+//	private final MTSvg trash, book;
 	private final static float radius = 100;
 
 	public OrbWidget(SuggestableScene scene, float x, float y) {
-		super(scene.getMTApplication(), new Vector3D(x, y), radius, radius);
+		super(scene.getMTApplication(), new Vector3D(x, y,100), radius, radius);
 		
 		this.setFillColor(new MTColor(0, 0, 0, 200));
 		this.setStrokeWeight(2.5f);
 		this.setStrokeColor(new MTColor(255, 255, 255, 150));
 		
-		trash = new MTTrashCan(scene.getMTApplication());
-		this.addChild(trash);
-		trash.setPositionRelativeToParent(this.getCenterPointLocal());
-		trash.setPickable(false);
-		trash.setVisible(false);
-		
-		//scene.registerPreDrawAction(new HoverPreDrawAction(scene, trash, trash.getCenterPointGlobal()));
-		
-		book = new MTSvg(scene.getMTApplication(), "data/icons/book.svg");
+		MTSvg book = new MTSvg(scene.getMTApplication(), "data/icons/book.svg");
 		this.addChild(book);
-		book.setPositionRelativeToParent(this.getCenterPointLocal().addLocal(new Vector3D(0, -20)));
+		book.setWidthXYGlobal(60);
+		book.setPositionRelativeToParent(this.getCenterPointLocal().addLocal(new Vector3D(45, 0)));
 		book.setPickable(false);
-		
-		IFont font = FontManager.getInstance().createFont(scene.getMTApplication(), "fonts/Trebuchet MS.ttf", 
-				16, 	//Font size
-				new MTColor(255,255,255));	//Font color
-		
-		MTTextArea text = new MTTextArea(scene.getMTApplication(), font);
-		text.setNoFill(true);
-		text.setNoStroke(true);
-		text.setText("Place a book");
-		book.addChild(text);
-		text.setPositionRelativeToParent(book.getCenterPointLocal().addLocal(new Vector3D(0, 70)));
-		
-		MTTextArea text2 = new MTTextArea(scene.getMTApplication(), font);
-		text2.setNoFill(true);
-		text2.setNoStroke(true);
-		text2.setText("to start!");
-		book.addChild(text2);
-		text2.setPositionRelativeToParent(book.getCenterPointLocal().addLocal(new Vector3D(0, 90)));
+//		
+//		IFont font = FontManager.getInstance().createFont(scene.getMTApplication(), "fonts/Trebuchet MS.ttf", 
+//				16, 	//Font size
+//				new MTColor(255,255,255));	//Font color
+//		
+//		MTTextArea text = new MTTextArea(scene.getMTApplication(), font);
+//		text.setNoFill(true);
+//		text.setNoStroke(true);
+//		text.setText("Place a book");
+//		book.addChild(text);
+//		text.setPositionRelativeToParent(book.getCenterPointLocal().addLocal(new Vector3D(0, 70)));
+//		
+//		MTTextArea text2 = new MTTextArea(scene.getMTApplication(), font);
+//		text2.setNoFill(true);
+//		text2.setNoStroke(true);
+//		text2.setText("to start!");
+//		book.addChild(text2);
+//		text2.setPositionRelativeToParent(book.getCenterPointLocal().addLocal(new Vector3D(0, 90)));
 		
 		this.removeAllGestureEventListeners();
-	}
-	
-	public MTTrashCan getTrashcan() {
-		return trash;
-	}
-	
-	public void showTrashcan(boolean visible) {
-		this.trash.setVisible(visible);
-		this.book.setVisible(!visible);
 	}
 	
 	/**
@@ -90,23 +70,23 @@ public class OrbWidget extends MTEllipse {
 		
 		// Reset the rotation
 		if (buttonList.size() != 0) {
-			t = 360/buttonList.size();
+			t = 90/(buttonList.size()+1);
 			for (int i=0; i<buttonList.size(); i++)
-				buttonList.get(i).rotateZ(this.getCenterPointGlobal(), -i*t);
+				buttonList.get(i).rotateZ(this.getCenterPointGlobal(), 45-(i+1)*t);
 		}
 		
 		for (OrbButton button : buttons) {
 			Vector3D anchor = this.getCenterPointGlobal();
-			anchor.translate(new Vector3D(0,-(this.getHeightXYGlobal()/2+button.getHeightXY(TransformSpace.GLOBAL)),0));
+			anchor.translate(new Vector3D(this.getWidthXYGlobal()/2+button.getWidthXY(TransformSpace.GLOBAL)/2+button.getHeightXY(TransformSpace.GLOBAL)/2,0));
 			buttonList.add(button);
 			this.addChild(button);
 			button.setPositionGlobal(anchor);
 		}
 
 		// Now rotate again
-		t = 360/buttonList.size();
+		t = 90/(buttonList.size()+1);
 		for (int i=0; i<buttonList.size(); i++)
-			buttonList.get(i).rotateZ(this.getCenterPointGlobal(), i*t);
+			buttonList.get(i).rotateZ(this.getCenterPointGlobal(), -45+(i+1)*t);
 	}
 	
 	public void removeButtons() {

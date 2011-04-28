@@ -6,22 +6,22 @@ import org.mt4j.components.visibleComponents.font.FontManager;
 import org.mt4j.components.visibleComponents.widgets.MTBackgroundImage;
 import org.mt4j.sceneManagement.AbstractScene;
 import org.mt4j.util.MTColor;
+import org.mt4j.util.math.Vector3D;
 
 import view.elements.AbstractElement;
 import view.elements.RetrievedElement;
 import view.elements.SuggestedElement;
 import view.elements.actions.AbstractElementPreDrawAction;
-import view.elements.actions.CreatedElementPreDrawAction;
 import view.elements.actions.RelatedElementPreDrawAction;
 import view.elements.actions.UnrelatedElementPreDrawAction;
 import view.elements.observers.SuggestedElementBirthObserver;
-import view.layers.PannLayer;
+import view.layers.PanLayer;
 import view.layers.WidgetLayer;
 import view.widgets.actions.WidgetDistancePreDrawAction;
 import view.widgets.facets.KeywordWidget;
 import view.widgets.facets.TimelineWidget;
 import view.widgets.specific.MTInformationWindow;
-import view.widgets.specific.OrbWidget;
+import view.widgets.specific.MTTrashCan;
 import bookshelf.apis.google.GoogleBookProcessor;
 import bookshelf.exceptions.BookshelfUnavailableException;
 
@@ -34,8 +34,9 @@ public class SuggestableScene extends AbstractScene {
 	private KeywordWidget keywordWidget;
 	private TimelineWidget timelineWidget;
 	
-	public WidgetLayer widgetLayer = new WidgetLayer(this);
-	
+	private WidgetLayer widgetLayer;
+	private PanLayer panLayer;
+	private MTTrashCan trashcan;
 	public SuggestableScene(SuggestableApplication application) {
 		super(application, "Suggestable Scene");
 	}
@@ -46,6 +47,10 @@ public class SuggestableScene extends AbstractScene {
 			new MTBackgroundImage(getMTApplication(), getMTApplication().loadImage("data/images/stripes.png"), false);
 		getCanvas().addChild(background);
 		
+		widgetLayer = new WidgetLayer(this);
+		panLayer = new PanLayer(this);
+		trashcan = new MTTrashCan(this);
+		
 		this.keywordWidget = new KeywordWidget(this, 500, 500, 400, 400);
 		this.timelineWidget = new TimelineWidget(this, 500, 500, 400, 200);
 		getKeywordWidget().setVisible(false);
@@ -55,6 +60,13 @@ public class SuggestableScene extends AbstractScene {
 		
 		this.registerPreDrawAction(new WidgetDistancePreDrawAction(getTimelineWidget(), getKeywordWidget()));
 		
+		float x = getMTApplication().getWidth()/2;
+		float y = getMTApplication().getHeight()/2;
+		
+		this.getCanvas().addChild(trashcan);
+		trashcan.setPositionRelativeToParent(new Vector3D(2*x,y));
+		
+		this.getCanvas().addChild(panLayer);
 		this.getCanvas().addChild(widgetLayer);
 		
 		FontManager.getInstance().createFont(getMTApplication(), "fonts/Trebuchet MS.ttf", 
@@ -75,8 +87,8 @@ public class SuggestableScene extends AbstractScene {
 		return this.timelineWidget;
 	}
 	
-	public OrbWidget getOrbWidget() {
-		return this.widgetLayer.getOrbWidget();
+	public MTTrashCan getTrashcan() {
+		return this.trashcan;
 	}
 
 	public BookshelfController getController() {
@@ -125,7 +137,7 @@ public class SuggestableScene extends AbstractScene {
 			if (s.getBook().hasKeywords())
 				keywordWidget.addKeywords(s.getBook().getKeywords());
 			
-			getCanvas().addChild(s);
+			panLayer.addChild(s);
 			updateElement(s);
 		}
 		
@@ -139,9 +151,9 @@ public class SuggestableScene extends AbstractScene {
 
 	public synchronized void addElement(RetrievedElement element) {
 		retrievedElements.add(element);
-		getCanvas().addChild(element);
-		widgetLayer.getOrbWidget().showTrashcan(true);
-		registerAssiciatedAction(new CreatedElementPreDrawAction(getOrbWidget(), element));
+		panLayer.addChild(element);
+//		widgetLayer.getOrbWidget().showTrashcan(true);
+		//registerAssiciatedAction(new CreatedElementPreDrawAction(getOrbWidget(), element));
 		
 		try {
 			GoogleBookProcessor gp = this.controller.getRelatedBooks(element.getBook());
@@ -172,8 +184,8 @@ public class SuggestableScene extends AbstractScene {
 		retrievedElements.remove(element);
 		unregisterAssociatedActions(element);
 		
-		if (retrievedElements.isEmpty())
-			widgetLayer.getOrbWidget().showTrashcan(false);
+//		if (retrievedElements.isEmpty())
+//			widgetLayer.getOrbWidget().showTrashcan(false);
 	}
 	
 	public void removeElement(SuggestedElement element) {

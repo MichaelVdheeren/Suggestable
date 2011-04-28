@@ -33,47 +33,73 @@ public class MTBookPreviewPanel extends MTPanel {
 	private void showPages(final int leftPageIndex, final int rightPageIndex) {
 		try {
 			if (leftPageIndex<0 || rightPageIndex >= book.getPageIds().size())
-				
+				return;
+			
 			if (leftPage != null)
 				leftPage.destroy();
 			if (rightPage != null)
 				rightPage.destroy();
 			
-			String leftPageId = book.getPageIds().get(leftPageIndex);
-			leftPage = new MTImage(pApplet, new PImage(book.getPage(leftPageId)));
-			addChild(leftPage);
-			leftPage.setHeightXYGlobal(getHeightXYGlobal());
-			leftPage.setPositionRelativeToParent(getCenterPointLocal().addLocal(new Vector3D(-leftPage.getWidthXY(TransformSpace.RELATIVE_TO_PARENT)/2-5,0)));
-			leftPage.removeAllGestureEventListeners();
-			leftPage.registerInputProcessor(new TapProcessor(pApplet));
-			leftPage.addGestureListener(TapProcessor.class, new IGestureEventListener() {
+			Thread leftPageLoader = new Thread(new Runnable() {
 				@Override
-				public boolean processGestureEvent(MTGestureEvent ge) {
-					TapEvent te = (TapEvent) ge;
-					if (te.getTapID() == TapEvent.TAPPED) {
-						showPages(leftPageIndex-1, rightPageIndex-1);
+				public void run() {
+					try {
+						String leftPageId = book.getPageIds().get(leftPageIndex);
+						leftPage = new MTImage(pApplet, new PImage(book.getPage(leftPageId)));
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
-					return true;
+					addChild(leftPage);
+					leftPage.setHeightXYGlobal(getHeightXYGlobal());
+					leftPage.setPositionRelativeToParent(getCenterPointLocal().addLocal(new Vector3D(-leftPage.getWidthXY(TransformSpace.RELATIVE_TO_PARENT)/2-5,0)));
+					leftPage.removeAllGestureEventListeners();
+					leftPage.registerInputProcessor(new TapProcessor(pApplet));
+					leftPage.addGestureListener(TapProcessor.class, new IGestureEventListener() {
+						@Override
+						public boolean processGestureEvent(MTGestureEvent ge) {
+							TapEvent te = (TapEvent) ge;
+							if (te.getTapID() == TapEvent.TAPPED) {
+								showPages(leftPageIndex-2, rightPageIndex-2);
+							}
+							return true;
+						}
+					});
 				}
 			});
 			
-			String rightPageId = book.getPageIds().get(rightPageIndex);
-			rightPage = new MTImage(pApplet, new PImage(book.getPage(rightPageId)));
-			addChild(rightPage);
-			rightPage.setHeightXYGlobal(getHeightXYGlobal());
-			rightPage.setPositionRelativeToParent(getCenterPointLocal().addLocal(new Vector3D(rightPage.getWidthXY(TransformSpace.RELATIVE_TO_PARENT)/2+5,0)));
-			rightPage.removeAllGestureEventListeners();
-			rightPage.registerInputProcessor(new TapProcessor(pApplet));
-			rightPage.addGestureListener(TapProcessor.class, new IGestureEventListener() {
+			Thread rightPageLoader = new Thread(new Runnable() {
 				@Override
-				public boolean processGestureEvent(MTGestureEvent ge) {
-					TapEvent te = (TapEvent) ge;
-					if (te.getTapID() == TapEvent.TAPPED) {
-						showPages(leftPageIndex+1, rightPageIndex+1);
+				public void run() {
+					try {
+						String rightPageId = book.getPageIds().get(rightPageIndex);
+						rightPage = new MTImage(pApplet, new PImage(book.getPage(rightPageId)));
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
-					return true;
+					addChild(rightPage);
+					rightPage.setHeightXYGlobal(getHeightXYGlobal());
+					rightPage.setPositionRelativeToParent(getCenterPointLocal().addLocal(new Vector3D(rightPage.getWidthXY(TransformSpace.RELATIVE_TO_PARENT)/2+5,0)));
+					rightPage.removeAllGestureEventListeners();
+					rightPage.registerInputProcessor(new TapProcessor(pApplet));
+					rightPage.addGestureListener(TapProcessor.class, new IGestureEventListener() {
+						@Override
+						public boolean processGestureEvent(MTGestureEvent ge) {
+							TapEvent te = (TapEvent) ge;
+							if (te.getTapID() == TapEvent.TAPPED) {
+								showPages(leftPageIndex+2, rightPageIndex+2);
+							}
+							return true;
+						}
+					});
 				}
 			});
+			
+			leftPageLoader.start();
+			rightPageLoader.start();
+			
+			
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

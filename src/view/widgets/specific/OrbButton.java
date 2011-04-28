@@ -29,9 +29,9 @@ public class OrbButton extends MTRoundRectangle {
 		float aw = this.getHeightXYGlobal()/2;
 		
 		Vertex[] vertices = new Vertex[3];
-		vertices[0] = new Vertex(x+w/2-aw/2, y+h-1f);
-		vertices[1] = new Vertex(x+w/2, y+h+aw/2);
-		vertices[2] = new Vertex(x+w/2+aw/2, y+h-1f);
+		vertices[0] = new Vertex(x+1f, y+h/2-aw/2);
+		vertices[1] = new Vertex(x-aw/2, y+h/2);
+		vertices[2] = new Vertex(x+1f, y+h/2+aw/2);
 		
 		MTComplexPolygon polygon = new MTComplexPolygon(pApplet, vertices);
 		

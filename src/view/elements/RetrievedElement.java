@@ -10,6 +10,8 @@ import org.mt4j.components.visibleComponents.widgets.MTTextArea;
 import org.mt4j.input.inputProcessors.IGestureEventListener;
 import org.mt4j.input.inputProcessors.MTGestureEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProcessor;
+import org.mt4j.input.inputProcessors.componentProcessors.tapAndHoldProcessor.TapAndHoldProcessor;
+import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProcessor;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Ray;
@@ -26,6 +28,7 @@ public class RetrievedElement extends AbstractElement {
 	private final float radius;
 	private final MTEllipse child;
 	private final MTTextArea text;
+	private boolean composition = false;
 	
 	public RetrievedElement(SuggestableScene scene,float r, LibisBook book) {
 		super(scene);
@@ -65,10 +68,23 @@ public class RetrievedElement extends AbstractElement {
 		addGestureListener(TapProcessor.class, new IGestureEventListener() {
 			@Override
 			public boolean processGestureEvent(MTGestureEvent ge) {
-				// TODO: show resize helper animation!
+				TapEvent te = (TapEvent) ge;
+				if (te.getId() == TapEvent.GESTURE_ENDED) {
+					setComposition(!isComposition());
+				}
+				
 				return true;
 			}
 		});
+		
+//		registerInputProcessor(new TapAndHoldProcessor(scene.getMTApplication()));
+//		addGestureListener(TapAndHoldProcessor.class, new IGestureEventListener() {
+//			@Override
+//			public boolean processGestureEvent(MTGestureEvent ge) {
+//				// TODO: show resize helper animation!
+//				return true;
+//			}
+//		});
 	}
 	
 	@Override
@@ -116,5 +132,13 @@ public class RetrievedElement extends AbstractElement {
 	@Override
 	public IBoundingShape getBounds() {
 		return child.getBounds();
+	}
+	
+	public boolean isComposition() {
+		return this.composition;
+	}
+	
+	private void setComposition(boolean composition) {
+		this.composition = composition;
 	}
 }
