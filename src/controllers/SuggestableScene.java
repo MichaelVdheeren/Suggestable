@@ -9,22 +9,22 @@ import org.mt4j.sceneManagement.AbstractScene;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
 
+import view.components.MTMessage;
+import view.components.actions.ComponentCreatedPreDrawAction;
+import view.components.actions.ComponentDistancePreDrawAction;
+import view.components.specific.MTInformationWindow;
+import view.components.specific.MTTrashCan;
 import view.elements.AbstractElement;
 import view.elements.RetrievedElement;
 import view.elements.SuggestedElement;
 import view.elements.actions.AbstractElementPreDrawAction;
-import view.elements.actions.CreatedElementPreDrawAction;
 import view.elements.actions.RelatedElementPreDrawAction;
 import view.elements.actions.UnrelatedElementPreDrawAction;
 import view.elements.observers.SuggestedElementBirthObserver;
 import view.layers.PanLayer;
 import view.layers.WidgetLayer;
-import view.widgets.MTMessage;
-import view.widgets.actions.WidgetDistancePreDrawAction;
-import view.widgets.facets.KeywordWidget;
-import view.widgets.facets.TimelineWidget;
-import view.widgets.specific.MTInformationWindow;
-import view.widgets.specific.MTTrashCan;
+import view.widgets.KeywordWidget;
+import view.widgets.TimelineWidget;
 import bookshelf.apis.google.GoogleBookProcessor;
 import bookshelf.exceptions.BookshelfUnavailableException;
 
@@ -59,10 +59,12 @@ public class SuggestableScene extends AbstractScene {
 		getCanvas().addChild(panLayer);
 		getCanvas().addChild(widgetLayer);
 		
+		float x = getMTApplication().getWidth()/2;
+		float y = getMTApplication().getHeight()/2;
 		
 		// Create the facet widgets
-		keywordWidget = new KeywordWidget(this, 500, 500, 400, 400);
-		timelineWidget = new TimelineWidget(this, 500, 500, 400, 200);
+		keywordWidget = new KeywordWidget(this, x, y+1, 400, 400);
+		timelineWidget = new TimelineWidget(this, x, y, 400, 200);
 		// Hide the facet widgets
 		getKeywordWidget().setVisible(false);
 		getTimelineWidget().setVisible(false);
@@ -70,13 +72,10 @@ public class SuggestableScene extends AbstractScene {
 		widgetLayer.addChild(getKeywordWidget());
 		widgetLayer.addChild(getTimelineWidget());
 		// Keep the widgets separate
-		registerPreDrawAction(new WidgetDistancePreDrawAction(getTimelineWidget(), getKeywordWidget()));
-		
-		float x = getMTApplication().getWidth()/2;
-		float y = getMTApplication().getHeight()/2;
+		registerPreDrawAction(new ComponentDistancePreDrawAction(getTimelineWidget(), getKeywordWidget()));
 		
 		// Messages
-		bookNeededMessage = new MTMessage(this, "Place a book to start!");
+		bookNeededMessage = new MTMessage(this, "Place a book to scan it and start, you can remove it afterwards.");
 		getCanvas().addChild(bookNeededMessage);
 		bookNeededMessage.setPositionRelativeToParent(new Vector3D(x,y));
 		
@@ -175,7 +174,7 @@ public class SuggestableScene extends AbstractScene {
 		bookNeededMessage.setVisible(false);
 		
 		element.setPositionGlobal(new Vector3D(100, getMTApplication().getHeight()/2));
-		registerAssiciatedAction(new CreatedElementPreDrawAction(new Vector3D(0, getMTApplication().getHeight()/2),element));
+		registerAssiciatedAction(new ComponentCreatedPreDrawAction(new Vector3D(0, getMTApplication().getHeight()/2),element));
 		
 		try {
 			GoogleBookProcessor gp = this.controller.getRelatedBooks(element.getBook());

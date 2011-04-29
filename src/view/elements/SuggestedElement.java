@@ -7,8 +7,11 @@ import javax.media.opengl.GL;
 
 import org.mt4j.components.TransformSpace;
 import org.mt4j.components.bounds.IBoundingShape;
+import org.mt4j.components.visibleComponents.font.FontManager;
+import org.mt4j.components.visibleComponents.font.IFont;
 import org.mt4j.components.visibleComponents.shapes.MTRoundRectangle;
 import org.mt4j.components.visibleComponents.widgets.MTImage;
+import org.mt4j.components.visibleComponents.widgets.MTTextArea;
 import org.mt4j.input.inputProcessors.IGestureEventListener;
 import org.mt4j.input.inputProcessors.MTGestureEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProcessor;
@@ -28,7 +31,7 @@ import controllers.SuggestableScene;
 public class SuggestedElement extends AbstractElement {
 	private final GoogleBook book;
 	private final MTRoundRectangle child;
-//	private final MTTextArea text;
+	private final MTTextArea text;
 
 	private final ArrayList<RetrievedElement> associatedElements = new ArrayList<RetrievedElement>();
 	
@@ -48,28 +51,42 @@ public class SuggestedElement extends AbstractElement {
 		child.setComposite(true);
 		child.setBoundsAutoCompute(true);
 		
+		
+		
 		try {
-			MTImage cover = new MTImage(scene.getMTApplication(), new PImage(getBook().getCover()));
+			final MTImage cover = new MTImage(scene.getMTApplication(), new PImage(getBook().getCover()));
 			child.addChild(cover);
 			cover.setPositionRelativeToParent(child.getCenterPointLocal());
 			cover.setStrokeColor(new MTColor(0, 255, 255, 150));
 			float scaleFactor = child.getHeightXY(TransformSpace.GLOBAL)/cover.getHeightXY(TransformSpace.GLOBAL);
 			cover.scaleGlobal(scaleFactor, scaleFactor, 1, cover.getCenterPointGlobal());
+//			cover.setStrokeColor(new MTColor(5,84,129,150));
+//			cover.setStrokeWeight(0);
+//			
+//			Animation anim = new Animation("stroke", new MultiPurposeInterpolator( 0,4, 1000, 0, 1f, -1), cover);
+//			anim.addAnimationListener(new IAnimationListener() {
+//				
+//				@Override
+//				public void processAnimationEvent(AnimationEvent ae) {
+//					cover.setStrokeWeight(ae.getValue());
+//				}
+//			});
+//			anim.start();
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
-//		IFont font = FontManager.getInstance().createFont(scene.getMTApplication(), "fonts/Trebuchet MS.ttf", 
-//				9, 	//Font size
-//				new MTColor(255,255,255));	//Font color
-//		
-//		text = new MTTextArea(scene.getMTApplication(), -10, s+5, s+20, 30, font);
-//		text.setNoStroke(true);
-//		text.setNoFill(true);
-//		text.setText(getBook().getTitle());
-//		//text.setPositionGlobal(center);
-//		this.addChild(text);
+		IFont font = FontManager.getInstance().createFont(scene.getMTApplication(), "fonts/Trebuchet MS.ttf", 
+				9, 	//Font size
+				new MTColor(255,255,255));	//Font color
+		
+		text = new MTTextArea(scene.getMTApplication(), -10, s+5, s+20, 30, font);
+		text.setNoStroke(true);
+		text.setNoFill(true);
+		text.setText(getBook().getTitle());
+		//text.setPositionGlobal(center);
+		this.addChild(text);
 		
 		final SuggestedElement self = this;
 		registerInputProcessor(new TapProcessor(scene.getMTApplication()));

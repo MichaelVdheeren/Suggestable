@@ -3,12 +3,13 @@ package view.layers;
 import org.mt4j.components.visibleComponents.widgets.MTOverlayContainer;
 import org.mt4j.util.math.Vector3D;
 
+import view.components.specific.MTDock;
+import view.components.specific.MTTrashCan;
+import view.components.specific.OrbWidget;
 import view.widgets.buttons.ButtonClearTable;
 import view.widgets.buttons.ButtonKeywords;
 import view.widgets.buttons.ButtonTest;
 import view.widgets.buttons.ButtonTimeline;
-import view.widgets.specific.MTTrashCan;
-import view.widgets.specific.OrbWidget;
 import controllers.SuggestableScene;
 
 public class WidgetLayer extends MTOverlayContainer {
@@ -35,6 +36,10 @@ public class WidgetLayer extends MTOverlayContainer {
 		addChild(trashcan);
 		
 		trashcan.setPositionRelativeToParent(new Vector3D(2*x,y));
+		
+//		MTDock dock = new MTDock(scene, 100);
+//		addChild(dock);
+//		dock.setPositionRelativeToParent(new Vector3D(x,2*y-49f));
 	}
 	
 	public MTTrashCan getTrashcan() {
