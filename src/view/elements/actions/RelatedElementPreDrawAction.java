@@ -11,7 +11,7 @@ public class RelatedElementPreDrawAction extends AbstractElementPreDrawAction {
 	private final RetrievedElement retrieved;
 	private final SuggestedElement suggested;
 	private static final float springK = 0.01f;
-	private final float forceMultiplier = 10f;
+	//private final float forceMultiplier = 10f;
 	
 	public RelatedElementPreDrawAction(RetrievedElement retrieved, SuggestedElement suggested) {
 		this.retrieved = retrieved;

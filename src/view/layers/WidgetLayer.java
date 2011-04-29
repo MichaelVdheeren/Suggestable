@@ -7,11 +7,13 @@ import view.widgets.buttons.ButtonClearTable;
 import view.widgets.buttons.ButtonKeywords;
 import view.widgets.buttons.ButtonTest;
 import view.widgets.buttons.ButtonTimeline;
+import view.widgets.specific.MTTrashCan;
 import view.widgets.specific.OrbWidget;
 import controllers.SuggestableScene;
 
 public class WidgetLayer extends MTOverlayContainer {
 //	private final OrbWidget orbWidget;
+	private MTTrashCan trashcan;
 	
 	public WidgetLayer(SuggestableScene scene) {
 		super(scene.getMTApplication());
@@ -27,9 +29,15 @@ public class WidgetLayer extends MTOverlayContainer {
 		addChild(orbWidget);
 		
 		orbWidget.setPositionRelativeToParent(new Vector3D(0, y));
+		
+		// Create the trashcan
+		trashcan = new MTTrashCan(scene);
+		addChild(trashcan);
+		
+		trashcan.setPositionRelativeToParent(new Vector3D(2*x,y));
 	}
 	
-//	public OrbWidget getOrbWidget() {
-//		return this.orbWidget;
-//	}
+	public MTTrashCan getTrashcan() {
+		return trashcan;
+	}
 }

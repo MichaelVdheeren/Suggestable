@@ -1,6 +1,7 @@
 package controllers;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import org.mt4j.components.visibleComponents.font.FontManager;
 import org.mt4j.components.visibleComponents.widgets.MTBackgroundImage;
@@ -12,11 +13,13 @@ import view.elements.AbstractElement;
 import view.elements.RetrievedElement;
 import view.elements.SuggestedElement;
 import view.elements.actions.AbstractElementPreDrawAction;
+import view.elements.actions.CreatedElementPreDrawAction;
 import view.elements.actions.RelatedElementPreDrawAction;
 import view.elements.actions.UnrelatedElementPreDrawAction;
 import view.elements.observers.SuggestedElementBirthObserver;
 import view.layers.PanLayer;
 import view.layers.WidgetLayer;
+import view.widgets.MTMessage;
 import view.widgets.actions.WidgetDistancePreDrawAction;
 import view.widgets.facets.KeywordWidget;
 import view.widgets.facets.TimelineWidget;
@@ -31,47 +34,57 @@ public class SuggestableScene extends AbstractScene {
 	private final ArrayList<SuggestedElement> suggestedElements = new ArrayList<SuggestedElement>();
 	private final ArrayList<AbstractElementPreDrawAction> associatedActions = new ArrayList<AbstractElementPreDrawAction>();
 	
+	private WidgetLayer widgetLayer;
+	private PanLayer panLayer;
+	
 	private KeywordWidget keywordWidget;
 	private TimelineWidget timelineWidget;
 	
-	private WidgetLayer widgetLayer;
-	private PanLayer panLayer;
-	private MTTrashCan trashcan;
+	private MTMessage bookNeededMessage;
+	
 	public SuggestableScene(SuggestableApplication application) {
 		super(application, "Suggestable Scene");
 	}
 	
 	@Override
 	public void init() {
+		// Add the background
 		MTBackgroundImage background = 
 			new MTBackgroundImage(getMTApplication(), getMTApplication().loadImage("data/images/stripes.png"), false);
 		getCanvas().addChild(background);
 		
+		// Create the layers
 		widgetLayer = new WidgetLayer(this);
 		panLayer = new PanLayer(this);
-		trashcan = new MTTrashCan(this);
+		getCanvas().addChild(panLayer);
+		getCanvas().addChild(widgetLayer);
 		
-		this.keywordWidget = new KeywordWidget(this, 500, 500, 400, 400);
-		this.timelineWidget = new TimelineWidget(this, 500, 500, 400, 200);
+		
+		// Create the facet widgets
+		keywordWidget = new KeywordWidget(this, 500, 500, 400, 400);
+		timelineWidget = new TimelineWidget(this, 500, 500, 400, 200);
+		// Hide the facet widgets
 		getKeywordWidget().setVisible(false);
 		getTimelineWidget().setVisible(false);
+		// Add the widgets to the widget layer
 		widgetLayer.addChild(getKeywordWidget());
 		widgetLayer.addChild(getTimelineWidget());
-		
-		this.registerPreDrawAction(new WidgetDistancePreDrawAction(getTimelineWidget(), getKeywordWidget()));
+		// Keep the widgets separate
+		registerPreDrawAction(new WidgetDistancePreDrawAction(getTimelineWidget(), getKeywordWidget()));
 		
 		float x = getMTApplication().getWidth()/2;
 		float y = getMTApplication().getHeight()/2;
 		
-		this.getCanvas().addChild(trashcan);
-		trashcan.setPositionRelativeToParent(new Vector3D(2*x,y));
+		// Messages
+		bookNeededMessage = new MTMessage(this, "Place a book to start!");
+		getCanvas().addChild(bookNeededMessage);
+		bookNeededMessage.setPositionRelativeToParent(new Vector3D(x,y));
 		
-		this.getCanvas().addChild(panLayer);
-		this.getCanvas().addChild(widgetLayer);
 		
+		// Fonts
 		FontManager.getInstance().createFont(getMTApplication(), "fonts/Trebuchet MS.ttf", 
-				9, 	//Font size
-				new MTColor(255,255,255));	//Font color
+				9, 							// Font size
+				new MTColor(255,255,255));	// Font color
 	}
 
 	@Override
@@ -88,7 +101,7 @@ public class SuggestableScene extends AbstractScene {
 	}
 	
 	public MTTrashCan getTrashcan() {
-		return this.trashcan;
+		return widgetLayer.getTrashcan();
 	}
 
 	public BookshelfController getController() {
@@ -110,6 +123,7 @@ public class SuggestableScene extends AbstractScene {
 		keywordWidget.removeKeywords();
 		retrievedElements.clear();
 		suggestedElements.clear();
+		bookNeededMessage.setVisible(true);
 	}
 
 	public void showKeywordWidget() {
@@ -139,6 +153,12 @@ public class SuggestableScene extends AbstractScene {
 			
 			panLayer.addChild(s);
 			updateElement(s);
+			
+			Vector3D position = new Vector3D(50, 50);
+			Random r = new Random();
+			position.rotateZ(r.nextInt(360));
+			
+			s.setPositionRelativeToOther(element, position);
 		}
 		
 		s.addAssociatedElement(element);
@@ -152,8 +172,10 @@ public class SuggestableScene extends AbstractScene {
 	public synchronized void addElement(RetrievedElement element) {
 		retrievedElements.add(element);
 		panLayer.addChild(element);
-//		widgetLayer.getOrbWidget().showTrashcan(true);
-		//registerAssiciatedAction(new CreatedElementPreDrawAction(getOrbWidget(), element));
+		bookNeededMessage.setVisible(false);
+		
+		element.setPositionGlobal(new Vector3D(100, getMTApplication().getHeight()/2));
+		registerAssiciatedAction(new CreatedElementPreDrawAction(new Vector3D(0, getMTApplication().getHeight()/2),element));
 		
 		try {
 			GoogleBookProcessor gp = this.controller.getRelatedBooks(element.getBook());
@@ -184,8 +206,8 @@ public class SuggestableScene extends AbstractScene {
 		retrievedElements.remove(element);
 		unregisterAssociatedActions(element);
 		
-//		if (retrievedElements.isEmpty())
-//			widgetLayer.getOrbWidget().showTrashcan(false);
+		if (retrievedElements.isEmpty())
+			bookNeededMessage.setVisible(true);
 	}
 	
 	public void removeElement(SuggestedElement element) {
@@ -225,9 +247,9 @@ public class SuggestableScene extends AbstractScene {
 	}
 	
 	public void showInformationWindow(SuggestedElement element) {
-		MTInformationWindow widget = new MTInformationWindow(getMTApplication(), 0, 0, 550, 400, element.getBook());
-		getCanvas().addChild(widget);
-		widget.setPositionGlobal(element.getCenterPointGlobal());
+		MTInformationWindow widget = new MTInformationWindow(getMTApplication(), 0, 0, 850, 600, element.getBook());
+		widgetLayer.addChild(widget);
+		widget.setPositionGlobal(new Vector3D(getMTApplication().getWidth()/2, getMTApplication().getHeight()/2));
 	}
 	
 	public void registerAssiciatedAction(AbstractElementPreDrawAction action) {

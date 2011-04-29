@@ -3,23 +3,20 @@ package view.elements.actions;
 import org.mt4j.components.visibleComponents.shapes.AbstractShape;
 import org.mt4j.util.math.Vector3D;
 
-import view.widgets.specific.OrbWidget;
-
 public class CreatedElementPreDrawAction extends AbstractElementPreDrawAction {
-	private final AbstractShape component1;
+	private final Vector3D centerTN1;
 	private final AbstractShape component2;
-	private static final float springK = 0.01f;
-	private static final float targetLength = 250;
+	private static final float springK = 0.03f;
+	private static final float targetLength = 600;
 	private boolean stopLoop = false;
 	
-	public CreatedElementPreDrawAction(OrbWidget component1, AbstractShape component2) {
-		this.component1 = component1;
-		this.component2 = component2;
+	public CreatedElementPreDrawAction(Vector3D vector, AbstractShape component) {
+		this.centerTN1 = vector;
+		this.component2 = component;
 	}
 	
 	@Override
 	public void processAction() {
-		Vector3D centerTN1 = component1.getCenterPointGlobal();
 		Vector3D centerTN2 = component2.getCenterPointGlobal();
 		
 		float distance = centerTN1.distance2D(centerTN2);
