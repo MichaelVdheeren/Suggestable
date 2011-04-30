@@ -22,7 +22,7 @@ public class OrbWidget extends MTEllipse {
 		this.setStrokeWeight(2.5f);
 		this.setStrokeColor(new MTColor(255, 255, 255, 150));
 		
-		MTSvg book = new MTSvg(scene.getMTApplication(), "data/icons/book.svg");
+		MTSvg book = new MTSvg(scene.getMTApplication(), "data/icons/options.svg");
 		this.addChild(book);
 		book.setWidthXYGlobal(60);
 		book.setPositionRelativeToParent(this.getCenterPointLocal().addLocal(new Vector3D(45, 0)));

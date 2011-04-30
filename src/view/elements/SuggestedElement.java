@@ -43,11 +43,9 @@ public class SuggestedElement extends AbstractElement {
 		this.addChild(child);
 		this.setVertices(child.getVerticesLocal());
 		
-		//child.setFillColor(new MTColor(0, 0, 0, 200));
-		child.setNoFill(true);
-		child.setNoStroke(true);
-		//child.setStrokeWeight(2.5f);
-		//child.setStrokeColor(new MTColor(255, 255, 255, 150));
+		child.setFillColor(new MTColor(0, 0, 0, 200));
+		child.setStrokeWeight(2.5f);
+		child.setStrokeColor(new MTColor(255, 255, 255, 150));
 		child.setComposite(true);
 		child.setBoundsAutoCompute(true);
 		
@@ -60,32 +58,19 @@ public class SuggestedElement extends AbstractElement {
 			cover.setStrokeColor(new MTColor(0, 255, 255, 150));
 			float scaleFactor = child.getHeightXY(TransformSpace.GLOBAL)/cover.getHeightXY(TransformSpace.GLOBAL);
 			cover.scaleGlobal(scaleFactor, scaleFactor, 1, cover.getCenterPointGlobal());
-//			cover.setStrokeColor(new MTColor(5,84,129,150));
-//			cover.setStrokeWeight(0);
-//			
-//			Animation anim = new Animation("stroke", new MultiPurposeInterpolator( 0,4, 1000, 0, 1f, -1), cover);
-//			anim.addAnimationListener(new IAnimationListener() {
-//				
-//				@Override
-//				public void processAnimationEvent(AnimationEvent ae) {
-//					cover.setStrokeWeight(ae.getValue());
-//				}
-//			});
-//			anim.start();
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
 		IFont font = FontManager.getInstance().createFont(scene.getMTApplication(), "fonts/Trebuchet MS.ttf", 
-				9, 	//Font size
+				12, 	//Font size
 				new MTColor(255,255,255));	//Font color
 		
-		text = new MTTextArea(scene.getMTApplication(), -10, s+5, s+20, 30, font);
+		text = new MTTextArea(scene.getMTApplication(), 1, 1, s-2, s-2, font);
 		text.setNoStroke(true);
-		text.setNoFill(true);
+		text.setFillColor(new MTColor(0, 0, 0, 180));
 		text.setText(getBook().getTitle());
-		//text.setPositionGlobal(center);
 		this.addChild(text);
 		
 		final SuggestedElement self = this;

@@ -26,7 +26,6 @@ public class WidgetLayer extends MTOverlayContainer {
 		orbWidget.addButton(new ButtonTimeline(scene));
 		orbWidget.addButton(new ButtonKeywords(scene));
 		orbWidget.addButton(new ButtonClearTable(scene));
-		orbWidget.addButton(new ButtonTest(scene));
 		addChild(orbWidget);
 		
 		orbWidget.setPositionRelativeToParent(new Vector3D(0, y));

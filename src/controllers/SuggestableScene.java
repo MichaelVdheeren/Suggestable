@@ -75,7 +75,7 @@ public class SuggestableScene extends AbstractScene {
 		registerPreDrawAction(new ComponentDistancePreDrawAction(getTimelineWidget(), getKeywordWidget()));
 		
 		// Messages
-		bookNeededMessage = new MTMessage(this, "Place a book to scan it and start, you can remove it afterwards.");
+		bookNeededMessage = new MTMessage(this, "Place a book to scan it and start, \nyou can take it away afterwards.");
 		getCanvas().addChild(bookNeededMessage);
 		bookNeededMessage.setPositionRelativeToParent(new Vector3D(x,y));
 		
@@ -83,6 +83,10 @@ public class SuggestableScene extends AbstractScene {
 		// Fonts
 		FontManager.getInstance().createFont(getMTApplication(), "fonts/Trebuchet MS.ttf", 
 				9, 							// Font size
+				new MTColor(255,255,255));	// Font color
+		// Fonts
+		FontManager.getInstance().createFont(getMTApplication(), "fonts/Trebuchet MS.ttf", 
+				12, 							// Font size
 				new MTColor(255,255,255));	// Font color
 	}
 
