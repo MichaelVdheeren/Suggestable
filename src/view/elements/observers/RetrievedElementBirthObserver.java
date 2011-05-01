@@ -17,7 +17,7 @@ public class RetrievedElementBirthObserver implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		LibisBook book = (LibisBook) arg;
-		RetrievedElement p = new RetrievedElement(getScene(), 50, book);
+		RetrievedElement p = new RetrievedElement(getScene(), 125, book);
 		
 //		Vector3D position = new Vector3D(100, -100);
 //		Random r = new Random();

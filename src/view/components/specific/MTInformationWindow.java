@@ -52,11 +52,9 @@ public class MTInformationWindow extends MTAbstractWindow {
 			Image image = getBook().getCover();
 			MTImage cover = new MTImage(getpApplet(), new PImage(image));
 			metaPanel.addChild(cover);
-			float s = 100/cover.getHeightXY(TransformSpace.GLOBAL);
-			cover.scaleGlobal(s, s, 1, cover.getCenterPointGlobal());
-			cover.setPositionRelativeToParent(new Vector3D(7.5f,7.5f,0).addLocal(
-					new Vector3D(cover.getWidthXY(TransformSpace.GLOBAL)/2, cover.getHeightXY(TransformSpace.GLOBAL)/2)
-				));
+			cover.setHeightXYGlobal(metaPanel.getHeightXY(TransformSpace.GLOBAL));
+			cover.setPositionRelativeToParent(metaPanel.getCenterPointLocal().addLocal(
+					new Vector3D(-cover.getWidthXY(TransformSpace.RELATIVE_TO_PARENT)/2-5,0)));
 			
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block

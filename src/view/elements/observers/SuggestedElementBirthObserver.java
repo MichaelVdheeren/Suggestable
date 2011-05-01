@@ -20,7 +20,7 @@ public class SuggestedElementBirthObserver implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		GoogleBook book = (GoogleBook) arg;
-		SuggestedElement s = new SuggestedElement(getScene(), 125, book);
+		SuggestedElement s = new SuggestedElement(getScene(), 100, book);
 		getScene().addElement(s, p);
 	}
 

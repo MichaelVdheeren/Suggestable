@@ -1,4 +1,4 @@
-package view.widgets.buttons;
+package view.components.buttons;
 
 import org.mt4j.input.inputProcessors.IGestureEventListener;
 import org.mt4j.input.inputProcessors.MTGestureEvent;
@@ -7,18 +7,17 @@ import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProces
 
 import controllers.SuggestableScene;
 
-import view.components.specific.OrbButton;
 
-public class ButtonKeywords extends OrbButton {
-	public ButtonKeywords(final SuggestableScene scene) {
-		super(scene.getMTApplication(),"Keywords");
+public class ButtonTimeline extends OrbButton {
+	public ButtonTimeline(final SuggestableScene scene) {
+		super(scene.getMTApplication(),"Timeline");
 		registerInputProcessor(new TapProcessor(scene.getMTApplication()));
 		addGestureListener(TapProcessor.class, new IGestureEventListener() {
 			@Override
 			public boolean processGestureEvent(MTGestureEvent ge) {
 				TapEvent te = (TapEvent) ge;
 				if (te.getTapID() == TapEvent.TAPPED) {
-					scene.showKeywordWidget();
+					scene.showTimelineWidget();
 				}
 				return true;
 			}

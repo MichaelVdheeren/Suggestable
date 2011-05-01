@@ -1,22 +1,20 @@
 package view.elements;
 
+import java.io.IOException;
+
 import javax.media.opengl.GL;
 
+import org.mt4j.components.TransformSpace;
 import org.mt4j.components.bounds.IBoundingShape;
-import org.mt4j.components.visibleComponents.font.FontManager;
-import org.mt4j.components.visibleComponents.font.IFont;
-import org.mt4j.components.visibleComponents.shapes.MTEllipse;
-import org.mt4j.components.visibleComponents.widgets.MTTextArea;
-import org.mt4j.input.inputProcessors.IGestureEventListener;
-import org.mt4j.input.inputProcessors.MTGestureEvent;
+import org.mt4j.components.visibleComponents.shapes.MTRoundRectangle;
+import org.mt4j.components.visibleComponents.widgets.MTImage;
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProcessor;
-import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent;
-import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProcessor;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Ray;
 import org.mt4j.util.math.Vector3D;
 
 import processing.core.PGraphics;
+import processing.core.PImage;
 import view.elements.gestures.DragElementListener;
 import view.elements.gestures.TrashRetrievedElementListener;
 import bookshelf.apis.libis.LibisBook;
@@ -24,17 +22,13 @@ import controllers.SuggestableScene;
 
 public class RetrievedElement extends AbstractElement {
 	private final LibisBook book;
-	private final float radius;
-	private final MTEllipse child;
-	private final MTTextArea text;
-	private boolean composition = false;
+	private final MTRoundRectangle child;
 	
-	public RetrievedElement(SuggestableScene scene,float r, LibisBook book) {
+	public RetrievedElement(SuggestableScene scene,float s, LibisBook book) {
 		super(scene);
-		this.child = new MTEllipse(scene.getMTApplication(), new Vector3D(0,0,0), r, r);
-		this.book = book;
-		this.radius = r;
+		this.child = new MTRoundRectangle(scene.getMTApplication(), 0, 0, 0, s, s, 5, 5);
 		
+		this.book = book;
 		this.addChild(child);
 		this.setVertices(child.getVerticesLocal());
 		
@@ -44,46 +38,20 @@ public class RetrievedElement extends AbstractElement {
 		child.setComposite(true);
 		child.setBoundsAutoCompute(true);
 		
-		IFont font = FontManager.getInstance().createFont(scene.getMTApplication(), "fonts/Trebuchet MS.ttf", 
-				9, 	//Font size
-				new MTColor(255,255,255));	//Font color
-		
-		Vector3D t = getCenterPointGlobal().addLocal(new Vector3D(-r,0,0));
-		t.rotateZ(getCenterPointGlobal(), 45);
-		float dx = t.getX();
-		float dy = t.getY();
-		
-		text = new MTTextArea(scene.getMTApplication(), dx, dy, r-dx/2, r-dy/2, font);
-		text.setNoStroke(true);
-		text.setNoFill(true);
-		text.setText(getBook().getTitle());
-		//text.setPositionGlobal(center);
-		this.addChild(text);
+		try {
+			final MTImage cover = new MTImage(scene.getMTApplication(), new PImage(getBook().getCover()));
+			child.addChild(cover);
+			cover.setPositionRelativeToParent(child.getCenterPointLocal());
+			cover.setStrokeColor(new MTColor(0, 255, 255, 150));
+			float scaleFactor = child.getHeightXY(TransformSpace.GLOBAL)/cover.getHeightXY(TransformSpace.GLOBAL);
+			cover.scaleGlobal(scaleFactor, scaleFactor, 1, cover.getCenterPointGlobal());
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 		addGestureListener(DragProcessor.class, new DragElementListener(this));
 		addGestureListener(DragProcessor.class, new TrashRetrievedElementListener(scene,this));
-		
-		registerInputProcessor(new TapProcessor(scene.getMTApplication()));
-		addGestureListener(TapProcessor.class, new IGestureEventListener() {
-			@Override
-			public boolean processGestureEvent(MTGestureEvent ge) {
-				TapEvent te = (TapEvent) ge;
-				if (te.getId() == TapEvent.GESTURE_ENDED) {
-					setComposition(!isComposition());
-				}
-				
-				return true;
-			}
-		});
-		
-//		registerInputProcessor(new TapAndHoldProcessor(scene.getMTApplication()));
-//		addGestureListener(TapAndHoldProcessor.class, new IGestureEventListener() {
-//			@Override
-//			public boolean processGestureEvent(MTGestureEvent ge) {
-//				// TODO: show resize helper animation!
-//				return true;
-//			}
-//		});
 	}
 	
 	@Override
@@ -91,12 +59,12 @@ public class RetrievedElement extends AbstractElement {
 		return this.book;
 	}
 	
-	public float getGForce() {
-		float currentRadius = this.getWidthXYGlobal()/2;
-		float gForce = 9.81f*currentRadius/radius;
-//		System.out.println("Current G-Force: "+gForce);
-		return gForce;
-	}
+//	public float getGForce() {
+//		float currentRadius = this.getWidthXYGlobal()/2;
+//		float gForce = 9.81f*currentRadius/radius;
+////		System.out.println("Current G-Force: "+gForce);
+//		return gForce;
+//	}
 
 	@Override
 	protected void drawPureGl(GL gl) {
@@ -131,13 +99,5 @@ public class RetrievedElement extends AbstractElement {
 	@Override
 	public IBoundingShape getBounds() {
 		return child.getBounds();
-	}
-	
-	public boolean isComposition() {
-		return this.composition;
-	}
-	
-	private void setComposition(boolean composition) {
-		this.composition = composition;
 	}
 }

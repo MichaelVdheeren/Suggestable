@@ -3,13 +3,11 @@ package view.layers;
 import org.mt4j.components.visibleComponents.widgets.MTOverlayContainer;
 import org.mt4j.util.math.Vector3D;
 
-import view.components.specific.MTDock;
+import view.components.buttons.ButtonClearTable;
+import view.components.buttons.ButtonKeywords;
+import view.components.buttons.ButtonTimeline;
 import view.components.specific.MTTrashCan;
 import view.components.specific.OrbWidget;
-import view.widgets.buttons.ButtonClearTable;
-import view.widgets.buttons.ButtonKeywords;
-import view.widgets.buttons.ButtonTest;
-import view.widgets.buttons.ButtonTimeline;
 import controllers.SuggestableScene;
 
 public class WidgetLayer extends MTOverlayContainer {

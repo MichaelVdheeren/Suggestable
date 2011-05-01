@@ -23,4 +23,30 @@ public abstract class AbstractElement extends AbstractShape {
 	}
 
 	public abstract AbstractBook getBook();
+	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((getBook() == null) ? 0 : getBook().hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AbstractElement other = (AbstractElement) obj;
+		if (getBook() == null) {
+			if (other.getBook() != null)
+				return false;
+		} else if (!getBook().equals(other.getBook()))
+			return false;
+		return true;
+	}
 }

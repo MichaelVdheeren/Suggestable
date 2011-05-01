@@ -8,6 +8,8 @@ import org.mt4j.components.visibleComponents.widgets.MTSvg;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
 
+import view.components.buttons.OrbButton;
+
 import controllers.SuggestableScene;
 
 public class OrbWidget extends MTEllipse {

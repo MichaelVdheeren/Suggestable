@@ -32,7 +32,6 @@ public class SuggestedElement extends AbstractElement {
 	private final GoogleBook book;
 	private final MTRoundRectangle child;
 	private final MTTextArea text;
-	private boolean retrieved;
 
 	private final ArrayList<RetrievedElement> associatedElements = new ArrayList<RetrievedElement>();
 	
@@ -107,15 +106,6 @@ public class SuggestedElement extends AbstractElement {
 	public GoogleBook getBook() {
 		return this.book;
 	}
-	
-	public boolean isRetrieved() {
-		return retrieved;
-	}
-
-	public void setRetrieved(boolean retrieved) {
-		this.retrieved = retrieved;
-		text.setVisible(!retrieved);
-	}
 
 	@Override
 	protected void drawPureGl(GL gl) {
@@ -150,31 +140,6 @@ public class SuggestedElement extends AbstractElement {
 	@Override
 	public IBoundingShape getBounds() {
 		return child.getBounds();
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((book == null) ? 0 : book.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		SuggestedElement other = (SuggestedElement) obj;
-		if (book == null) {
-			if (other.book != null)
-				return false;
-		} else if (!book.equals(other.book))
-			return false;
-		return true;
 	}
 
 	public void removeAllAssociatedElements() {

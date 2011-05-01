@@ -12,6 +12,8 @@ import org.mt4j.util.math.Vector3D;
 import view.components.MTMessage;
 import view.components.actions.ComponentCreatedPreDrawAction;
 import view.components.actions.ComponentDistancePreDrawAction;
+import view.components.facets.KeywordWidget;
+import view.components.facets.TimelineWidget;
 import view.components.specific.MTInformationWindow;
 import view.components.specific.MTTrashCan;
 import view.elements.AbstractElement;
@@ -23,8 +25,6 @@ import view.elements.actions.UnrelatedElementPreDrawAction;
 import view.elements.observers.SuggestedElementBirthObserver;
 import view.layers.PanLayer;
 import view.layers.WidgetLayer;
-import view.widgets.KeywordWidget;
-import view.widgets.TimelineWidget;
 import bookshelf.apis.google.GoogleBookProcessor;
 import bookshelf.exceptions.BookshelfUnavailableException;
 
@@ -173,6 +173,11 @@ public class SuggestableScene extends AbstractScene {
 	}
 
 	public synchronized void addElement(RetrievedElement element) {
+		if (retrievedElements.contains(element)) {
+			panToElement(element);
+			return;
+		}
+		
 		retrievedElements.add(element);
 		panLayer.addChild(element);
 		bookNeededMessage.setVisible(false);
@@ -192,6 +197,11 @@ public class SuggestableScene extends AbstractScene {
 		}
 	}
 	
+	private void panToElement(AbstractElement element) {
+		// TODO Auto-generated method stub
+
+	}
+
 	public void removeElement(RetrievedElement element) {
 		int i=0;
 		

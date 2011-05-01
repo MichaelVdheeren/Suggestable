@@ -1,4 +1,4 @@
-package view.components.specific;
+package view.components.buttons;
 
 import org.mt4j.components.visibleComponents.font.FontManager;
 import org.mt4j.components.visibleComponents.font.IFont;
