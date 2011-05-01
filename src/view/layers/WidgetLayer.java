@@ -7,7 +7,7 @@ import view.components.buttons.ButtonClearTable;
 import view.components.buttons.ButtonKeywords;
 import view.components.buttons.ButtonTimeline;
 import view.components.specific.MTTrashCan;
-import view.components.specific.OrbWidget;
+import view.components.specific.MTActionOrb;
 import controllers.SuggestableScene;
 
 public class WidgetLayer extends MTOverlayContainer {
@@ -20,7 +20,7 @@ public class WidgetLayer extends MTOverlayContainer {
 		float x = scene.getMTApplication().getWidth()/2;
 		float y = scene.getMTApplication().getHeight()/2;
 		
-		OrbWidget orbWidget = new OrbWidget(scene, x, y);
+		MTActionOrb orbWidget = new MTActionOrb(scene, x, y);
 		orbWidget.addButton(new ButtonTimeline(scene));
 		orbWidget.addButton(new ButtonKeywords(scene));
 		orbWidget.addButton(new ButtonClearTable(scene));

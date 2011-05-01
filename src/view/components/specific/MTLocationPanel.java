@@ -8,9 +8,9 @@ import processing.core.PApplet;
 import view.components.MTPanel;
 import view.components.MTPanelButton;
 
-public class MTLocationPreviewPanel extends MTPanel {
+public class MTLocationPanel extends MTPanel {
 
-	public MTLocationPreviewPanel(final PApplet pApplet, final float width, final float height) {
+	public MTLocationPanel(final PApplet pApplet, final float width, final float height) {
 		super(pApplet, width, height, new MTPanelButton(pApplet, "data/icons/circle-pointer.svg"));
 		
 		setFillColor(new MTColor(224,224,244));
@@ -20,7 +20,7 @@ public class MTLocationPreviewPanel extends MTPanel {
 			public void run() {
 				final MTSvg floor = new MTSvg(pApplet, "data/floors/niv00.v17.svg");
 				addChild(floor);
-				floor.setSizeXYGlobal(getWidthXYGlobal(), getHeightXYGlobal());
+				floor.setSizeXYGlobal(getWidthXYGlobal()-10, getHeightXYGlobal()-10);
 				floor.setPositionRelativeToParent(getCenterPointLocal());
 				floor.setClip(new Clip(pApplet, 0, 0, width, height));
 				floor.removeAllGestureEventListeners();

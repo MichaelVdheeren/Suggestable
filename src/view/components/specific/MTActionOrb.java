@@ -12,12 +12,11 @@ import view.components.buttons.OrbButton;
 
 import controllers.SuggestableScene;
 
-public class OrbWidget extends MTEllipse {
+public class MTActionOrb extends MTEllipse {
 	private ArrayList<OrbButton> buttonList = new ArrayList<OrbButton>();
-//	private final MTSvg trash, book;
 	private final static float radius = 100;
 
-	public OrbWidget(SuggestableScene scene, float x, float y) {
+	public MTActionOrb(SuggestableScene scene, float x, float y) {
 		super(scene.getMTApplication(), new Vector3D(x, y,100), radius, radius);
 		
 		this.setFillColor(new MTColor(0, 0, 0, 255));
@@ -29,24 +28,6 @@ public class OrbWidget extends MTEllipse {
 		book.setWidthXYGlobal(60);
 		book.setPositionRelativeToParent(this.getCenterPointLocal().addLocal(new Vector3D(45, 0)));
 		book.setPickable(false);
-//		
-//		IFont font = FontManager.getInstance().createFont(scene.getMTApplication(), "fonts/Trebuchet MS.ttf", 
-//				16, 	//Font size
-//				new MTColor(255,255,255));	//Font color
-//		
-//		MTTextArea text = new MTTextArea(scene.getMTApplication(), font);
-//		text.setNoFill(true);
-//		text.setNoStroke(true);
-//		text.setText("Place a book");
-//		book.addChild(text);
-//		text.setPositionRelativeToParent(book.getCenterPointLocal().addLocal(new Vector3D(0, 70)));
-//		
-//		MTTextArea text2 = new MTTextArea(scene.getMTApplication(), font);
-//		text2.setNoFill(true);
-//		text2.setNoStroke(true);
-//		text2.setText("to start!");
-//		book.addChild(text2);
-//		text2.setPositionRelativeToParent(book.getCenterPointLocal().addLocal(new Vector3D(0, 90)));
 		
 		this.removeAllGestureEventListeners();
 	}

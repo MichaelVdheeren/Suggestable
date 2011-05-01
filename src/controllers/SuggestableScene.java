@@ -63,8 +63,8 @@ public class SuggestableScene extends AbstractScene {
 		float y = getMTApplication().getHeight()/2;
 		
 		// Create the facet widgets
-		keywordWidget = new KeywordWidget(this, x, y+1, 400, 400);
-		timelineWidget = new TimelineWidget(this, x, y, 400, 200);
+		keywordWidget = new KeywordWidget(this, 300, y/2, 400, 400);
+		timelineWidget = new TimelineWidget(this, 300, y+y/2, 400, 200);
 		// Hide the facet widgets
 		getKeywordWidget().setVisible(false);
 		getTimelineWidget().setVisible(false);
@@ -79,11 +79,6 @@ public class SuggestableScene extends AbstractScene {
 		getCanvas().addChild(bookNeededMessage);
 		bookNeededMessage.setPositionRelativeToParent(new Vector3D(x,y));
 		
-		
-		// Fonts
-		FontManager.getInstance().createFont(getMTApplication(), "fonts/Trebuchet MS.ttf", 
-				9, 							// Font size
-				new MTColor(255,255,255));	// Font color
 		// Fonts
 		FontManager.getInstance().createFont(getMTApplication(), "fonts/Trebuchet MS.ttf", 
 				12, 							// Font size
