@@ -32,6 +32,7 @@ public class SuggestedElement extends AbstractElement {
 	private final GoogleBook book;
 	private final MTRoundRectangle child;
 	private final MTTextArea text;
+	private boolean retrieved;
 
 	private final ArrayList<RetrievedElement> associatedElements = new ArrayList<RetrievedElement>();
 	
@@ -107,6 +108,15 @@ public class SuggestedElement extends AbstractElement {
 		return this.book;
 	}
 	
+	public boolean isRetrieved() {
+		return retrieved;
+	}
+
+	public void setRetrieved(boolean retrieved) {
+		this.retrieved = retrieved;
+		text.setVisible(!retrieved);
+	}
+
 	@Override
 	protected void drawPureGl(GL gl) {
 		// Nothing.
