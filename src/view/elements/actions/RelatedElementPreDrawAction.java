@@ -22,8 +22,8 @@ public class RelatedElementPreDrawAction extends AbstractElementPreDrawAction {
 	
 	@Override
 	public void processAction() {
-		Vector3D centerTN1 = retrieved.getCenterPointGlobal();
-		Vector3D centerTN2 = suggested.getCenterPointGlobal();
+		Vector3D centerTN1 = retrieved.getCenterPointRelativeToParent();
+		Vector3D centerTN2 = suggested.getCenterPointRelativeToParent();
 		
 		float width1 = 0, width2 = 0, height1 = 0, height2 = 0;
 		float targetLength = 0f;// = retrieved.getGForce()*forceMultiplier;

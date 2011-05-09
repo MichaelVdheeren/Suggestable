@@ -15,6 +15,7 @@ import org.mt4j.util.math.Vector3D;
 
 import processing.core.PGraphics;
 import processing.core.PImage;
+import view.components.MTSpinner;
 import view.elements.gestures.DragElementListener;
 import view.elements.gestures.TrashRetrievedElementListener;
 import bookshelf.apis.libis.LibisBook;
@@ -23,6 +24,7 @@ import controllers.SuggestableScene;
 public class RetrievedElement extends AbstractElement {
 	private final LibisBook book;
 	private final MTRoundRectangle child;
+	private final MTSpinner spinner;
 	
 	public RetrievedElement(SuggestableScene scene,float s, LibisBook book) {
 		super(scene);
@@ -49,6 +51,10 @@ public class RetrievedElement extends AbstractElement {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		
+		spinner = new MTSpinner(scene.getMTApplication(), new Vector3D(s/2, s/2), s*1/16, s*3/16, 12);
+		child.addChild(spinner);
+		spinner.setVisible(false);
 		
 		addGestureListener(DragProcessor.class, new DragElementListener(this));
 		addGestureListener(DragProcessor.class, new TrashRetrievedElementListener(scene,this));
@@ -99,5 +105,14 @@ public class RetrievedElement extends AbstractElement {
 	@Override
 	public IBoundingShape getBounds() {
 		return child.getBounds();
+	}
+	
+	public void setLoading(boolean loading) {
+		this.spinner.setVisible(loading);
+		
+		if (loading)
+			this.spinner.start();
+		else
+			this.spinner.stop();
 	}
 }

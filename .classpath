@@ -59,5 +59,19 @@
 	<classpathentry kind="lib" path="/MT4j/mt4jLibs/whirlylib/whirlycache-1.0.1.jar"/>
 	<classpathentry kind="lib" path="/Bookshelf/libs/jericho.jar"/>
 	<classpathentry kind="lib" path="/MT4j/mt4jLibs/junit-4.8.2.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Signalization"/>
+	<classpathentry kind="lib" path="/Signalization/lib/ant-launcher.jar"/>
+	<classpathentry kind="lib" path="/Signalization/lib/ant.jar"/>
+	<classpathentry kind="lib" path="/Signalization/lib/antlr.jar"/>
+	<classpathentry kind="lib" path="/Signalization/lib/core.jar"/>
+	<classpathentry kind="lib" path="/Signalization/lib/ecj.jar"/>
+	<classpathentry kind="lib" path="/Signalization/lib/jna.jar"/>
+	<classpathentry kind="lib" path="/Signalization/lib/pde.jar"/>
+	<classpathentry kind="lib" path="/Signalization/lib/RXTXcomm.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Signalization/lib/macosx"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/Signalization/lib/serial.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

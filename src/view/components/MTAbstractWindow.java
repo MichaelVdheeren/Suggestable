@@ -22,9 +22,9 @@ public abstract class MTAbstractWindow extends MTRoundRectangle {
 		super(pApplet, 0, 0,  0, w, h, 5, 5);
 		this.setPositionRelativeToParent(new Vector3D(x,y));
 		
-		this.setFillColor(new MTColor(0, 0, 0, 170));
+		this.setFillColor(new MTColor(0, 0, 0, 120));
 		this.setStrokeWeight(2.5f);
-		this.setStrokeColor(new MTColor(255, 255, 255, 150));
+		this.setStrokeColor(new MTColor(255, 255, 255, 255));
 
 		IFont font = FontManager.getInstance().createFont(pApplet, "fonts/Trebuchet MS.ttf", 
 				16, 	//Font size

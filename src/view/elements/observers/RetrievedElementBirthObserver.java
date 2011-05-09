@@ -23,7 +23,6 @@ public class RetrievedElementBirthObserver implements Observer {
 //		Random r = new Random();
 //		position.rotateZ(r.nextInt(90));
 		
-		
 		getScene().addElement(p);
 	}
 

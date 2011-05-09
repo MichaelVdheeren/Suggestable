@@ -5,6 +5,7 @@ import java.util.Observer;
 
 import view.elements.RetrievedElement;
 import view.elements.SuggestedElement;
+import bookshelf.AbstractBookProcessor;
 import bookshelf.apis.google.GoogleBook;
 import controllers.SuggestableScene;
 
@@ -20,8 +21,13 @@ public class SuggestedElementBirthObserver implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		GoogleBook book = (GoogleBook) arg;
+		AbstractBookProcessor processor = (AbstractBookProcessor) o;
+		
 		SuggestedElement s = new SuggestedElement(getScene(), 100, book);
 		getScene().addElement(s, p);
+		
+		if (processor.isFinished())
+			p.setLoading(false);
 	}
 
 	private SuggestableScene getScene() {

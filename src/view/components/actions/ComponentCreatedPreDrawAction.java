@@ -19,7 +19,7 @@ public class ComponentCreatedPreDrawAction extends AbstractElementPreDrawAction 
 	
 	@Override
 	public void processAction() {
-		Vector3D centerTN2 = component2.getCenterPointGlobal();
+		Vector3D centerTN2 = component2.getCenterPointRelativeToParent();
 		
 		float distance = centerTN1.distance2D(centerTN2);
 		Vector3D distanceVector = centerTN1.getSubtracted(centerTN2);

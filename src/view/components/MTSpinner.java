@@ -19,7 +19,7 @@ public class MTSpinner extends MTEllipse {
 	
 	public MTSpinner(PApplet pApplet, Vector3D center, float radiusInner,  float radiusOuter, final int sectorCount) {
 		super(pApplet, center, radiusOuter, radiusOuter);
-		float margin = 15;
+		float margin = 0.1f*radiusOuter;
 		radiusOuter -= margin;
 		this.setStrokeColor(new MTColor(255, 255, 255, 150));
 		this.setFillColor(new MTColor(0, 0, 0, 200));
@@ -37,7 +37,7 @@ public class MTSpinner extends MTEllipse {
 			Vertex start = new Vertex(center.x + radiusInner * cos, center.y + radiusInner * sin);
 			Vertex end = new Vertex(center.x + radiusOuter * cos, center.y + radiusOuter * sin);
 			sectors[i] = new MTLine(pApplet, start, end);
-			sectors[i].setStrokeWeight(10);
+			sectors[i].setStrokeWeight(0.15f*radiusOuter);
 			this.addChild(sectors[i]);
 		}
 		

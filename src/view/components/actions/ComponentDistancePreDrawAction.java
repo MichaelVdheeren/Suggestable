@@ -20,8 +20,8 @@ public class ComponentDistancePreDrawAction implements IPreDrawAction {
 		if (!(component2.isVisible() && component1.isVisible()))
 			return;
 		
-		Vector3D centerTN1 = component1.getCenterPointGlobal();
-		Vector3D centerTN2 = component2.getCenterPointGlobal();
+		Vector3D centerTN1 = component1.getCenterPointRelativeToParent();
+		Vector3D centerTN2 = component2.getCenterPointRelativeToParent();
 		
 		float width1 = 0, width2 = 0, height1 = 0, height2 = 0, targetLength = 250;
 		

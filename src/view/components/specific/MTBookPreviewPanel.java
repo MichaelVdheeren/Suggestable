@@ -6,8 +6,11 @@ import org.mt4j.components.TransformSpace;
 import org.mt4j.components.visibleComponents.widgets.MTImage;
 import org.mt4j.input.inputProcessors.IGestureEventListener;
 import org.mt4j.input.inputProcessors.MTGestureEvent;
+import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent;
+import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProcessor;
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProcessor;
+import org.mt4j.util.math.Matrix;
 import org.mt4j.util.math.Vector3D;
 
 import processing.core.PApplet;
@@ -54,14 +57,21 @@ public class MTBookPreviewPanel extends MTPanel {
 					leftPage.setHeightXYGlobal(getHeightXYGlobal());
 					leftPage.setPositionRelativeToParent(getCenterPointLocal().addLocal(new Vector3D(-leftPage.getWidthXY(TransformSpace.RELATIVE_TO_PARENT)/2-5,0)));
 					leftPage.removeAllGestureEventListeners();
-					leftPage.registerInputProcessor(new TapProcessor(pApplet));
-					leftPage.addGestureListener(TapProcessor.class, new IGestureEventListener() {
+					leftPage.addGestureListener(DragProcessor.class, new IGestureEventListener() {
+						Vector3D from;
+						
 						@Override
 						public boolean processGestureEvent(MTGestureEvent ge) {
-							TapEvent te = (TapEvent) ge;
-							if (te.getTapID() == TapEvent.TAPPED) {
-								showPages(leftPageIndex-2, rightPageIndex-2);
+							DragEvent de = (DragEvent) ge;
+							
+							if (de.getId() == DragEvent.GESTURE_STARTED) {
+								from = de.getFrom();
+							} else if (de.getId() == DragEvent.GESTURE_ENDED) {
+								Vector3D translation = de.getTo().getSubtracted(from);
+								if (translation.getX() > 0)
+									showPages(leftPageIndex-2, rightPageIndex-2);
 							}
+							
 							return true;
 						}
 					});
@@ -82,14 +92,21 @@ public class MTBookPreviewPanel extends MTPanel {
 					rightPage.setHeightXYGlobal(getHeightXYGlobal());
 					rightPage.setPositionRelativeToParent(getCenterPointLocal().addLocal(new Vector3D(rightPage.getWidthXY(TransformSpace.RELATIVE_TO_PARENT)/2+5,0)));
 					rightPage.removeAllGestureEventListeners();
-					rightPage.registerInputProcessor(new TapProcessor(pApplet));
-					rightPage.addGestureListener(TapProcessor.class, new IGestureEventListener() {
+					rightPage.addGestureListener(DragProcessor.class, new IGestureEventListener() {
+						Vector3D from;
+						
 						@Override
 						public boolean processGestureEvent(MTGestureEvent ge) {
-							TapEvent te = (TapEvent) ge;
-							if (te.getTapID() == TapEvent.TAPPED) {
-								showPages(leftPageIndex+2, rightPageIndex+2);
+							DragEvent de = (DragEvent) ge;
+							
+							if (de.getId() == DragEvent.GESTURE_STARTED) {
+								from = de.getFrom();
+							} else if (de.getId() == DragEvent.GESTURE_ENDED) {
+								Vector3D translation = de.getTo().getSubtracted(from);
+								if (translation.getX() < 0)
+									showPages(leftPageIndex+2, rightPageIndex+2);
 							}
+							
 							return true;
 						}
 					});

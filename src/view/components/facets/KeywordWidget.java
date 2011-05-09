@@ -37,7 +37,7 @@ public class KeywordWidget extends MTAbstractWindow implements IFacetWidget {
 				16, 	//Font size
 				new MTColor(255,255,255));	//Font color
 		
-		list = new MTList(scene.getMTApplication(), 0, 0, getContainer().getWidthXY(TransformSpace.LOCAL)-10, getContainer().getHeightXY(TransformSpace.LOCAL)-53);
+		list = new MTList(scene.getMTApplication(), 0, 0, getContainer().getWidthXY(TransformSpace.LOCAL)-10, getContainer().getHeightXY(TransformSpace.LOCAL)-45);
 		getContainer().addChild(list);
 		list.setPositionRelativeToParent(new Vector3D(5,5,0).addLocal(list.getCenterOfMass2DLocal()));
 		list.setNoFill(true);
@@ -50,7 +50,7 @@ public class KeywordWidget extends MTAbstractWindow implements IFacetWidget {
 		selectAllButton.setStrokeWeight(2.5f);
 		selectAllButton.setStrokeColor(new MTColor(255, 255, 255, 150));
 		selectAllButton.setAnchor(PositionAnchor.LOWER_RIGHT);
-		selectAllButton.setPositionRelativeToParent(new Vector3D(getContainer().getWidthXY(TransformSpace.LOCAL)-10, getContainer().getHeightXY(TransformSpace.LOCAL)-10));
+		selectAllButton.setPositionRelativeToParent(new Vector3D(getContainer().getWidthXY(TransformSpace.LOCAL)-5, getContainer().getHeightXY(TransformSpace.LOCAL)-5));
 		selectAllButton.removeAllGestureEventListeners();
 		selectAllButton.registerInputProcessor(new TapProcessor(scene.getMTApplication()));
 		selectAllButton.addGestureListener(TapProcessor.class, new IGestureEventListener() {
@@ -76,7 +76,7 @@ public class KeywordWidget extends MTAbstractWindow implements IFacetWidget {
 		deselectAllButton.setStrokeWeight(2.5f);
 		deselectAllButton.setStrokeColor(new MTColor(255, 255, 255, 150));
 		deselectAllButton.setAnchor(PositionAnchor.LOWER_LEFT);
-		deselectAllButton.setPositionRelativeToParent(new Vector3D(10, getContainer().getHeightXY(TransformSpace.LOCAL)-10));
+		deselectAllButton.setPositionRelativeToParent(new Vector3D(5, getContainer().getHeightXY(TransformSpace.LOCAL)-5));
 		deselectAllButton.removeAllGestureEventListeners();
 		deselectAllButton.registerInputProcessor(new TapProcessor(scene.getMTApplication()));
 		deselectAllButton.addGestureListener(TapProcessor.class, new IGestureEventListener() {

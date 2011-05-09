@@ -54,13 +54,40 @@ public class SuggestableScene extends AbstractScene {
 		getCanvas().addChild(background);
 		
 		// Create the layers
+		initializePanLayer();
 		widgetLayer = new WidgetLayer(this);
-		panLayer = new PanLayer(this);
-		getCanvas().addChild(panLayer);
 		getCanvas().addChild(widgetLayer);
 		
 		float x = getMTApplication().getWidth()/2;
 		float y = getMTApplication().getHeight()/2;
+		
+		initializeWidgets();
+		
+		// Messages
+		bookNeededMessage = new MTMessage(this, "Place a book to scan it and start, \nyou can take it away afterwards.");
+		getCanvas().addChild(bookNeededMessage);
+		bookNeededMessage.removeAllGestureEventListeners();
+		bookNeededMessage.setPositionRelativeToParent(new Vector3D(x,y));
+		
+		// Fonts
+		FontManager.getInstance().createFont(getMTApplication(), "fonts/Trebuchet MS.ttf", 
+				12, 							// Font size
+				new MTColor(255,255,255));	// Font color
+	}
+
+	@Override
+	public void shutDown() {
+		// TODO Auto-generated method stub
+	}
+	
+	public void initializeWidgets() {
+		float y = getMTApplication().getHeight()/2;
+		
+		if (keywordWidget != null)
+			keywordWidget.destroy();
+		
+		if (timelineWidget != null)
+			timelineWidget.destroy();
 		
 		// Create the facet widgets
 		keywordWidget = new KeywordWidget(this, 300, y/2, 400, 400);
@@ -73,21 +100,14 @@ public class SuggestableScene extends AbstractScene {
 		widgetLayer.addChild(getTimelineWidget());
 		// Keep the widgets separate
 		registerPreDrawAction(new ComponentDistancePreDrawAction(getTimelineWidget(), getKeywordWidget()));
-		
-		// Messages
-		bookNeededMessage = new MTMessage(this, "Place a book to scan it and start, \nyou can take it away afterwards.");
-		getCanvas().addChild(bookNeededMessage);
-		bookNeededMessage.setPositionRelativeToParent(new Vector3D(x,y));
-		
-		// Fonts
-		FontManager.getInstance().createFont(getMTApplication(), "fonts/Trebuchet MS.ttf", 
-				12, 							// Font size
-				new MTColor(255,255,255));	// Font color
 	}
-
-	@Override
-	public void shutDown() {
-		// TODO Auto-generated method stub
+	
+	public void initializePanLayer() {
+		if (panLayer != null)
+			panLayer.destroy();
+		
+		panLayer = new PanLayer(this);
+		getCanvas().addChild(panLayer);
 	}
 	
 	protected KeywordWidget getKeywordWidget() {
@@ -185,6 +205,7 @@ public class SuggestableScene extends AbstractScene {
 			gp.addObserver(new SuggestedElementBirthObserver(this,element));
 			gp.setLimit(20);
 			Thread thread = new Thread(gp);
+			element.setLoading(true);
 			thread.start();
 		} catch (BookshelfUnavailableException e) {
 			// TODO Auto-generated catch block

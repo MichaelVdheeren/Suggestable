@@ -62,17 +62,17 @@ public class MTMetadataPanel extends MTPanel {
 			
 			meta.setText(metaString);
 			
-			MTTextArea content = new MTTextArea(pApplet, 0, 0, width-10, height-cover.getHeightXY(TransformSpace.GLOBAL)+15,font);
-			content.setNoFill(true);
-			content.setNoStroke(true);
-			addChild(content);
-			content.setAnchor(PositionAnchor.UPPER_LEFT);
-			content.setPositionRelativeToParent(new Vector3D(5,cover.getHeightXY(TransformSpace.GLOBAL)+10));
+			MTTextArea summary = new MTTextArea(pApplet, 0, 0, width-10, height-cover.getHeightXY(TransformSpace.GLOBAL)-20,font);
+			summary.setNoFill(true);
+			summary.setNoStroke(true);
+			addChild(summary);
+			summary.setAnchor(PositionAnchor.UPPER_LEFT);
+			summary.setPositionRelativeToParent(new Vector3D(5,cover.getHeightXY(TransformSpace.GLOBAL)+10));
 			
 			if (book.hasSummary())
-				content.setText(book.getSummary());
+				summary.setText(book.getSummary());
 			else
-				content.setText("No summary available");
+				summary.setText("No summary available");
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

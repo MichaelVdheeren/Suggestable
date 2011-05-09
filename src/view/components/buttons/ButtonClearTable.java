@@ -18,6 +18,8 @@ public class ButtonClearTable extends OrbButton {
 				TapEvent te = (TapEvent) ge;
 				if (te.getTapID() == TapEvent.TAPPED) {
 					scene.removeAllElements();
+					scene.initializeWidgets();
+					scene.initializePanLayer();
 				}
 				return true;
 			}
