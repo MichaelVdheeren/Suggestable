@@ -3,7 +3,10 @@ package view.elements.observers;
 import java.util.Observable;
 import java.util.Observer;
 
+import org.mt4j.util.math.Vector3D;
+
 import view.elements.RetrievedElement;
+import view.elements.actions.CreatedElementPreDrawAction;
 import bookshelf.apis.libis.LibisBook;
 import controllers.SuggestableScene;
 
@@ -18,11 +21,6 @@ public class RetrievedElementBirthObserver implements Observer {
 	public void update(Observable o, Object arg) {
 		LibisBook book = (LibisBook) arg;
 		RetrievedElement p = new RetrievedElement(getScene(), 125, book);
-		
-//		Vector3D position = new Vector3D(100, -100);
-//		Random r = new Random();
-//		position.rotateZ(r.nextInt(90));
-		
 		getScene().addElement(p);
 	}
 

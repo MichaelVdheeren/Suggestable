@@ -1,20 +1,26 @@
-package view.components.actions;
+package view.elements.actions;
 
-import org.mt4j.components.visibleComponents.shapes.AbstractShape;
+import java.util.Random;
+
 import org.mt4j.util.math.Vector3D;
 
-import view.elements.actions.AbstractElementPreDrawAction;
+import view.elements.AbstractElement;
 
-public class ComponentCreatedPreDrawAction extends AbstractElementPreDrawAction {
+
+public class CreatedElementPreDrawAction extends AbstractElementPreDrawAction {
 	private final Vector3D centerTN1;
-	private final AbstractShape component2;
-	private static final float springK = 0.03f;
-	private static final float targetLength = 600;
+	private final AbstractElement component2;
+	private final float springK = 0.03f;
+	private final float targetLength;
 	private boolean stopLoop = false;
 	
-	public ComponentCreatedPreDrawAction(Vector3D vector, AbstractShape component) {
+	public CreatedElementPreDrawAction(Vector3D vector, AbstractElement element) {
 		this.centerTN1 = vector;
-		this.component2 = component;
+		this.component2 = element;
+		addAssociatedElement(element);
+		
+		Random r = new Random();
+		targetLength = 300 + r.nextInt(500);
 	}
 	
 	@Override
@@ -30,7 +36,7 @@ public class ComponentCreatedPreDrawAction extends AbstractElementPreDrawAction 
 		
 		distanceVector.scaleLocal(1/distance*springK*(distance-targetLength));
 		
-		if(distance > targetLength) {
+		if(distance > targetLength || component2.isDragged()) {
 			stopLoop = true;
 		}
 

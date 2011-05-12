@@ -4,7 +4,6 @@ import org.mt4j.util.math.Vector3D;
 
 import view.elements.SuggestedElement;
 
-//TODO: some calculations in here can be done quite better!
 public class UnrelatedElementPreDrawAction extends AbstractElementPreDrawAction {
 	private final SuggestedElement component1;
 	private final SuggestedElement component2;

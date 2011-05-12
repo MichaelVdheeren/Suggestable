@@ -32,11 +32,13 @@ public class SuggestedElement extends AbstractElement {
 	private final GoogleBook book;
 	private final MTRoundRectangle child;
 	private final MTTextArea text;
+	private final SuggestableScene scene;
 
 	private final ArrayList<RetrievedElement> associatedElements = new ArrayList<RetrievedElement>();
 	
 	public SuggestedElement(final SuggestableScene scene, float s, GoogleBook book) {
 		super(scene);
+		this.scene = scene;
 		this.child = new MTRoundRectangle(scene.getMTApplication(), 0, 0, 0, s, s, 5, 5);
 		
 		this.book = book;
@@ -131,6 +133,8 @@ public class SuggestedElement extends AbstractElement {
 	protected void destroyComponent() {
 		// Nothing.
 	}
+	
+	
 
 	@Override
 	public void drawComponent(PGraphics g) {

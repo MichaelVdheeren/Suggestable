@@ -1,4 +1,4 @@
-package view.components.facets;
+package view.components.widgets;
 
 import org.mt4j.components.TransformSpace;
 import org.mt4j.components.visibleComponents.shapes.MTEllipse;

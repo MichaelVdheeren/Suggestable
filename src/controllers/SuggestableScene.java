@@ -10,16 +10,17 @@ import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
 
 import view.components.MTMessage;
-import view.components.actions.ComponentCreatedPreDrawAction;
 import view.components.actions.ComponentDistancePreDrawAction;
-import view.components.facets.KeywordWidget;
-import view.components.facets.TimelineWidget;
 import view.components.specific.MTInformationWindow;
 import view.components.specific.MTTrashCan;
+import view.components.widgets.BarcodeWidget;
+import view.components.widgets.KeywordWidget;
+import view.components.widgets.TimelineWidget;
 import view.elements.AbstractElement;
 import view.elements.RetrievedElement;
 import view.elements.SuggestedElement;
 import view.elements.actions.AbstractElementPreDrawAction;
+import view.elements.actions.CreatedElementPreDrawAction;
 import view.elements.actions.RelatedElementPreDrawAction;
 import view.elements.actions.UnrelatedElementPreDrawAction;
 import view.elements.observers.SuggestedElementBirthObserver;
@@ -39,6 +40,7 @@ public class SuggestableScene extends AbstractScene {
 	
 	private KeywordWidget keywordWidget;
 	private TimelineWidget timelineWidget;
+	private BarcodeWidget barcodeWidget;
 	
 	private MTMessage bookNeededMessage;
 	
@@ -81,6 +83,7 @@ public class SuggestableScene extends AbstractScene {
 	}
 	
 	public void initializeWidgets() {
+		float x = getMTApplication().getWidth()/2;
 		float y = getMTApplication().getHeight()/2;
 		
 		if (keywordWidget != null)
@@ -89,15 +92,21 @@ public class SuggestableScene extends AbstractScene {
 		if (timelineWidget != null)
 			timelineWidget.destroy();
 		
+		if (barcodeWidget != null)
+			barcodeWidget.destroy();
+		
 		// Create the facet widgets
 		keywordWidget = new KeywordWidget(this, 300, y/2, 400, 400);
 		timelineWidget = new TimelineWidget(this, 300, y+y/2, 400, 200);
+		barcodeWidget = new BarcodeWidget(this, x, y, 400, 400);
 		// Hide the facet widgets
 		getKeywordWidget().setVisible(false);
 		getTimelineWidget().setVisible(false);
+		getBarcodeWidget().setVisible(false);
 		// Add the widgets to the widget layer
 		widgetLayer.addChild(getKeywordWidget());
 		widgetLayer.addChild(getTimelineWidget());
+		widgetLayer.addChild(getBarcodeWidget());
 		// Keep the widgets separate
 		registerPreDrawAction(new ComponentDistancePreDrawAction(getTimelineWidget(), getKeywordWidget()));
 	}
@@ -116,6 +125,10 @@ public class SuggestableScene extends AbstractScene {
 	
 	private TimelineWidget getTimelineWidget() {
 		return this.timelineWidget;
+	}
+	
+	private BarcodeWidget getBarcodeWidget() {
+		return this.barcodeWidget;
 	}
 	
 	public MTTrashCan getTrashcan() {
@@ -151,12 +164,18 @@ public class SuggestableScene extends AbstractScene {
 	public void showTimelineWidget() {
 		getTimelineWidget().setVisible(true);
 	}
+	
+	public boolean containsElement(RetrievedElement element) {
+		return retrievedElements.contains(element);
+	}
 
 	public synchronized void addElement(SuggestedElement s, RetrievedElement element) {
-		// Nasty solution to prevent adding suggestions for deleted items
-		// Should in fact stop the thread, need to look more in depth for that
-		if (!retrievedElements.contains(element))
-			return;
+//		// Nasty solution to prevent adding suggestions for deleted items
+//		// Should in fact stop the thread, need to look more in depth for that
+//		if (!retrievedElements.contains(element))
+//			return;
+		
+		
 		
 		int i = suggestedElements.indexOf(s);
 		
@@ -178,27 +197,24 @@ public class SuggestableScene extends AbstractScene {
 			
 			s.setPositionRelativeToOther(element, position);
 		}
-		
+
 		s.addAssociatedElement(element);
-		registerAssiciatedAction(new RelatedElementPreDrawAction(element, s));
+		registerAssociatedAction(new RelatedElementPreDrawAction(element, s));
 		
 		for (SuggestedElement so : this.suggestedElements) {
-			registerAssiciatedAction(new UnrelatedElementPreDrawAction(so, s));
+			registerAssociatedAction(new UnrelatedElementPreDrawAction(so, s));
 		}
 	}
 
-	public synchronized void addElement(RetrievedElement element) {
-		if (retrievedElements.contains(element)) {
-			panToElement(element);
-			return;
-		}
-		
+	public synchronized void addElement(RetrievedElement element) {		
 		retrievedElements.add(element);
 		panLayer.addChild(element);
 		bookNeededMessage.setVisible(false);
 		
-		element.setPositionGlobal(new Vector3D(100, getMTApplication().getHeight()/2));
-		registerAssiciatedAction(new ComponentCreatedPreDrawAction(new Vector3D(0, getMTApplication().getHeight()/2),element));
+		Vector3D anchor = new Vector3D(0,getMTApplication().getHeight()/2);
+		
+		element.setPositionGlobal(new Vector3D(1,getMTApplication().getHeight()/2));
+		registerAssociatedAction(new CreatedElementPreDrawAction(panLayer.globalToLocal(anchor),element));
 		
 		try {
 			GoogleBookProcessor gp = this.controller.getRelatedBooks(element.getBook());
@@ -212,15 +228,9 @@ public class SuggestableScene extends AbstractScene {
 			e.printStackTrace();
 		}
 	}
-	
-	private void panToElement(AbstractElement element) {
-		// TODO Auto-generated method stub
 
-	}
-
-	public void removeElement(RetrievedElement element) {
+	public synchronized void removeElement(RetrievedElement element) {
 		int i=0;
-		
 		while (i<suggestedElements.size()) {
 			suggestedElements.get(i).removeAssociatedElement(element);
 			
@@ -239,10 +249,11 @@ public class SuggestableScene extends AbstractScene {
 			bookNeededMessage.setVisible(true);
 	}
 	
-	public void removeElement(SuggestedElement element) {
+	public synchronized void removeElement(SuggestedElement element) {
 		if (element.getBook().hasPublishingYear())
 			timelineWidget.removeValue(element.getBook().getPublishingYear());
-		keywordWidget.removeKeywords(element.getBook().getKeywords());
+		if (element.getBook().hasKeywords())
+			keywordWidget.removeKeywords(element.getBook().getKeywords());
 
 		element.removeAllAssociatedElements();
 		
@@ -281,7 +292,7 @@ public class SuggestableScene extends AbstractScene {
 		widget.setPositionGlobal(new Vector3D(getMTApplication().getWidth()/2, getMTApplication().getHeight()/2));
 	}
 	
-	public void registerAssiciatedAction(AbstractElementPreDrawAction action) {
+	public void registerAssociatedAction(AbstractElementPreDrawAction action) {
 		super.registerPreDrawAction(action);
 		associatedActions.add(action);
 	}
@@ -298,5 +309,9 @@ public class SuggestableScene extends AbstractScene {
 				i++;
 			}
 		}
+	}
+
+	public void showBarcodeWidget() {
+		getBarcodeWidget().setVisible(true);
 	}
 }

@@ -1,4 +1,4 @@
-package view.components.facets;
+package view.components.widgets;
 
 import org.mt4j.components.visibleComponents.font.FontManager;
 import org.mt4j.components.visibleComponents.font.IFont;

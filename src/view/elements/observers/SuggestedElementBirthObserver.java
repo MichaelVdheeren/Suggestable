@@ -24,7 +24,9 @@ public class SuggestedElementBirthObserver implements Observer {
 		AbstractBookProcessor processor = (AbstractBookProcessor) o;
 		
 		SuggestedElement s = new SuggestedElement(getScene(), 100, book);
-		getScene().addElement(s, p);
+		
+		if (!p.isDestroyed())
+			getScene().addElement(s, p);
 		
 		if (processor.isFinished())
 			p.setLoading(false);

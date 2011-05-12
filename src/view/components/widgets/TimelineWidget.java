@@ -1,4 +1,4 @@
-package view.components.facets;
+package view.components.widgets;
 
 import java.util.ArrayList;
 import java.util.Collections;

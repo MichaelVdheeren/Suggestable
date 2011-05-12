@@ -7,6 +7,8 @@ import bookshelf.AbstractBook;
 import controllers.SuggestableScene;
 
 public abstract class AbstractElement extends AbstractShape {
+	private boolean destroyed = false;
+	
 	public AbstractElement(SuggestableScene scene) {
 		super(scene.getMTApplication(), new Vertex[0]);
 		this.setComposite(true);
@@ -24,6 +26,14 @@ public abstract class AbstractElement extends AbstractShape {
 
 	public abstract AbstractBook getBook();
 	
+	public void destroy() {
+		super.destroy();
+		this.destroyed = true;
+	}
+	
+	public boolean isDestroyed() {
+		return this.destroyed;
+	}
 
 	@Override
 	public int hashCode() {
