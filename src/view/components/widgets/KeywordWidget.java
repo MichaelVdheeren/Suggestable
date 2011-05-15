@@ -27,7 +27,6 @@ public class KeywordWidget extends MTAbstractWindow implements IFacetWidget {
 	private final SuggestableScene scene;
 	private final float minImportance = 0.7f;
 	private final MTTextArea warning;
-//	private final MTTextField selectAll;
 	
 	public KeywordWidget(final SuggestableScene scene, float x, float y, float w, float h) {
 		super(scene.getMTApplication(), x, y, w, h, "Keywords");

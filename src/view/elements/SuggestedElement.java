@@ -15,6 +15,8 @@ import org.mt4j.components.visibleComponents.widgets.MTTextArea;
 import org.mt4j.input.inputProcessors.IGestureEventListener;
 import org.mt4j.input.inputProcessors.MTGestureEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProcessor;
+import org.mt4j.input.inputProcessors.componentProcessors.tapAndHoldProcessor.TapAndHoldEvent;
+import org.mt4j.input.inputProcessors.componentProcessors.tapAndHoldProcessor.TapAndHoldProcessor;
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProcessor;
 import org.mt4j.util.MTColor;
@@ -24,6 +26,7 @@ import org.mt4j.util.math.Vector3D;
 import processing.core.PGraphics;
 import processing.core.PImage;
 import view.elements.gestures.DragElementListener;
+import view.elements.gestures.TapAndHoldElementListener;
 import view.elements.gestures.TrashSuggestedElementListener;
 import bookshelf.apis.google.GoogleBook;
 import controllers.SuggestableScene;
@@ -32,13 +35,11 @@ public class SuggestedElement extends AbstractElement {
 	private final GoogleBook book;
 	private final MTRoundRectangle child;
 	private final MTTextArea text;
-	private final SuggestableScene scene;
 
 	private final ArrayList<RetrievedElement> associatedElements = new ArrayList<RetrievedElement>();
 	
 	public SuggestedElement(final SuggestableScene scene, float s, GoogleBook book) {
 		super(scene);
-		this.scene = scene;
 		this.child = new MTRoundRectangle(scene.getMTApplication(), 0, 0, 0, s, s, 5, 5);
 		
 		this.book = book;
@@ -60,9 +61,9 @@ public class SuggestedElement extends AbstractElement {
 			cover.setStrokeColor(new MTColor(0, 255, 255, 150));
 			float scaleFactor = child.getHeightXY(TransformSpace.GLOBAL)/cover.getHeightXY(TransformSpace.GLOBAL);
 			cover.scaleGlobal(scaleFactor, scaleFactor, 1, cover.getCenterPointGlobal());
-		} catch (IOException e1) {
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			e.printStackTrace();
 		}
 		
 		IFont font = FontManager.getInstance().createFont(scene.getMTApplication(), "fonts/Trebuchet MS.ttf", 
@@ -84,6 +85,23 @@ public class SuggestedElement extends AbstractElement {
 				
 				if (te.getTapID() == TapEvent.TAPPED) {
 					scene.showInformationWindow(self);
+				}
+				return true;
+			}
+		});
+		registerInputProcessor(new TapAndHoldProcessor(scene.getMTApplication()));
+		addGestureListener(TapAndHoldProcessor.class, new TapAndHoldElementListener(scene.getMTApplication(), scene.getPanLayer()));
+		addGestureListener(TapAndHoldProcessor.class, new IGestureEventListener() {
+			@Override
+			public boolean processGestureEvent(MTGestureEvent ge) {
+				TapAndHoldEvent te = (TapAndHoldEvent) ge;
+				
+				if (te.isHoldComplete()) {
+					RetrievedElement element = new RetrievedElement(scene, null, getBook(), 125);
+					element.transform(getGlobalMatrix());
+					element.setPositionGlobal(getCenterPointLocal());
+					scene.removeElement(self);
+					scene.addElement(element);
 				}
 				return true;
 			}

@@ -22,7 +22,6 @@ import view.elements.AbstractElement;
 import view.elements.RetrievedElement;
 import view.elements.SuggestedElement;
 import view.elements.actions.AbstractElementPreDrawAction;
-import view.elements.actions.CreatedElementPreDrawAction;
 import view.elements.actions.RelatedElementPreDrawAction;
 import view.elements.actions.UnrelatedElementPreDrawAction;
 import view.elements.observers.RetrievedElementBirthObserver;
@@ -50,7 +49,6 @@ public class SuggestableScene extends AbstractScene {
 	private BarcodeWidget barcodeWidget;
 	
 	private MTMessage bookNeededMessage;
-	//private MTMessage tagFoundMessage;
 	
 	public SuggestableScene(SuggestableApplication application) {
 		super(application, "Suggestable Scene");
@@ -247,12 +245,7 @@ public class SuggestableScene extends AbstractScene {
 		retrievedElements.add(element);
 		panLayer.addChild(element);
 		bookNeededMessage.setVisible(false);
-		
-		Vector3D anchor = new Vector3D(0,getMTApplication().getHeight()/2);
-		
-		element.setPositionGlobal(new Vector3D(1,getMTApplication().getHeight()/2));
-		registerAssociatedAction(new CreatedElementPreDrawAction(panLayer.globalToLocal(anchor),element));
-		
+
 		try {
 			GoogleBookProcessor gp = this.bookController.getRelatedBooks(element.getBook());
 			gp.addObserver(new SuggestedElementBirthObserver(this,element));
@@ -288,10 +281,8 @@ public class SuggestableScene extends AbstractScene {
 	}
 	
 	public synchronized void removeElement(SuggestedElement element) {
-		if (element.getBook().hasPublishingYear())
-			timelineWidget.removeValue(element.getBook().getPublishingYear());
-		if (element.getBook().hasKeywords())
-			keywordWidget.removeKeywords(element.getBook().getKeywords());
+		timelineWidget.removeValue(element.getBook().getPublishingYear());
+		keywordWidget.removeKeywords(element.getBook().getKeywords());
 
 		element.removeAllAssociatedElements();
 		
@@ -355,5 +346,13 @@ public class SuggestableScene extends AbstractScene {
 
 	public void showBarcodeWidget() {
 		getBarcodeWidget().processTag(null);
+	}
+
+	public WidgetLayer getWidgetLayer() {
+		return widgetLayer;
+	}
+
+	public PanLayer getPanLayer() {
+		return panLayer;
 	}
 }

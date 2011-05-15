@@ -19,16 +19,16 @@ import rfid.idtronic.evo.desktop.hf.EDHFReply;
 import view.components.MTSpinner;
 import view.elements.gestures.DragElementListener;
 import view.elements.gestures.TrashRetrievedElementListener;
-import bookshelf.apis.libis.LibisBook;
+import bookshelf.AbstractBook;
 import controllers.SuggestableScene;
 
 public class RetrievedElement extends AbstractElement {
-	private final LibisBook book;
+	private final AbstractBook book;
 	private final MTRoundRectangle child;
 	private final MTSpinner spinner;
 	private final EDHFReply tag;
 	
-	public RetrievedElement(SuggestableScene scene, EDHFReply tag, LibisBook book, float s) {
+	public RetrievedElement(SuggestableScene scene, EDHFReply tag, AbstractBook book, float s) {
 		super(scene);
 		this.child = new MTRoundRectangle(scene.getMTApplication(), 0, 0, 0, s, s, 5, 5);
 		this.tag = tag;
@@ -49,9 +49,9 @@ public class RetrievedElement extends AbstractElement {
 			cover.setStrokeColor(new MTColor(0, 255, 255, 150));
 			float scaleFactor = child.getHeightXY(TransformSpace.GLOBAL)/cover.getHeightXY(TransformSpace.GLOBAL);
 			cover.scaleGlobal(scaleFactor, scaleFactor, 1, cover.getCenterPointGlobal());
-		} catch (IOException e1) {
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			e.printStackTrace();
 		}
 		
 		spinner = new MTSpinner(scene.getMTApplication(), new Vector3D(s/2, s/2), s*1/16, s*3/16, 12);
@@ -63,7 +63,7 @@ public class RetrievedElement extends AbstractElement {
 	}
 	
 	@Override
-	public LibisBook getBook() {
+	public AbstractBook getBook() {
 		return this.book;
 	}
 	
