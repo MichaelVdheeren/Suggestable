@@ -25,7 +25,7 @@ public class KeywordWidget extends MTAbstractWindow implements IFacetWidget {
 	private TreeMap<Keyword,KeywordCell> keywords = new TreeMap<Keyword,KeywordCell>();
 	private final MTList list;
 	private final SuggestableScene scene;
-	private final float minImportance = 0.7f;
+	private final float minImportance = 0.5f;
 	private final MTTextArea warning;
 	
 	public KeywordWidget(final SuggestableScene scene, float x, float y, float w, float h) {

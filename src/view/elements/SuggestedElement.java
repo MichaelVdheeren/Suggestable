@@ -97,9 +97,9 @@ public class SuggestedElement extends AbstractElement {
 				if (te.isHoldComplete()) {
 					RetrievedElement element = new RetrievedElement(scene, null, getBook(), 125);
 					element.transform(getGlobalMatrix());
-					element.setPositionGlobal(getCenterPointLocal());
 					scene.removeElement(self);
 					scene.addElement(element);
+					element.setPositionRelativeToParent(scene.getPanLayer().globalToLocal(getCenterPointGlobal()));
 				}
 				return true;
 			}
