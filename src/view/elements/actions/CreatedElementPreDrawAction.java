@@ -20,7 +20,7 @@ public class CreatedElementPreDrawAction extends AbstractElementPreDrawAction {
 		addAssociatedElement(element);
 		
 		Random r = new Random();
-		targetLength = 300 + r.nextInt(500);
+		targetLength = 300 + r.nextInt(700);
 	}
 	
 	@Override

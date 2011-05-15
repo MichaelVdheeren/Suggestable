@@ -52,8 +52,6 @@ public class SuggestedElement extends AbstractElement {
 		child.setComposite(true);
 		child.setBoundsAutoCompute(true);
 		
-		
-		
 		try {
 			final MTImage cover = new MTImage(scene.getMTApplication(), new PImage(getBook().getCover()));
 			child.addChild(cover);
