@@ -2,23 +2,14 @@ package controllers;
 import gnu.io.NoSuchPortException;
 import gnu.io.PortInUseException;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-
 import org.mt4j.MTApplication;
 import org.mt4j.input.inputProcessors.globalProcessors.CursorTracer;
 
-import rfid.AbstractReader;
 import rfid.ReplyEvent;
 import rfid.ReplyEventListener;
 import rfid.idtronic.evo.desktop.hf.EDHFReader;
+import rfid.idtronic.evo.desktop.hf.EDHFReply;
 import rfid.idtronic.evo.desktop.hf.iso15693.ReadCommand;
-
-import view.elements.observers.RetrievedElementBirthObserver;
-import bookshelf.apis.libis.LibisBookProcessor;
-import bookshelf.exceptions.BookNotFoundException;
-import bookshelf.exceptions.BookshelfUnavailableException;
-import bookshelf.exceptions.InvalidBarcodeException;
 
 
 /**
@@ -43,76 +34,26 @@ public class SuggestableApplication extends MTApplication {
 		// Add the scene to the application
 		this.addScene(scene);
 		// Create the reader
-//		try {
-//			AbstractReader reader = new EDHFReader("/dev/tty.SLAB_USBtoUART");
-//			reader.addListener(new ReplyEventListener() {
-//				
-//				@Override
-//				public void receivedReply(ReplyEvent event) {
-//					// TODO Auto-generated method stub
-//					
-//				}
-//			});
-//			reader.open();
-//			reader.execute(new ReadCommand(2, 1, 30, true));
-//		} catch (NoSuchPortException e) {
-//			System.out.println("The port could not be found!");
-//		} catch (PortInUseException e) {
-//			System.out.println("The port is in use!");
-//		}
-		
-		
-		
-		
-		addKeyListener(new KeyListener() {
-			
-			@Override
-			public void keyTyped(KeyEvent e) {
-				// TODO Auto-generated method stub
+		try {
+			EDHFReader reader = new EDHFReader("/dev/tty.SLAB_USBtoUART");
+			reader.addListener(new ReplyEventListener() {
 				
-			}
-			
-			@Override
-			public void keyReleased(KeyEvent e) {
-				try {
-					LibisBookProcessor lp = null;
-					switch (e.getKeyCode()) {
-											// An introduction to OO programming with Java
-						case KeyEvent.VK_1: lp = scene.getController().getBookByBarcode("009906485");
-											break;
-											// Understanding OO programming with Java
-						case KeyEvent.VK_2: lp = scene.getController().getBookByISBN("0-201-61273-9");
-											break;
-											// Learning Java
-						case KeyEvent.VK_3: lp = scene.getController().getBookByISBN("978-0-596-00873-4");
-											break;
-											// Object-oriented programming with Java : an introduction. 
-						case KeyEvent.VK_4: lp = scene.getController().getBookByISBN("0-13-086900-7");
-											break;
-											// Data structures and abstractions with Java.
-						case KeyEvent.VK_5: lp = scene.getController().getBookByISBN("0-13-204367-X");
-											break;
-					}
-					lp.addObserver(new RetrievedElementBirthObserver(scene));
-					lp.setLimit(1);
-					Thread thread = new Thread(lp,"Book Processor");
-					thread.start();
-				} catch (InvalidBarcodeException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (BookshelfUnavailableException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (BookNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+				@Override
+				public void receivedReply(ReplyEvent event) {
+					EDHFReply reply = (EDHFReply) event.getReply();
+					// Reading not good when result=aa0002018487bb
+					if (reply.getBytes()[2] != 0x6e)
+						return;
+					
+					scene.processTag(reply);
 				}
-			}
-			
-			@Override
-			public void keyPressed(KeyEvent e) {
-				// TODO Auto-generated method stub
-			}
-		});
+			});
+			reader.open();
+			reader.execute(new ReadCommand(2, 1, 30, true));
+		} catch (NoSuchPortException e) {
+			System.out.println("The port could not be found!");
+		} catch (PortInUseException e) {
+			System.out.println("The port is in use!");
+		}
 	}
 }

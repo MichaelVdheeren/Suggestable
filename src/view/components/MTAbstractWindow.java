@@ -17,6 +17,7 @@ import processing.core.PApplet;
 public abstract class MTAbstractWindow extends MTRoundRectangle {
 	private final MTTextArea title;
 	private final MTRoundRectangle container;
+	protected final MTSvgButton btnClose;
 	
 	public MTAbstractWindow(PApplet pApplet, float x, float y, float w, float h) {
 		super(pApplet, 0, 0,  0, w, h, 5, 5);
@@ -44,7 +45,7 @@ public abstract class MTAbstractWindow extends MTRoundRectangle {
 		container.setNoStroke(true);
 		container.removeAllGestureEventListeners();
 		
-		final MTSvgButton btnClose = new MTSvgButton(pApplet, "data/icons/close.svg");
+		btnClose = new MTSvgButton(pApplet, "data/icons/close.svg");
 		btnClose.setSizeXYGlobal(24, 24);
 		btnClose.setPositionRelativeToParent(new Vector3D(-17,17).addLocal(new Vector3D(w,0)));
 		btnClose.removeAllGestureEventListeners();
@@ -61,7 +62,6 @@ public abstract class MTAbstractWindow extends MTRoundRectangle {
 		});
 		
 		this.addChild(btnClose);
-		
 	}
 	
 	public MTAbstractWindow(PApplet pApplet, float x, float y, float w, float h, String title) {

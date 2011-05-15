@@ -15,6 +15,7 @@ import org.mt4j.util.math.Vector3D;
 
 import processing.core.PGraphics;
 import processing.core.PImage;
+import rfid.idtronic.evo.desktop.hf.EDHFReply;
 import view.components.MTSpinner;
 import view.elements.gestures.DragElementListener;
 import view.elements.gestures.TrashRetrievedElementListener;
@@ -25,11 +26,12 @@ public class RetrievedElement extends AbstractElement {
 	private final LibisBook book;
 	private final MTRoundRectangle child;
 	private final MTSpinner spinner;
+	private final EDHFReply tag;
 	
-	public RetrievedElement(SuggestableScene scene,float s, LibisBook book) {
+	public RetrievedElement(SuggestableScene scene, EDHFReply tag, LibisBook book, float s) {
 		super(scene);
 		this.child = new MTRoundRectangle(scene.getMTApplication(), 0, 0, 0, s, s, 5, 5);
-		
+		this.tag = tag;
 		this.book = book;
 		this.addChild(child);
 		this.setVertices(child.getVerticesLocal());
@@ -65,12 +67,9 @@ public class RetrievedElement extends AbstractElement {
 		return this.book;
 	}
 	
-//	public float getGForce() {
-//		float currentRadius = this.getWidthXYGlobal()/2;
-//		float gForce = 9.81f*currentRadius/radius;
-////		System.out.println("Current G-Force: "+gForce);
-//		return gForce;
-//	}
+	public EDHFReply getTag() {
+		return this.tag;
+	}
 
 	@Override
 	protected void drawPureGl(GL gl) {

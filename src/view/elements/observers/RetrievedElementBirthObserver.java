@@ -3,24 +3,24 @@ package view.elements.observers;
 import java.util.Observable;
 import java.util.Observer;
 
-import org.mt4j.util.math.Vector3D;
-
+import rfid.idtronic.evo.desktop.hf.EDHFReply;
 import view.elements.RetrievedElement;
-import view.elements.actions.CreatedElementPreDrawAction;
 import bookshelf.apis.libis.LibisBook;
 import controllers.SuggestableScene;
 
 public class RetrievedElementBirthObserver implements Observer {
 	private final SuggestableScene scene;
+	private final EDHFReply tag;
 	
-	public RetrievedElementBirthObserver(SuggestableScene scene) {
+	public RetrievedElementBirthObserver(SuggestableScene scene, EDHFReply tag) {
 		this.scene = scene;
+		this.tag = tag;
 	}
 	
 	@Override
 	public void update(Observable o, Object arg) {
 		LibisBook book = (LibisBook) arg;
-		RetrievedElement p = new RetrievedElement(getScene(), 125, book);
+		RetrievedElement p = new RetrievedElement(getScene(), tag, book, 125);
 		getScene().addElement(p);
 	}
 

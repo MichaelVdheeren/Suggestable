@@ -3,12 +3,14 @@ package controllers;
 import java.util.ArrayList;
 import java.util.Random;
 
+import org.mt4j.components.TransformSpace;
 import org.mt4j.components.visibleComponents.font.FontManager;
 import org.mt4j.components.visibleComponents.widgets.MTBackgroundImage;
 import org.mt4j.sceneManagement.AbstractScene;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
 
+import rfid.idtronic.evo.desktop.hf.EDHFReply;
 import view.components.MTMessage;
 import view.components.actions.ComponentDistancePreDrawAction;
 import view.components.specific.MTInformationWindow;
@@ -23,14 +25,19 @@ import view.elements.actions.AbstractElementPreDrawAction;
 import view.elements.actions.CreatedElementPreDrawAction;
 import view.elements.actions.RelatedElementPreDrawAction;
 import view.elements.actions.UnrelatedElementPreDrawAction;
+import view.elements.observers.RetrievedElementBirthObserver;
 import view.elements.observers.SuggestedElementBirthObserver;
 import view.layers.PanLayer;
 import view.layers.WidgetLayer;
 import bookshelf.apis.google.GoogleBookProcessor;
+import bookshelf.apis.libis.LibisBarcode;
+import bookshelf.apis.libis.LibisBookProcessor;
 import bookshelf.exceptions.BookshelfUnavailableException;
 
 public class SuggestableScene extends AbstractScene {
-	private final BookshelfController controller = new BookshelfController();
+	private final BookshelfController bookController = new BookshelfController();
+	private final TagController tagController = new TagController();
+	private final ArrayList<EDHFReply> tags = new ArrayList<EDHFReply>();
 	private final ArrayList<RetrievedElement> retrievedElements = new ArrayList<RetrievedElement>();
 	private final ArrayList<SuggestedElement> suggestedElements = new ArrayList<SuggestedElement>();
 	private final ArrayList<AbstractElementPreDrawAction> associatedActions = new ArrayList<AbstractElementPreDrawAction>();
@@ -43,6 +50,7 @@ public class SuggestableScene extends AbstractScene {
 	private BarcodeWidget barcodeWidget;
 	
 	private MTMessage bookNeededMessage;
+	//private MTMessage tagFoundMessage;
 	
 	public SuggestableScene(SuggestableApplication application) {
 		super(application, "Suggestable Scene");
@@ -61,7 +69,7 @@ public class SuggestableScene extends AbstractScene {
 		getCanvas().addChild(widgetLayer);
 		
 		float x = getMTApplication().getWidth()/2;
-		float y = getMTApplication().getHeight()/2;
+		//float y = getMTApplication().getHeight()/2;
 		
 		initializeWidgets();
 		
@@ -69,7 +77,7 @@ public class SuggestableScene extends AbstractScene {
 		bookNeededMessage = new MTMessage(this, "Place a book to scan it and start, \nyou can take it away afterwards.");
 		getCanvas().addChild(bookNeededMessage);
 		bookNeededMessage.removeAllGestureEventListeners();
-		bookNeededMessage.setPositionRelativeToParent(new Vector3D(x,y));
+		bookNeededMessage.setPositionRelativeToParent(new Vector3D(x,-5).addLocal(new Vector3D(0, bookNeededMessage.getHeightXY(TransformSpace.LOCAL)/2)));
 		
 		// Fonts
 		FontManager.getInstance().createFont(getMTApplication(), "fonts/Trebuchet MS.ttf", 
@@ -79,7 +87,7 @@ public class SuggestableScene extends AbstractScene {
 
 	@Override
 	public void shutDown() {
-		// TODO Auto-generated method stub
+		// Do nothing;
 	}
 	
 	public void initializeWidgets() {
@@ -98,7 +106,7 @@ public class SuggestableScene extends AbstractScene {
 		// Create the facet widgets
 		keywordWidget = new KeywordWidget(this, 300, y/2, 400, 400);
 		timelineWidget = new TimelineWidget(this, 300, y+y/2, 400, 200);
-		barcodeWidget = new BarcodeWidget(this, x, y, 400, 400);
+		barcodeWidget = new BarcodeWidget(this, x, y);
 		// Hide the facet widgets
 		getKeywordWidget().setVisible(false);
 		getTimelineWidget().setVisible(false);
@@ -135,8 +143,12 @@ public class SuggestableScene extends AbstractScene {
 		return widgetLayer.getTrashcan();
 	}
 
-	public BookshelfController getController() {
-		return controller;
+	public BookshelfController getBookController() {
+		return bookController;
+	}
+	
+	public TagController getTagController() {
+		return tagController;
 	}
 
 	public void removeAllElements() {
@@ -154,6 +166,7 @@ public class SuggestableScene extends AbstractScene {
 		keywordWidget.removeKeywords();
 		retrievedElements.clear();
 		suggestedElements.clear();
+		tags.clear();
 		bookNeededMessage.setVisible(true);
 	}
 
@@ -168,14 +181,40 @@ public class SuggestableScene extends AbstractScene {
 	public boolean containsElement(RetrievedElement element) {
 		return retrievedElements.contains(element);
 	}
+	
+	public synchronized void processTag(EDHFReply tag) {		
+		// Check if mapping exists, if not, ask user for barcode
+		if (!tagController.containsTag(tag)) {
+			// Ask user for barcode
+			barcodeWidget.processTag(tag);
+		} else {
+			// Retrieve barcode
+			LibisBarcode barcode = tagController.getBarcode(tag);
+			processBarcode(barcode, tag);
+		}
+	}
+	
+	public synchronized void processBarcode(LibisBarcode barcode, EDHFReply tag) {
+		if (tag != null && getTags().contains(tag))
+			return;
+		
+		try {
+			tags.add(tag);
+			LibisBookProcessor lp = getBookController().getBookByBarcode(barcode);
+			lp.addObserver(new RetrievedElementBirthObserver(this, tag));
+			lp.setLimit(1);
+			Thread thread = new Thread(lp,"Book Processor");
+			thread.start();
+		} catch (BookshelfUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	public synchronized void addElement(SuggestedElement s, RetrievedElement element) {
-//		// Nasty solution to prevent adding suggestions for deleted items
-//		// Should in fact stop the thread, need to look more in depth for that
-//		if (!retrievedElements.contains(element))
-//			return;
-		
-		
+		if (!s.getBook().hasPublishingYear()
+				|| !s.getBook().hasKeywords())
+			return;
 		
 		int i = suggestedElements.indexOf(s);
 		
@@ -183,10 +222,8 @@ public class SuggestableScene extends AbstractScene {
 			s = suggestedElements.get(i);
 		else {
 			suggestedElements.add(s);
-			if (s.getBook().hasPublishingYear())
-				timelineWidget.addValue(s.getBook().getPublishingYear());
-			if (s.getBook().hasKeywords())
-				keywordWidget.addKeywords(s.getBook().getKeywords());
+			timelineWidget.addValue(s.getBook().getPublishingYear());
+			keywordWidget.addKeywords(s.getBook().getKeywords());
 			
 			panLayer.addChild(s);
 			updateElement(s);
@@ -217,7 +254,7 @@ public class SuggestableScene extends AbstractScene {
 		registerAssociatedAction(new CreatedElementPreDrawAction(panLayer.globalToLocal(anchor),element));
 		
 		try {
-			GoogleBookProcessor gp = this.controller.getRelatedBooks(element.getBook());
+			GoogleBookProcessor gp = this.bookController.getRelatedBooks(element.getBook());
 			gp.addObserver(new SuggestedElementBirthObserver(this,element));
 			gp.setLimit(20);
 			Thread thread = new Thread(gp);
@@ -243,6 +280,7 @@ public class SuggestableScene extends AbstractScene {
 		
 		element.destroy();
 		retrievedElements.remove(element);
+		tags.remove(element.getTag());
 		unregisterAssociatedActions(element);
 		
 		if (retrievedElements.isEmpty())
@@ -286,8 +324,12 @@ public class SuggestableScene extends AbstractScene {
 		return result;
 	}
 	
+	public ArrayList<EDHFReply> getTags() {
+		return new ArrayList<EDHFReply>(tags);
+	}
+	
 	public void showInformationWindow(SuggestedElement element) {
-		MTInformationWindow widget = new MTInformationWindow(getMTApplication(), 0, 0, 850, 600, element.getBook());
+		MTInformationWindow widget = new MTInformationWindow(this, 0, 0, 850, 600, element.getBook());
 		widgetLayer.addChild(widget);
 		widget.setPositionGlobal(new Vector3D(getMTApplication().getWidth()/2, getMTApplication().getHeight()/2));
 	}
@@ -312,6 +354,6 @@ public class SuggestableScene extends AbstractScene {
 	}
 
 	public void showBarcodeWidget() {
-		getBarcodeWidget().setVisible(true);
+		getBarcodeWidget().processTag(null);
 	}
 }

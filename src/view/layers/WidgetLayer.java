@@ -5,7 +5,7 @@ import org.mt4j.util.math.Vector3D;
 
 import view.components.buttons.ButtonClearTable;
 import view.components.buttons.ButtonKeywords;
-import view.components.buttons.ButtonSearch;
+import view.components.buttons.ButtonBarcode;
 import view.components.buttons.ButtonTimeline;
 import view.components.specific.MTTrashCan;
 import view.components.specific.MTActionOrb;
@@ -22,7 +22,7 @@ public class WidgetLayer extends MTOverlayContainer {
 		float y = scene.getMTApplication().getHeight()/2;
 		
 		MTActionOrb orbWidget = new MTActionOrb(scene, x, y);
-		orbWidget.addButton(new ButtonSearch(scene));
+		orbWidget.addButton(new ButtonBarcode(scene));
 		orbWidget.addButton(new ButtonTimeline(scene));
 		orbWidget.addButton(new ButtonKeywords(scene));
 		orbWidget.addButton(new ButtonClearTable(scene));

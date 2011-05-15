@@ -8,9 +8,9 @@ import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProces
 import controllers.SuggestableScene;
 
 
-public class ButtonSearch extends OrbButton {
-	public ButtonSearch(final SuggestableScene scene) {
-		super(scene.getMTApplication(),"Search");
+public class ButtonBarcode extends OrbButton {
+	public ButtonBarcode(final SuggestableScene scene) {
+		super(scene.getMTApplication(),"Scan problem?");
 		registerInputProcessor(new TapProcessor(scene.getMTApplication()));
 		addGestureListener(TapProcessor.class, new IGestureEventListener() {
 			@Override

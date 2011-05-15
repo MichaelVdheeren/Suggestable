@@ -29,11 +29,22 @@ public class MTMessage extends AbstractShape {
 		setText(text);
 	}
 	
+	public MTMessage(SuggestableScene scene, String text, IFont font) {
+		super(scene.getMTApplication(), new Vertex[0]);
+		this.setComposite(true);
+		this.scene = scene;
+		setText(text,font);
+	}
+	
 	public void setText(String text) {
 		IFont font = FontManager.getInstance().createFont(scene.getMTApplication(), "fonts/Trebuchet MS.ttf", 
 				25, 	//Font size
 				new MTColor(255,255,255));	//Font color
 		
+		setText(text, font);
+	}
+	
+	public void setText(String text, IFont font) {	
 		if (textArea != null)
 			textArea.destroy();
 		
@@ -54,6 +65,7 @@ public class MTMessage extends AbstractShape {
 		container.setStrokeWeight(2.5f);
 		container.setStrokeColor(new MTColor(255, 255, 255, 150));
 		container.addChild(textArea);
+		setVertices(container.getVerticesLocal());
 		textArea.setPositionGlobal(container.getCenterPointGlobal());
 		addChild(container);
 	}

@@ -12,12 +12,13 @@ import rfid.idtronic.evo.desktop.hf.EDHFReply;
 import bookshelf.apis.libis.LibisBarcode;
 
 public class TagController {
+	private final String file = "tags.bin";
 	private HashMap<EDHFReply, LibisBarcode> tags;
-	
+
 	@SuppressWarnings("unchecked")
 	public TagController() {
 		try {
-			ObjectInputStream in = new ObjectInputStream(new FileInputStream("tags.bin"));
+			ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
 			this.tags = (HashMap<EDHFReply, LibisBarcode>) in.readObject();
 			in.close();
 		} catch (FileNotFoundException e) {
@@ -39,7 +40,7 @@ public class TagController {
 		this.tags.remove(tag);
 		
 		try {
-			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("tags.bin"));
+			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
 			out.writeObject(tags);
 			out.close();
 		} catch (FileNotFoundException e) {
@@ -53,7 +54,7 @@ public class TagController {
 		this.tags.put(tag, barcode);
 		
 		try {
-			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("tags.bin"));
+			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
 			out.writeObject(tags);
 			out.close();
 		} catch (FileNotFoundException e) {
