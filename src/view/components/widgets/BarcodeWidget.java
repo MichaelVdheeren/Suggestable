@@ -36,6 +36,7 @@ public class BarcodeWidget extends MTAbstractWindow {
 		barcode.setFillColor(new MTColor(0, 0, 0, 255));
 		barcode.setStrokeWeight(2.5f);
 		barcode.setStrokeColor(new MTColor(255, 255, 255, 150));
+		barcode.removeAllGestureEventListeners();
 		getContainer().addChild(barcode);
 		
 		MTTextArea buttons[] = new MTTextArea[12];
@@ -61,6 +62,9 @@ public class BarcodeWidget extends MTAbstractWindow {
 						TapEvent te = (TapEvent) ge;
 						
 						if (te.getTapID() == TapEvent.TAPPED) {
+							if (barcode.getText().length() <= 0)
+								return true;
+							
 							barcode.setText(barcode.getText().substring(0, barcode.getText().length()-1));
 							if (barcode.getText().length() == 9)
 								barcode.setFillColor(new MTColor(136, 185, 129, 255));
@@ -114,8 +118,10 @@ public class BarcodeWidget extends MTAbstractWindow {
 							if (tag != null)
 								scene.getTagController().addTag(getTag(), new LibisBarcode(barcode.getText()));
 							
-							setVisible(false);
 							scene.processBarcode(new LibisBarcode(barcode.getText()), tag);
+							setVisible(false);
+							barcode.setText("");
+							barcode.setFillColor(new MTColor(0, 0, 0, 255));
 						}
 						
 						return true;
