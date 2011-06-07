@@ -5,9 +5,9 @@ import java.util.Observer;
 
 import view.elements.RetrievedElement;
 import view.elements.SuggestedElement;
+import view.scene.SuggestableScene;
 import bookshelf.AbstractBookProcessor;
 import bookshelf.apis.google.GoogleBook;
-import controllers.SuggestableScene;
 
 public class SuggestedElementBirthObserver implements Observer {
 	private final SuggestableScene scene;

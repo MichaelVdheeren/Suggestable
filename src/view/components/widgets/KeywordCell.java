@@ -11,7 +11,7 @@ import org.mt4j.util.math.Vector3D;
 import bookshelf.Keyword;
 
 import view.components.MTPercentageIndicator;
-import controllers.SuggestableScene;
+import view.scene.SuggestableScene;
 
 public class KeywordCell extends MTListCell {
 	

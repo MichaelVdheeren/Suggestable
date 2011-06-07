@@ -9,7 +9,7 @@ import view.components.buttons.ButtonBarcode;
 import view.components.buttons.ButtonTimeline;
 import view.components.specific.MTTrashCan;
 import view.components.specific.MTActionOrb;
-import controllers.SuggestableScene;
+import view.scene.SuggestableScene;
 
 public class WidgetLayer extends MTOverlayContainer {
 //	private final OrbWidget orbWidget;

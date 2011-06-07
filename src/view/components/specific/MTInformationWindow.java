@@ -9,8 +9,8 @@ import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProces
 import view.components.MTAbstractWindow;
 import view.components.MTPanel;
 import view.components.MTPanelContainer;
+import view.scene.SuggestableScene;
 import bookshelf.apis.google.GoogleBook;
-import controllers.SuggestableScene;
 
 public class MTInformationWindow extends MTAbstractWindow {
 	public MTInformationWindow(SuggestableScene scene, float x, float y, float w, float h, GoogleBook book) {

@@ -3,7 +3,8 @@ package view.layers;
 import org.mt4j.components.visibleComponents.shapes.MTEllipse;
 import org.mt4j.util.math.Vector3D;
 
-import controllers.SuggestableScene;
+import view.scene.SuggestableScene;
+
 
 public class PanLayer extends MTEllipse {
 //	private final OrbWidget orbWidget;

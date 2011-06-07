@@ -3,8 +3,9 @@ package view.elements;
 import org.mt4j.components.visibleComponents.shapes.AbstractShape;
 import org.mt4j.util.math.Vertex;
 
+import view.scene.SuggestableScene;
+
 import bookshelf.AbstractBook;
-import controllers.SuggestableScene;
 
 public abstract class AbstractElement extends AbstractShape {
 	private boolean destroyed = false;

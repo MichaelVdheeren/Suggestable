@@ -14,8 +14,8 @@ import org.mt4j.util.math.Vector3D;
 import org.mt4j.util.math.Vertex;
 
 import processing.core.PGraphics;
+import view.scene.SuggestableScene;
 
-import controllers.SuggestableScene;
 
 public class MTMessage extends AbstractShape {
 	private MTTextArea textArea;

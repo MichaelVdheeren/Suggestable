@@ -16,7 +16,7 @@ import org.mt4j.util.math.Vector3D;
 import processing.core.PApplet;
 import view.components.MTAbstractWindow;
 import view.elements.SuggestedElement;
-import controllers.SuggestableScene;
+import view.scene.SuggestableScene;
 
 public class TimelineWidget extends MTAbstractWindow implements IFacetWidget {
 	private final ArrayList<Integer> values = new ArrayList<Integer>();
@@ -72,16 +72,19 @@ public class TimelineWidget extends MTAbstractWindow implements IFacetWidget {
 		this.addChild(lowestValue);
 		lowestValue.setNoStroke(true);
 		lowestValue.setNoFill(true);
+		lowestValue.removeAllGestureEventListeners();
 		
 		highestValue = new MTTextArea(pApplet, legendFont);
 		this.addChild(highestValue);
 		highestValue.setNoStroke(true);
 		highestValue.setNoFill(true);
+		highestValue.removeAllGestureEventListeners();
 		
 		scaleLine = new MTLine(pApplet, 0, 0, getContainer().getWidthXY(TransformSpace.GLOBAL)-10, 0);
 		this.addChild(scaleLine);
 		scaleLine.setVisible(false);
 		scaleLine.setStrokeWeight(3);
+		scaleLine.removeAllGestureEventListeners();
 		scaleLine.setPositionRelativeToOther(getContainer(),new Vector3D(getContainer().getWidthXY(TransformSpace.GLOBAL)/2, getContainer().getHeightXY(TransformSpace.GLOBAL)));
 	}
 	

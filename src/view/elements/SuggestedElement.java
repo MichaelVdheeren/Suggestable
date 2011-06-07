@@ -28,8 +28,8 @@ import processing.core.PImage;
 import view.elements.gestures.DragElementListener;
 import view.elements.gestures.TapAndHoldElementListener;
 import view.elements.gestures.TrashSuggestedElementListener;
+import view.scene.SuggestableScene;
 import bookshelf.apis.google.GoogleBook;
-import controllers.SuggestableScene;
 
 public class SuggestedElement extends AbstractElement {
 	private final GoogleBook book;

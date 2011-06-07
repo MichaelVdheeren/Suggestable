@@ -5,7 +5,8 @@ import org.mt4j.components.visibleComponents.widgets.buttons.MTSvgButton;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
 
-import controllers.SuggestableScene;
+import view.scene.SuggestableScene;
+
 
 public class MTTrashCan extends MTEllipse {
 	private float scale = 1/1.2f;

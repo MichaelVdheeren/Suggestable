@@ -19,8 +19,8 @@ import rfid.idtronic.evo.desktop.hf.EDHFReply;
 import view.components.MTSpinner;
 import view.elements.gestures.DragElementListener;
 import view.elements.gestures.TrashRetrievedElementListener;
+import view.scene.SuggestableScene;
 import bookshelf.AbstractBook;
-import controllers.SuggestableScene;
 
 public class RetrievedElement extends AbstractElement {
 	private final AbstractBook book;

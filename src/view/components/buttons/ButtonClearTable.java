@@ -5,7 +5,8 @@ import org.mt4j.input.inputProcessors.MTGestureEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProcessor;
 
-import controllers.SuggestableScene;
+import view.scene.SuggestableScene;
+
 
 
 public class ButtonClearTable extends OrbButton {

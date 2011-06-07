@@ -9,8 +9,8 @@ import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
 
 import view.components.buttons.OrbButton;
+import view.scene.SuggestableScene;
 
-import controllers.SuggestableScene;
 
 public class MTActionOrb extends MTEllipse {
 	private ArrayList<OrbButton> buttonList = new ArrayList<OrbButton>();

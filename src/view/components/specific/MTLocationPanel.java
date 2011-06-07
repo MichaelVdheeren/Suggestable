@@ -13,11 +13,11 @@ import org.mt4j.util.math.Vector3D;
 import view.components.MTMessage;
 import view.components.MTPanel;
 import view.components.MTPanelButton;
+import view.scene.SuggestableScene;
 import bookshelf.AbstractBook;
 import bookshelf.apis.libis.LibisLocation;
 import bookshelf.apis.libis.parameters.LibisLibrary;
 import bookshelf.exceptions.BookshelfUnavailableException;
-import controllers.SuggestableScene;
 
 public class MTLocationPanel extends MTPanel {
 

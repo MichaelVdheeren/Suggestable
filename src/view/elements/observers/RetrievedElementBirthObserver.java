@@ -8,8 +8,8 @@ import org.mt4j.util.math.Vector3D;
 import rfid.idtronic.evo.desktop.hf.EDHFReply;
 import view.elements.RetrievedElement;
 import view.elements.actions.CreatedElementPreDrawAction;
+import view.scene.SuggestableScene;
 import bookshelf.apis.libis.LibisBook;
-import controllers.SuggestableScene;
 
 public class RetrievedElementBirthObserver implements Observer {
 	private final SuggestableScene scene;

@@ -18,8 +18,8 @@ import org.mt4j.util.math.Vector3D;
 
 import view.components.MTAbstractWindow;
 import view.elements.SuggestedElement;
+import view.scene.SuggestableScene;
 import bookshelf.Keyword;
-import controllers.SuggestableScene;
 
 public class KeywordWidget extends MTAbstractWindow implements IFacetWidget {
 	private TreeMap<Keyword,KeywordCell> keywords = new TreeMap<Keyword,KeywordCell>();

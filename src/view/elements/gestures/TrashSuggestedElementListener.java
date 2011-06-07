@@ -5,7 +5,7 @@ import org.mt4j.input.inputProcessors.MTGestureEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent;
 
 import view.elements.SuggestedElement;
-import controllers.SuggestableScene;
+import view.scene.SuggestableScene;
 
 public class TrashSuggestedElementListener implements IGestureEventListener {
 	private final SuggestedElement element;

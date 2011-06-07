@@ -10,6 +10,7 @@ import rfid.ReplyEventListener;
 import rfid.idtronic.evo.desktop.hf.EDHFReader;
 import rfid.idtronic.evo.desktop.hf.EDHFReply;
 import rfid.idtronic.evo.desktop.hf.iso15693.ReadCommand;
+import view.scene.SuggestableScene;
 
 
 /**

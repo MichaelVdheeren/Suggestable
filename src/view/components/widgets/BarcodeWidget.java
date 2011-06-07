@@ -14,8 +14,8 @@ import org.mt4j.util.math.Vector3D;
 
 import rfid.idtronic.evo.desktop.hf.EDHFReply;
 import view.components.MTAbstractWindow;
+import view.scene.SuggestableScene;
 import bookshelf.apis.libis.LibisBarcode;
-import controllers.SuggestableScene;
 
 public class BarcodeWidget extends MTAbstractWindow {
 	private EDHFReply tag;

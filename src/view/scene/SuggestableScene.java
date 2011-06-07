@@ -1,4 +1,4 @@
-package controllers;
+package view.scene;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -9,6 +9,10 @@ import org.mt4j.components.visibleComponents.widgets.MTBackgroundImage;
 import org.mt4j.sceneManagement.AbstractScene;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
+
+import controllers.BookshelfController;
+import controllers.SuggestableApplication;
+import controllers.TagController;
 
 import rfid.idtronic.evo.desktop.hf.EDHFReply;
 import view.components.MTMessage;
@@ -88,6 +92,9 @@ public class SuggestableScene extends AbstractScene {
 		// Do nothing;
 	}
 	
+	/**
+	 * Initialize the widgets
+	 */
 	public void initializeWidgets() {
 		float x = getMTApplication().getWidth()/2;
 		float y = getMTApplication().getHeight()/2;
@@ -117,6 +124,9 @@ public class SuggestableScene extends AbstractScene {
 		registerPreDrawAction(new ComponentDistancePreDrawAction(getTimelineWidget(), getKeywordWidget()));
 	}
 	
+	/**
+	 * Initialize the pan layer
+	 */
 	public void initializePanLayer() {
 		if (panLayer != null)
 			panLayer.destroy();
